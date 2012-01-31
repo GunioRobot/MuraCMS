@@ -1,14 +1,14 @@
 <!---
-	  
+
   Copyright (c) 2005, Chris Scott, David Ross, Kurt Wiersma, Sean Corfield
   All rights reserved.
-	
+
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
   You may obtain a copy of the License at
-  
+
        http://www.apache.org/licenses/LICENSE-2.0
-  
+
   Unless required by applicable law or agreed to in writing, software
   distributed under the License is distributed on an "AS IS" BASIS,
   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -30,20 +30,20 @@
  Forgot to add Dave to AOP license
 
 
----> 
- 
-<cfcomponent name="AfterReturningAdvice" 
-			displayname="AfterReturningAdvice" 
-			extends="coldspring.aop.Advice" 
-			hint="Interface (Abstract Class) for Before Advice implimentations" 
+--->
+
+<cfcomponent name="AfterReturningAdvice"
+			displayname="AfterReturningAdvice"
+			extends="coldspring.aop.Advice"
+			hint="Interface (Abstract Class) for Before Advice implimentations"
 			output="false">
-			
+
 	<cfset variables.adviceType = 'afterReturning' />
-			
+
 	<cffunction name="init" access="private" returntype="void" output="false">
 		<cfthrow message="Abstract CFC. Cannot be initialized" />
 	</cffunction>
-	
+
 	<cffunction name="afterReturning" access="public" returntype="void">
 		<cfargument name="returnVal" type="any" required="false" />
 		<cfargument name="method" type="coldspring.aop.Method" required="false" />
@@ -51,5 +51,5 @@
 		<cfargument name="target" type="any" required="false" />
 		<cfthrow type="Method.NotImplemented">
 	</cffunction>
-	
+
 </cfcomponent>

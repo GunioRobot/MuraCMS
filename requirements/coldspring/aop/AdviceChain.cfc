@@ -1,14 +1,14 @@
 <!---
-	  
+
   Copyright (c) 2005, Chris Scott, David Ross, Kurt Wiersma, Sean Corfield
   All rights reserved.
-	
+
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
   You may obtain a copy of the License at
-  
+
        http://www.apache.org/licenses/LICENSE-2.0
-  
+
   Unless required by applicable law or agreed to in writing, software
   distributed under the License is distributed on an "AS IS" BASIS,
   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -26,28 +26,28 @@
  Revision 1.5  2005/10/09 22:45:24  scottc
  Forgot to add Dave to AOP license
 
-	
----> 
- 
-<cfcomponent name="AdviceChain" 
-			displayname="AdviceChain" 
-			hint="Base Class for all Advice Chains" 
+
+--->
+
+<cfcomponent name="AdviceChain"
+			displayname="AdviceChain"
+			hint="Base Class for all Advice Chains"
 			output="false">
-			
+
 	<cffunction name="init" access="public" returntype="coldspring.aop.AdviceChain" output="false">
 		<cfset variables.beforeAdvice = ArrayNew(1) />
 		<cfset variables.afterAdvice = ArrayNew(1) />
 		<cfset variables.throwsAdvice = ArrayNew(1) />
 		<cfset variables.aroundAdvice = ArrayNew(1) />
 		<cfset variables.interceptors = StructNew() />
-		
+
 		<cfreturn this />
 	</cffunction>
-	
+
 	<cffunction name="addAdvice" access="public" returntype="void" output="false">
 		<cfargument name="advice" type="coldspring.aop.Advice" required="true" />
 		<cfset var interceptor = 0 />
-		
+
 		<cfswitch expression="#advice.getType()#">
 			<cfcase value="before">
 				<cfset interceptor = CreateObject('component','coldspring.aop.BeforeAdviceInterceptor').init(arguments.advice) />
@@ -62,10 +62,10 @@
 				<cfset interceptor = arguments.advice />
 			</cfdefaultcase>
 		</cfswitch>
-		
+
 		<cfset addInterceptor(interceptor) />
 	</cffunction>
-	
+
 	<cffunction name="addInterceptor" access="public" returntype="void" output="false">
 		<cfargument name="advice" type="coldspring.aop.MethodInterceptor" required="true" />
 		<cfswitch expression="#advice.getType()#">
@@ -86,29 +86,29 @@
 			</cfdefaultcase>
 		</cfswitch>
 	</cffunction>
-	
+
 	<cffunction name="getMethodInvocation" access="public" returntype="coldspring.aop.MethodInvocation" output="false">
 		<cfargument name="method" type="coldspring.aop.Method" required="true" />
 		<cfargument name="args" type="struct" required="true" />
 		<cfargument name="target" type="any" required="true" />
 		<cfset var invocation = 0 />
-		
+
 		<cfif not StructKeyExists(variables.interceptors,'data')>
 			<cfset buildInterceptorChain() />
 		</cfif>
-		
-		<cfset invocation = 
-			   CreateObject('component','coldspring.aop.MethodInvocation').init(arguments.method, 
-																			arguments.args, 
-																			arguments.target, 
+
+		<cfset invocation =
+			   CreateObject('component','coldspring.aop.MethodInvocation').init(arguments.method,
+																			arguments.args,
+																			arguments.target,
 																			variables.interceptors) />
-		
+
 		<cfreturn invocation>
 	</cffunction>
-	
+
 	<cffunction name="buildInterceptorChain" access="private" returntype="void" output="false">
 		<cfset var ix = 0 />
-		
+
 		<cflock name="AdviceChain.Interceptors" timeout="5">
 			<cfif not StructKeyExists(variables.interceptors,'data')>
 				<cfset variables.interceptors.data = ArrayNew(1) />
@@ -124,9 +124,9 @@
 				<cfloop from="1" to="#ArrayLen(variables.aroundAdvice)#" index="ix">
 					<cfset ArrayAppend(variables.interceptors.data, variables.aroundAdvice[ix])>
 				</cfloop>
-			</cfif> 
+			</cfif>
 		</cflock>
-		
+
 	</cffunction>
-	
+
 </cfcomponent>

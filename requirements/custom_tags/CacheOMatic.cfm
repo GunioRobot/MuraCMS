@@ -13,7 +13,7 @@ You should have received a copy of the GNU General Public License
 along with Mura CMS.  If not, see <http://www.gnu.org/licenses/>.
 
 Linking Mura CMS statically or dynamically with other modules constitutes
-the preparation of a derivative work based on Mura CMS. Thus, the terms and      
+the preparation of a derivative work based on Mura CMS. Thus, the terms and
 conditions of the GNU General Public License version 2 (GPL) cover the entire combined work.
 
 However, as a special exception, the copyright holders of Mura CMS grant you permission
@@ -65,15 +65,15 @@ uses the query string as the key --->
 
 <cfif request.cacheItem and NOT attributes.nocache AND (application.settingsManager.getSite(attributes.siteid).getCache()  OR request.forceCache IS true)>
        <cfset cacheFactory=attributes.cacheFactory/>
-       
+
        <cfif thisTag.executionMode IS "Start">
                <cfif cacheFactory.has( attributes.key )>
                        <cfset content=cacheFactory.get( attributes.key )>
                        <cfoutput>#content#</cfoutput>
                        <cfsetting enableCFOutputOnly="No">
-                       <cfexit method="EXITTAG">      
+                       <cfexit method="EXITTAG">
                </cfif>
-       <cfelse>        
+       <cfelse>
 			  <cfif isDate(request.cacheItemTimeSpan)>
 				 <cfset cacheFactory.set( key=attributes.key, context=thisTag.generatedContent, obj=thisTag.generatedContent, timespan=request.cacheItemTimeSpan)>
 			  <cfelse>

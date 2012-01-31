@@ -12,17 +12,17 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Mura CMS. If not, see <http://www.gnu.org/licenses/>.
 
-Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on 
+Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on
 Mura CMS. Thus, the terms and conditions of the GNU General Public License version 2 ("GPL") cover the entire combined work.
 
 However, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with programs
 or libraries that are released under the GNU Lesser General Public License version 2.1.
 
-In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with 
-independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without 
-Mura CMS under the license of your choice, provided that you follow these specific guidelines: 
+In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with
+independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without
+Mura CMS under the license of your choice, provided that you follow these specific guidelines:
 
-Your custom code 
+Your custom code
 
 • Must not alter any default objects in the Mura CMS database and
 • May not alter the default display of the Mura CMS logo within Mura CMS and
@@ -36,16 +36,16 @@ Your custom code
  /index.cfm
  /MuraProxy.cfc
 
-You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work 
-under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL 
+You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work
+under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL
 requires distribution of source code.
 
-For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your 
-modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
+For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your
+modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 <cfcomponent extends="mura.bean.beanExtendable" output="false">
-	
+
 <cfproperty name="contentHistID" type="string" default="" required="true" />
 <cfproperty name="contentID" type="string" default="" required="true" />
 <cfproperty name="preserveID" type="string" default="" required="true" />
@@ -125,9 +125,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfproperty name="expires" type="date" default="" required="true" />
 
 <cffunction name="init" access="public" returntype="any" output="false">
-	
+
 	<cfset super.init(argumentCollection=arguments)>
-	
+
 	<cfset variables.instance.ContentHistID = "" />
 	<cfset variables.instance.Contentid = "" />
 	<cfset variables.instance.preserveID = "" />
@@ -151,7 +151,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset variables.instance.newFile = "" />
 	<cfset variables.instance.type = "Page" />
 	<cfset variables.instance.subType = "Default" />
-	
+
 	<cfif isDefined("session.mura") and session.mura.isLoggedIn>
 		<cfset variables.instance.LastUpdateBy = left(session.mura.fname & " " & session.mura.lname,50) />
 		<cfset variables.instance.LastUpdateByID = session.mura.userID />
@@ -159,7 +159,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset variables.instance.LastUpdateBy = "" />
 		<cfset variables.instance.LastUpdateByID = "" />
 	</cfif>
-	
+
 	<cfset variables.instance.Summary = "" />
 	<cfset variables.instance.SiteID = "" />
 	<cfset variables.instance.ModuleID = "00000000000000000000000000000000000" />
@@ -216,10 +216,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset variables.instance.minorVersion = 0 />
 	<cfset variables.instance.expires = "" />
 	<cfset variables.instance.errors=structnew() />
-	
+
 	<cfset variables.kids = arrayNew(1) />
 	<cfset variables.displayRegions = structNew()>
-	
+
 	<cfreturn this />
 </cffunction>
 
@@ -237,7 +237,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="set" returnType="any" output="false" access="public">
     <cfargument name="content" type="any" required="true">
-	
+
 	<cfset var starthour = 0 />
 	<cfset var stophour = 0 />
 	<cfset var pageNum = 2 />
@@ -246,168 +246,168 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var releasehour="" />
 	<cfset var expireshour="" />
 	<cfset var prop="" />
-	
+
 	<cfif isQuery(arguments.content) and arguments.content.recordcount>
 		<cfloop list="#arguments.content.columnlist#" index="prop">
 			<cfset setValue(prop,arguments.content[prop][1]) />
 		</cfloop>
-		
+
 	<cfelseif isStruct(arguments.content)>
 		<cfloop collection="#arguments.content#" item="prop">
 			<cfset setValue(prop,arguments.content[prop]) />
 		</cfloop>
-		
-		<cfif variables.instance.display eq 2 
+
+		<cfif variables.instance.display eq 2
 			AND isDate(variables.instance.displayStart)>
-			
+
 			<cfif isdefined("arguments.content.starthour")
 			and isdefined("arguments.content.startMinute")
 			and isdefined("arguments.content.startDayPart")>
-			
+
 				<cfif arguments.content.startdaypart eq "PM">
 					<cfset starthour = arguments.content.starthour + 12>
-					
+
 					<cfif starthour eq 24>
 						<cfset starthour = 12>
 					</cfif>
 				<cfelse>
 					<cfset starthour = arguments.content.starthour>
-					
+
 					<cfif starthour eq 12>
 						<cfset starthour = 0>
 					</cfif>
 				</cfif>
-				
+
 				<cfset setDisplayStart(createDateTime(year(variables.instance.displayStart), month(variables.instance.displayStart), day(variables.instance.displayStart),starthour, arguments.content.startMinute, "0"))>
-		
+
 			</cfif>
 		<cfelseif variables.instance.display eq 2 >
 			<cfset variables.instance.display=1 >
 			<cfset variables.instance.displayStart="" >
 			<cfset variables.instance.displayStop="" >
 		</cfif>
-		
-		<cfif variables.instance.display eq 2 
+
+		<cfif variables.instance.display eq 2
 			AND isDate(variables.instance.displayStop)>
-			
+
 			<cfif isdefined("arguments.content.Stophour")
 			and isdefined("arguments.content.StopMinute")
 			and isdefined("arguments.content.StopDayPart")>
 			<cfif arguments.content.stopdaypart eq "PM">
 				<cfset stophour = arguments.content.stophour + 12>
-				
+
 				<cfif stophour eq 24>
 					<cfset stophour = 12>
 				</cfif>
 			<cfelse>
 				<cfset stophour = arguments.content.stophour>
-				
+
 				<cfif stophour eq 12>
 					<cfset stophour = 0>
 				</cfif>
 			</cfif>
-			
+
 			<cfset setDisplayStop(createDateTime(year(variables.instance.displayStop), month(variables.instance.displayStop), day(variables.instance.displayStop),stophour, arguments.content.StopMinute, "0"))>
-			
+
 			</cfif>
 		</cfif>
-		
-		<cfif variables.instance.isFeature eq 2 
+
+		<cfif variables.instance.isFeature eq 2
 			AND isDate(variables.instance.featureStart)
 			and isdefined("arguments.content.featurestarthour")
 			and isdefined("arguments.content.featurestartMinute")
 			and isdefined("arguments.content.featureStartDayPart")>
-			
+
 			<cfif arguments.content.featureStartdaypart eq "PM">
 				<cfset featurestarthour = arguments.content.featurestarthour + 12>
-				
+
 				<cfif featurestarthour eq 24>
 					<cfset featurestarthour = 12>
 				</cfif>
 			<cfelse>
 				<cfset featurestarthour = arguments.content.featurestarthour>
-				
+
 				<cfif featurestarthour eq 12>
 					<cfset featurestarthour = 0>
 				</cfif>
 			</cfif>
-			
+
 			<cfset setFeatureStart(createDateTime(year(variables.instance.featureStart), month(variables.instance.featureStart), day(variables.instance.featureStart),Featurestarthour, arguments.content.featurestartMinute, "0"))>
 		</cfif>
-		
-		<cfif variables.instance.isFeature eq 2 
+
+		<cfif variables.instance.isFeature eq 2
 			AND isDate(variables.instance.featureStop)
 			and isdefined("arguments.content.featurestophour")
 			and isdefined("arguments.content.featurestopMinute")
 			and isdefined("arguments.content.featureStopDayPart")>
-			
+
 			<cfif arguments.content.featureStopdaypart eq "PM">
 				<cfset featurestophour = arguments.content.featurestophour + 12>
-				
+
 				<cfif featurestophour eq 24>
 					<cfset featurestophour = 12>
 				</cfif>
 			<cfelse>
 				<cfset featurestophour = arguments.content.featurestophour>
-				
+
 				<cfif featurestophour eq 12>
 					<cfset featurestophour = 0>
 				</cfif>
 			</cfif>
-			
+
 			<cfset setFeatureStop(createDateTime(year(variables.instance.featureStop), month(variables.instance.featureStop), day(variables.instance.featureStop),Featurestophour, arguments.content.featurestopMinute, "0"))>
 		</cfif>
-		
+
 		<cfif isDate(variables.instance.releaseDate)>
-			
+
 			<cfif isdefined("arguments.content.releasehour")
 			and isdefined("arguments.content.releaseMinute")
 			and isdefined("arguments.content.releaseDayPart")>
-			
+
 				<cfif arguments.content.releasedaypart eq "PM">
 					<cfset releasehour = arguments.content.releasehour + 12>
-					
+
 					<cfif releasehour eq 24>
 						<cfset releasehour = 12>
 					</cfif>
 				<cfelse>
 					<cfset releasehour = arguments.content.releasehour>
-					
+
 					<cfif releasehour eq 12>
 						<cfset releasehour = 0>
 					</cfif>
 				</cfif>
-				
+
 				<cfset setReleaseDate(createDateTime(year(variables.instance.releaseDate), month(variables.instance.releaseDate), day(variables.instance.releaseDate), releasehour, arguments.content.releaseMinute, "0"))>
-		
+
 			</cfif>
 		</cfif>
-		
+
 		<cfif isDate(variables.instance.expires)>
-			
+
 			<cfif isdefined("arguments.content.expireshour")
 			and isdefined("arguments.content.expiresMinute")
 			and isdefined("arguments.content.expiresDayPart")>
-			
+
 				<cfif arguments.content.expiresdaypart eq "PM">
 					<cfset expireshour = arguments.content.expireshour + 12>
-					
+
 					<cfif expireshour eq 24>
 						<cfset expireshour = 12>
 					</cfif>
 				<cfelse>
 					<cfset expireshour = arguments.content.expireshour>
-					
+
 					<cfif expireshour eq 12>
 						<cfset expireshour = 0>
 					</cfif>
 				</cfif>
-				
+
 				<cfset setExpires(createDateTime(year(variables.instance.expires), month(variables.instance.expires), day(variables.instance.expires), expireshour, arguments.content.expiresMinute, "0"))>
-		
+
 			</cfif>
 		</cfif>
-		
+
 		<cfif not session.mura.isLoggedIn >
 			<cfset variables.instance.LastUpdateBy = "" />
 			<cfset variables.instance.LastUpdateByID = "" />
@@ -415,53 +415,53 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset variables.instance.LastUpdateBy = left(session.mura.fname & " " & session.mura.lname,50) />
 			<cfset variables.instance.LastUpdateByID = session.mura.userID />
 		</cfif>
-		
+
 	</cfif>
-	
+
 	<cfreturn this />
 </cffunction>
 
 <cffunction name="validate" access="public" output="false">
 	<cfset var extErrors=structNew() />
-	
+
 	<cfif len(variables.instance.siteID)>
 		<cfset extErrors=variables.configBean.getClassExtensionManager().validateExtendedData(getAllValues())>
 	</cfif>
-		
+
 	<cfset variables.instance.errors=structnew() />
-		
+
 	<cfif not structIsEmpty(extErrors)>
 		<cfset structAppend(variables.instance.errors,extErrors)>
 	</cfif>
-	<cfreturn this>	
+	<cfreturn this>
 </cffunction>
- 
+
 <cffunction name="getAllValues" access="public" returntype="struct" output="false">
 	<cfargument name="autocomplete" required="true" default="#variables.instance.extendAutoComplete#">
 	<cfset var i="">
 	<cfset var extData="">
-		
+
 	<cfif arguments.autocomplete>
 		<cfset extData=getExtendedData().getAllExtendSetData()>
 		<cfif not structIsEmpty(extData)>
-			<cfset structAppend(variables.instance,extData.data,false)>	
+			<cfset structAppend(variables.instance,extData.data,false)>
 			<cfloop list="#extData.extendSetID#" index="i">
 				<cfif not listFind(variables.instance.extendSetID,i)>
 					<cfset variables.instance.extendSetID=listAppend(variables.instance.extendSetID,i)>
 				</cfif>
 			</cfloop>
 		</cfif>
-		
+
 		<cfif not structIsEmpty(variables.displayRegions)>
 			<cfloop collection="#variables.displayRegions#" item="i">
 				<cfset variables.instance[i]=variables.contentManager.formatRegionObjectsString(variables.displayRegions[i])>
 			</cfloop>
 		</cfif>
 	</cfif>
-		
+
 	<cfset purgeExtendedData()>
 	<cfset variables.displayRegions=structNew()>
-		
+
 	<cfreturn variables.instance />
 </cffunction>
 
@@ -471,14 +471,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 	<cfreturn variables.instance.ContentHistID />
 </cffunction>
-  
+
 <cffunction name="getContentID" returnType="string" output="false" access="public">
     <cfif not len(variables.instance.contentid)>
 		<cfset variables.instance.contentid = createUUID() />
 	</cfif>
 	<cfreturn variables.instance.contentid />
 </cffunction>
-  
+
 <cffunction name="setDisplayStart" output="false" access="public">
     <cfargument name="DisplayStart" type="string" required="true">
 	<cfset variables.instance.displayStart = parseDateArg(arguments.displayStart) />
@@ -502,11 +502,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset variables.instance.LastUpdate = parseDateArg(arguments.LastUpdate) />
 	<cfreturn this>
 </cffunction>
-  
+
 <cffunction name="setType" output="false" access="public">
     <cfargument name="Type" type="string" required="true">
     <cfset arguments.Type=trim(arguments.Type)>
-	
+
 	<cfif len(arguments.Type) and variables.instance.Type neq arguments.Type>
 		<cfset variables.instance.Type = arguments.Type />
 		<cfset purgeExtendedData()>
@@ -518,7 +518,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset variables.instance.ParentID="00000000000000000000000000000000003">
 		</cfif>
 	</cfif>
-	
+
 	<cfreturn this>
 </cffunction>
 
@@ -539,7 +539,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset variables.instance.releaseDate = parseDateArg(arguments.releaseDate) />
 	<cfreturn this>
 </cffunction>
-  
+
 <cffunction name="setNextN" output="false" access="public">
     <cfargument name="NextN" type="any" required="true">
 	<cfif isNumeric(arguments.NextN)>
@@ -547,7 +547,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 	<cfreturn this>
 </cffunction>
-  
+
 <cffunction name="setFeatureStop" output="false" access="public">
     <cfargument name="FeatureStop" type="string" required="true">
     <cfset variables.instance.FeatureStop = parseDateArg(arguments.FeatureStop) />
@@ -559,7 +559,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset variables.instance.FeatureStart = parseDateArg(arguments.FeatureStart) />
 	<cfreturn this>
 </cffunction>
-  
+
 <cffunction name="setRemotePubDate" output="false" access="public">
     <cfargument name="RemotePubDate" type="string" required="true">
 	<cfset variables.instance.RemotePubDate = parseDateArg(arguments.RemotePubDate) />
@@ -616,7 +616,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="imageSize">
 	<cfif listFindNoCase("small,medium,large,custom",arguments.imageSize)>
 		<cfset variables.instance.imageSize = arguments.imageSize>
-	</cfif>	
+	</cfif>
 	<cfreturn this>
 </cffunction>
 
@@ -655,7 +655,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="setDisplayList" output="false">
 	<cfargument name="displayList">
 	<cfset variables.instance.responseDisplayFields=arguments.displayList>
-	<cfreturn this>	
+	<cfreturn this>
 </cffunction>
 
 <cffunction name="getDisplayList" output="false">
@@ -667,7 +667,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var i=0>
 	<cfset var finder=0>
 	<cfset var rsExtend=variables.configBean.getClassExtensionManager().getExtendedAttributeList(variables.instance.siteID,"tcontent")>
-	
+
 	<cfif variables.instance.type neq "Gallery">
 		<cfset returnList="Date,Title,Image,Summary,ReadMore,Credits,Comments,Tags,Rating">
 	<cfelse>
@@ -676,13 +676,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<cfif rsExtend.recordcount>
 		<cfquery name="rsExtend" dbType="query">
-			select attribute from rsExtend 
+			select attribute from rsExtend
 			group by attribute
 			order by attribute
 		</cfquery>
 		<cfset returnList=returnList & "," & valueList(rsExtend.attribute)>
 	</cfif>
-	
+
 	<cfloop list="#variables.instance.responseDisplayFields#" index="i">
 		<cfset finder=listFindNoCase(returnList,i)>
 		<cfif finder>
@@ -695,13 +695,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="setCategory" returntype="any" access="public" output="false">
 	<cfargument name="categoryID"  required="true" default=""/>
 	<cfargument name="membership"  required="true" default="0"/>
-	<cfargument name="featureStart"  required="true" default=""/>	
-	<cfargument name="featureStop"  required="true" default=""/>	
-	
+	<cfargument name="featureStart"  required="true" default=""/>
+	<cfargument name="featureStop"  required="true" default=""/>
+
 	<cfset var catTrim=replace(arguments.categoryID,'-','','ALL')>
-	
+
 	<cfset variables.instance["categoryAssign#catTrim#"]=arguments.membership />
-	
+
 	<cfif arguments.membership eq "2">
 		<cfif isdate(arguments.featureStart)>
 		<cfset variables.instance['featureStart#catTrim#']=arguments.featureStart />
@@ -722,16 +722,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="setCategories" returntype="any" access="public" output="false">
 	<cfargument name="categoryList"  required="true" default=""/>
 	<cfargument name="membership"  required="true" default="0"/>
-	<cfargument name="featureStart"  required="true" default=""/>	
+	<cfargument name="featureStart"  required="true" default=""/>
 	<cfargument name="featureStop"  required="true" default=""/>
-	
+
 	<cfset var cat = "" />
 	<cfloop list="#arguments.categoryList#" index="cat">
 		<cfset setCategory(
 			cat,
 			arguments.membership,
 			arguments.featureStart,
-			arguments.featureStop	
+			arguments.featureStop
 		) />
 	</cfloop>
 	<cfreturn this>
@@ -751,7 +751,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfreturn variables.instance.MenuTitle />
 	</cfif>
 </cffunction>
-  
+
 <cffunction name="getKidsQuery" returnType="query" output="false" access="public">
 	<cfargument name="aggregation" required="true" default="false">
 	<cfreturn variables.contentManager.getKidsQuery(siteID:variables.instance.siteID, parentID:getContentID(), sortBy:variables.instance.sortBy, sortDirection:variables.instance.sortDirection, aggregation=arguments.aggregation) />
@@ -762,14 +762,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="aggregation" required="true" default="false">
 	<cfset var q="" />
 	<cfset var it=getBean("contentIterator").setPackageBy("active")>
-	
+
 	<cfif arguments.liveOnly>
 		<cfset q=getKidsQuery(aggregation=arguments.aggregation) />
 	<cfelse>
 		<cfset q=variables.contentManager.getNest( parentID:getContentID(), siteID:variables.instance.siteID, sortBy:variables.instance.sortby, sortDirection:variables.instance.sortdirection) />
 	</cfif>
 	<cfset it.setQuery(q,variables.instance.nextn)>
-	
+
 	<cfreturn it>
 </cffunction>
 
@@ -800,7 +800,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="today" type="date" required="yes" default="#now()#" />
 	<cfargument name="sortBy" type="string" default="created" >
 	<cfargument name="sortDirection" type="string" default="desc" >
-	
+
 	<cfreturn variables.contentManager.getRelatedContent(variables.instance.siteID, getContentHistID(), arguments.liveOnly, arguments.today,arguments.sortBy,arguments.sortDirection) />
 </cffunction>
 
@@ -809,7 +809,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="today" type="date" required="yes" default="#now()#" />
 	<cfargument name="sortBy" type="string" default="created" >
 	<cfargument name="sortDirection" type="string" default="desc" >
-	
+
 	<cfset var q=getRelatedContentQuery(arguments.liveOnly, arguments.today,arguments.sortBy,arguments.sortDirection) />
 	<cfset var it=getBean("contentIterator").setPackageBy("active")>
 	<cfset it.setQuery(q)>
@@ -820,16 +820,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var kid="">
 	<cfset var i="">
 	<cfset setAllValues(variables.contentManager.save(this).getAllValues())>
-	
+
 	<cfif arrayLen(variables.kids)>
 		<cfloop from="1" to="#arrayLen(variables.kids)#" index="i">
 			<cfset kid=variables.kids[i]>
 			<cfset kid.save()>
 		</cfloop>
 	</cfif>
-	
+
 	<cfset variables.kids=arrayNew(1)>
-	
+
 	<cfreturn this />
 </cffunction>
 
@@ -838,7 +838,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset arguments.child.setSiteID(variables.instance.siteID)>
 	<cfset arguments.child.setParentID(getContentID())>
 	<cfset arguments.child.setModuleID(variables.instance.moduleID)>
-	<cfset arrayAppend(variables.kids,arguments.child)>	
+	<cfset arrayAppend(variables.kids,arguments.child)>
 	<cfreturn this>
 </cffunction>
 
@@ -851,7 +851,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="orderno" default="">
 	<cfset var rs=getDisplayRegion(arguments.regionID)>
 	<cfset var rows=0>
-	
+
 	<cfif isNumeric(arguments.orderno)>
 		<cfloop query="rs">
 			<cfif rs.objectID eq arguments.objectID
@@ -866,17 +866,17 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfif>
 		</cfloop>
 	</cfif>
-	
+
 	<cfif not hasDisplayObject(argumentCollection=arguments)>
 		<cfset queryAddRow(rs,1)/>
 		<cfset rows =rs.recordcount />
 		<cfset querysetcell(rs,"objectid",arguments.objectID,rows)/>
 		<cfset querysetcell(rs,"object",arguments.object,rows)/>
 		<cfset querysetcell(rs,"name",arguments.name,rows)/>
-		<cfset querysetcell(rs,"params",arguments.params,rows)/>	
+		<cfset querysetcell(rs,"params",arguments.params,rows)/>
 		<cfset variables.instance.extendAutoComplete = true />
 	</cfif>
-	
+
 	<cfreturn this>
 </cffunction>
 
@@ -886,7 +886,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="objectID">
 	<cfset var rs=getDisplayRegion(arguments.regionID)>
 	<cfset var rows=0>
-	
+
 	<cfif hasDisplayObject(argumentCollection=arguments)>
 		<cfquery name="variables.displayRegions.objectlist#arguments.regionID#" dbtype="query">
 		select * from rs where
@@ -895,7 +895,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfquery>
 		<cfset variables.instance.extendAutoComplete = true />
 	</cfif>
-	
+
 	<cfreturn this>
 </cffunction>
 
@@ -904,24 +904,24 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="object">
 	<cfargument name="objectID">
 	<cfset var rs=getDisplayRegion(arguments.regionID)>
-	
+
 	<cfquery name="rs" dbtype="query">
 		select * from rs where
 		objectID='#arguments.objectID#'
 		and object='#arguments.object#'
 	</cfquery>
-	
+
 	<cfreturn rs.recordcount>
 </cffunction>
-	
+
 <cffunction name="getDisplayRegion" output="false" access="public" returntype="any">
 	<cfargument name="regionID">
 	<cfset var rs="">
 	<cfif not structKeyExists(variables.displayRegions,"objectlist#arguments.regionID#")>
 		<cfset variables.displayRegions["objectlist#arguments.regionID#"]=variables.contentManager.getRegionObjects(getContentHistID(), variables.instance.siteID, arguments.regionID)>
 	</cfif>
-	
-	<cfreturn variables.displayRegions["objectlist#arguments.regionID#"]>	
+
+	<cfreturn variables.displayRegions["objectlist#arguments.regionID#"]>
 </cffunction>
 
 <cffunction name="deleteVersion" returnType="any" output="false" access="public">
@@ -945,9 +945,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif not structKeyExists(arguments,"siteID")>
 		<cfset arguments.siteID=variables.instance.siteID>
 	</cfif>
-	
+
 	<cfset arguments.contentBean=this>
-	
+
 	<cfreturn variables.contentManager.read(argumentCollection=arguments)>
 </cffunction>
 
@@ -1008,28 +1008,28 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="complete" type="boolean" required="true" default="false">
 	<cfargument name="showMeta" type="string" required="true" default="0">
 	 <cfreturn variables.contentManager.getURL(this, arguments.queryString,arguments.complete, arguments.showMeta)>
-</cffunction>		
+</cffunction>
 
 <cffunction name="getEditUrl" access="public" returntype="string" output="false">
 	<cfargument name="compactDisplay" type="any" required="true" default="false"/>
 	<cfset var returnStr="">
 	<cfset var topID="00000000000000000000000000000000001">
-	
+
 	<cfif listFindNoCase("Form,Component", variables.instance.type)>
 		<cfset topID=variables.instance.moduleID>
 	</cfif>
-	
+
 	<cfset returnStr= "#variables.configBean.getContext()#/admin/?fuseaction=cArch.edit&contentHistId=#getContentHistId()#&contentId=#getContentId()#&Type=#variables.instance.type#&siteId=#variables.instance.siteID#&topId=#topID#&parentId=#variables.instance.parentID#&moduleId=#variables.instance.moduleID#&compactDisplay=#arguments.compactdisplay#" >
-	
+
 	<cfreturn returnStr>
-</cffunction> 
+</cffunction>
 
 <cffunction name="hasParent" output="false">
 	<cfreturn listLen(variables.instance.path) gt 1>
 </cffunction>
 
 <cffunction name="getIsOnDisplay" output="false">
-<cfreturn variables.instance.display eq 1 or 
+<cfreturn variables.instance.display eq 1 or
 			(
 				variables.instance.display eq 2 and variables.instance.displayStart lte now()
 				AND (variables.instance.displayStop eq "" or variables.instance.displayStop gte now())

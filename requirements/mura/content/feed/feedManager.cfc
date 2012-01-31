@@ -12,17 +12,17 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Mura CMS. If not, see <http://www.gnu.org/licenses/>.
 
-Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on 
+Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on
 Mura CMS. Thus, the terms and conditions of the GNU General Public License version 2 ("GPL") cover the entire combined work.
 
 However, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with programs
 or libraries that are released under the GNU Lesser General Public License version 2.1.
 
-In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with 
-independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without 
-Mura CMS under the license of your choice, provided that you follow these specific guidelines: 
+In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with
+independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without
+Mura CMS under the license of your choice, provided that you follow these specific guidelines:
 
-Your custom code 
+Your custom code
 
 • Must not alter any default objects in the Mura CMS database and
 • May not alter the default display of the Mura CMS logo within Mura CMS and
@@ -36,12 +36,12 @@ Your custom code
  /index.cfm
  /MuraProxy.cfc
 
-You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work 
-under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL 
+You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work
+under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL
 requires distribution of source code.
 
-For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your 
-modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
+For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your
+modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 <cfcomponent extends="mura.cfobject" output="false">
@@ -62,9 +62,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset variables.feedUtility=arguments.feedUtility />
 	<cfset variables.pluginManager=arguments.pluginManager />
 	<cfset variables.trashManager=arguments.trashManager />
-	
+
 	<cfset variables.feedDAO.setFeedManager(this) />
-	
+
 	<cfreturn this />
 </cffunction>
 
@@ -98,7 +98,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var rs =  variables.feedgateway.getFeed(arguments.feedBean,arguments.tag,arguments.aggregation) />
 	<cfset var it = getBean("contentIterator")>
 	<cfset it.setQuery(rs)>
-	<cfreturn it/>	
+	<cfreturn it/>
 </cffunction>
 
 <cffunction name="getcontentItems" returntype="query" access="public" output="false">
@@ -109,18 +109,18 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="create" access="public" returntype="any" output="false">
-	<cfargument name="data" type="struct" default="#structnew()#"/>		
-	
+	<cfargument name="data" type="struct" default="#structnew()#"/>
+
 	<cfset var feedBean=getBean("feed") />
 	<cfset var pluginEvent = createObject("component","mura.event").init(arguments.data) />
 	<cfset feedBean.set(arguments.data) />
 	<cfset feedBean.validate()>
-	
+
 	<cfset pluginEvent.setValue("feedBean",feedBean)>
 	<cfset pluginEvent.setValue("siteID",feedBean.getSiteID())>
 	<cfset variables.pluginManager.announceEvent("onBeforeFeedSave",pluginEvent)>
-	<cfset variables.pluginManager.announceEvent("onBeforeFeedCreate",pluginEvent)>	
-	
+	<cfset variables.pluginManager.announceEvent("onBeforeFeedCreate",pluginEvent)>
+
 	<cfif structIsEmpty(feedBean.getErrors())>
 		<cfset feedBean.setLastUpdateBy(left(session.mura.fname & " " & session.mura.lname,50) ) />
 		<cfif not (structKeyExists(arguments.data,"feedID") and len(arguments.data.feedID))>
@@ -135,17 +135,17 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset variables.pluginManager.announceEvent("onAfterFeedSave",pluginEvent)>
 		<cfset variables.pluginManager.announceEvent("onAfterFeedCreate",pluginEvent)>
 	</cfif>
-	
+
 	<cfreturn feedBean />
 </cffunction>
 
 <cffunction name="read" access="public" returntype="any" output="false">
-	<cfargument name="feedID" required="true" default=""/>		
+	<cfargument name="feedID" required="true" default=""/>
 	<cfargument name="name" required="true" default=""/>
 	<cfargument name="remoteID" required="true" default=""/>
 	<cfargument name="siteID" required="true" default=""/>
 	<cfargument name="feedBean" required="true" default=""/>
-	
+
 	<cfif not len(arguments.feedID) and len(arguments.siteid)>
 		<cfif len(arguments.name)>
 			<cfreturn variables.feedDAO.readByName(arguments.name,arguments.siteid,arguments.feedBean) />
@@ -153,16 +153,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfreturn variables.feedDAO.readByRemoteID(arguments.remoteID,arguments.siteid,arguments.feedBean) />
 		</cfif>
 	</cfif>
-	
+
 	<cfreturn variables.feedDAO.read(arguments.feedID,arguments.feedBean) />
-	
+
 </cffunction>
 
 <cffunction name="readByName" access="public" returntype="any" output="false">
 	<cfargument name="name" type="String" />
 	<cfargument name="siteid" type="String" />
-	<cfargument name="feedBean" required="true" default=""/>		
-	
+	<cfargument name="feedBean" required="true" default=""/>
+
 	<cfreturn variables.feedDAO.readByName(arguments.name,arguments.siteid,arguments.feedBean) />
 
 </cffunction>
@@ -170,32 +170,32 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="readByRemoteID" access="public" returntype="any" output="false">
 	<cfargument name="remoteID" type="String" />
 	<cfargument name="siteid" type="String" />
-	<cfargument name="feedBean" required="true" default=""/>		
-	
+	<cfargument name="feedBean" required="true" default=""/>
+
 	<cfreturn variables.feedDAO.readByRemoteID(arguments.remoteID,arguments.siteid,arguments.feedBean) />
 
 </cffunction>
 
 <cffunction name="doImport" access="public" returntype="struct" output="false">
-	<cfargument name="data" type="struct" />		
-	
+	<cfargument name="data" type="struct" />
+
 	<cfreturn variables.feedUtility.doImport(arguments.data) />
 
 </cffunction>
 
 <cffunction name="update" access="public" returntype="any" output="false">
-	<cfargument name="data" type="struct" default="#structnew()#"/>		
-	
+	<cfargument name="data" type="struct" default="#structnew()#"/>
+
 	<cfset var feedBean=variables.feedDAO.read(arguments.data.feedID) />
 	<cfset var pluginEvent = createObject("component","mura.event").init(arguments.data) />
 	<cfset feedBean.set(arguments.data) />
 	<cfset feedBean.validate()>
-	
+
 	<cfset pluginEvent.setValue("feedBean",feedBean)>
 	<cfset pluginEvent.setValue("siteID",feedBean.getSiteID())>
 	<cfset variables.pluginManager.announceEvent("onBeforeFeedSave",pluginEvent)>
-	<cfset variables.pluginManager.announceEvent("onBeforeFeedUpdate",pluginEvent)>	
-	
+	<cfset variables.pluginManager.announceEvent("onBeforeFeedUpdate",pluginEvent)>
+
 	<cfif structIsEmpty(feedBean.getErrors())>
 		<cfset variables.globalUtility.logEvent("feedID:#feedBean.getfeedID()# Name:#feedBean.getName()# was updated","mura-content","Information",true) />
 		<cfset feedBean.setLastUpdateBy(left(session.mura.fname & " " & session.mura.lname,50) ) />
@@ -203,18 +203,18 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset variables.pluginManager.announceEvent("onFeedSave",pluginEvent)>
 		<cfset variables.pluginManager.announceEvent("onFeedUpdate",pluginEvent)>
 		<cfset variables.pluginManager.announceEvent("onAfterFeedSave",pluginEvent)>
-		<cfset variables.pluginManager.announceEvent("onAfterFeedUpdate",pluginEvent)>			
+		<cfset variables.pluginManager.announceEvent("onAfterFeedUpdate",pluginEvent)>
 	</cfif>
-	
+
 	<cfreturn feedBean />
 </cffunction>
 
 <cffunction name="save" access="public" returntype="any" output="false">
-	<cfargument name="data" type="any" default="#structnew()#"/>	
-	
+	<cfargument name="data" type="any" default="#structnew()#"/>
+
 	<cfset var feedID="">
 	<cfset var rs="">
-	
+
 	<cfif isObject(arguments.data)>
 		<cfif listLast(getMetaData(arguments.data).name,".") eq "feedBean">
 			<cfset arguments.data=arguments.data.getAllValues()>
@@ -227,13 +227,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfelse>
 		<cfthrow type="custom" message="The attribute 'FEEDID' is required when saving a feed.">
 	</cfif>
-	
+
 	<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#" name="rs">
 	select feedID from tcontentfeeds where feedID=<cfqueryparam value="#feedID#">
 	</cfquery>
-	
+
 	<cfif rs.recordcount>
-		<cfreturn update(arguments.data)>	
+		<cfreturn update(arguments.data)>
 	<cfelse>
 		<cfreturn create(arguments.data)>
 	</cfif>
@@ -241,20 +241,20 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="delete" access="public" returntype="void" output="false">
-	<cfargument name="feedID" type="String" />		
-	
+	<cfargument name="feedID" type="String" />
+
 	<cfset var feedBean=read(arguments.feedID) />
 	<cfset var pluginEvent = createObject("component","mura.event").init(arguments) />
 	<cfset pluginEvent.setValue("feedBean",feedBean)>
 	<cfset pluginEvent.setValue("siteID",feedBean.getSiteID())>
-	
+
 	<cfset variables.pluginManager.announceEvent("onBeforeFeedDelete",pluginEvent)>
 	<cfset variables.trashManager.throwIn(feedBean)>
 	<cfset variables.globalUtility.logEvent("feedID:#feedBean.getfeedID()# Name:#feedBean.getName()# was deleted","mura-content","Information",true) />
 	<cfset variables.feedDAO.delete(arguments.feedID) />
-	
+
 	<cfset variables.pluginManager.announceEvent("onFeedDelete",pluginEvent)>
-	<cfset variables.pluginManager.announceEvent("onAfterFeedDelete",pluginEvent)>	
+	<cfset variables.pluginManager.announceEvent("onAfterFeedDelete",pluginEvent)>
 
 </cffunction>
 
@@ -268,41 +268,41 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset var allowFeed=true />
 			<cfset var rLen=listLen(arguments.feedBean.getRestrictGroups()) />
 			<cfset var G = 0 />
-			
+
 			<cfif listFind(session.mura.memberships,'S2IsPrivate;#arguments.feedBean.getSiteID()#')>
 				<cfreturn true />
 			</cfif>
-			
+
 			<cfif  arguments.feedBean.getRestricted()>
 						<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
-						select tusers.userid from tusers 
-						<cfif rLen> inner join tusersmemb 
+						select tusers.userid from tusers
+						<cfif rLen> inner join tusersmemb
 						on(tusers.userid=tusersmemb.userid)</cfif>
-						where tusers.type=2 
+						where tusers.type=2
 						<cfif len(arguments.userID)>
 							tusers.userID=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.userID#">
 						<cfelse>
-						and tusers.username=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.username#"> 
+						and tusers.username=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.username#">
 						and (tusers.password=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.password#">
-							or 
+							or
 						     tusers.password=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#trim(hash(arguments.password))#">)
 						</cfif>
 						and tusers.siteid='#application.settingsManager.getSite(arguments.feedBean.getSiteID()).getPublicUserPoolID()#'
-						
+
 						<cfif rLen>
-						and tusersmemb.groupid in ( 
+						and tusersmemb.groupid in (
 						<cfloop from="1" to="#rlen#" index="g">
 						<cfqueryparam cfsqltype="cf_sql_varchar" value="#listGetAt(arguments.feedBean.getRestrictGroups(),g)#">
 						<cfif g lt rlen>,</cfif>
 						</cfloop>)
 						</cfif>
 						</cfquery>
-						
+
 						<cfif not rs.recordcount>
 							<cfreturn false />
 						</cfif>
 			</cfif>
-			
+
 		<cfreturn allowFeed>
 </cffunction>
 
@@ -326,15 +326,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var data = "" />
 	<cfset var temp = 0 />
 	<cfset var response=structNew() />
-	
+
 	<cftry>
 	<cfif len(variables.configBean.getProxyServer())>
-		<cfhttp result="temp" url="#arguments.feedURL#" method="GET" resolveurl="Yes" 
-		throwOnError="Yes" charset="UTF-8" timeout="#arguments.timeout#" 
+		<cfhttp result="temp" url="#arguments.feedURL#" method="GET" resolveurl="Yes"
+		throwOnError="Yes" charset="UTF-8" timeout="#arguments.timeout#"
 		proxyUser="#variables.configBean.getProxyUser()#" proxyPassword="#variables.configBean.getProxyPassword()#"
 		proxyServer="#variables.configBean.getProxyServer()#" proxyPort="#variables.configBean.getProxyPort()#"/>
 	<cfelse>
-		<cfhttp result="temp" url="#arguments.feedURL#" method="GET" resolveurl="Yes" 
+		<cfhttp result="temp" url="#arguments.feedURL#" method="GET" resolveurl="Yes"
 		throwOnError="Yes" charset="UTF-8" timeout="#arguments.timeout#"/>
 	</cfif>
 	<cfcatch><cfreturn response /></cfcatch>
@@ -370,7 +370,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfif>
 			<cfset response.type = "atom" />
 		</cfif>
-	
+
 		<cfif response.maxItems gt arguments.MaxItems>
 			<cfset response.maxItems=arguments.MaxItems/>
 		</cfif>

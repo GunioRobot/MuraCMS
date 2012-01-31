@@ -23,19 +23,19 @@
 
 <cffunction name="setParams" access="public" output="false">
 	<cfargument name="params" type="any" required="true">
-		
+
 		<cfset var rows=0/>
 		<cfset var I = 0 />
-		
+
 		<cfif isquery(arguments.params)>
-			
+
 		<cfset variables.instance.params=arguments.params />
-			
+
 		<cfelseif isdefined('arguments.params.param')>
-		
+
 			<cfset clearparams() />
 			<cfloop from="1" to="#listLen(arguments.params.param)#" index="i">
-				
+
 				<cfset addParam(
 						listFirst(evaluate('arguments.params.paramField#i#'),'^'),
 						evaluate('arguments.params.paramRelationship#i#'),
@@ -43,14 +43,14 @@
 						evaluate('arguments.params.paramCondition#i#'),
 						listLast(evaluate('arguments.params.paramField#i#'),'^')
 						) />
-	
+
 			</cfloop>
-			
+
 		<cfelseif isdefined('arguments.params.paramarray') and isArray(arguments.params.paramarray)>
-		
+
 			<cfset clearparams() />
 			<cfloop from="1" to="#arrayLen(arguments.params.paramarray)#" index="i">
-				
+
 				<cfset addParam(
 						listFirst(arguments.params.paramarray[i].field,'^'),
 						arguments.params.paramarray[i].relationship,
@@ -58,28 +58,28 @@
 						arguments.params.paramarray[i].condition,
 						listLast(arguments.params.paramarray[i].field,'^')
 						) />
-	
+
 			</cfloop>
-					
+
 		</cfif>
-		
+
 		<cfif isStruct(arguments.params)>
 			<cfif structKeyExists(arguments.params,"inactive")>
 				<cfset setInActive(arguments.params.inactive)>
 			</cfif>
-			
+
 			<cfif structKeyExists(arguments.params,"ispublic")>
 				<cfset setIsPublic(arguments.params.ispublic)>
 			</cfif>
-			
+
 			<cfif structKeyExists(arguments.params,"siteid")>
 				<cfset setSiteID(arguments.params.siteid)>
 			</cfif>
-			
+
 			<cfif structKeyExists(arguments.params,"categoryID")>
 				<cfset setCategoryID(arguments.params.categoryID)>
 			</cfif>
-			
+
 			<cfif structKeyExists(arguments.params,"groupID")>
 				<cfset setGroupID(arguments.params.groupID)>
 			</cfif>
@@ -94,7 +94,7 @@
 	<cfargument name="condition" type="string" default="EQUALS" required="true">
 	<cfargument name="datatype" type="string"  default="varchar" required="true">
 		<cfset var rows=1/>
-		
+
 		<cfset queryAddRow(variables.instance.params,1)/>
 		<cfset rows = variables.instance.params.recordcount />
 		<cfset querysetcell(variables.instance.params,"param",rows,rows)/>
@@ -112,7 +112,7 @@
 	<cfargument name="criteria" type="string" required="true" default="">
 	<cfargument name="condition" type="string" default="EQUALS" required="true">
 	<cfargument name="datatype" type="string"  default="varchar" required="true">
-		
+
 	<cfreturn addParam(argumentCollection=arguments)>
 </cffunction>
 
@@ -222,26 +222,26 @@
 	<cfset var blockFactor=getNextN()>
 	<cfset var rsAttribute="">
 	<cfset var dataTable=getDataTable()>
-	
+
 	<cfif not len(getSiteID())>
 		<cfthrow message="The 'SITEID' value must be set in order to search custom objects.">
 	</cfif>
-	
+
 	<cfif not len(getType())>
 		<cfthrow message="The 'Type' value must be set in order  to search custom objects.">
 	</cfif>
-	
+
 	<cfif not len(getSubType())>
 		<cfthrow message="The 'SubType' value must be set in order  to search custom objects.">
 	</cfif>
-	
+
 	<cfif blockFactor gt 100>
 		<cfset blockFactor=100>
 	</cfif>
-	
+
 	<cfquery name="rs" datasource="#variables.configBean.getDatasource()#" blockfactor="#blockFactor#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 	<cfif dbType eq "oracle" and getMaxItems()>select * from (</cfif>
-	select <cfif dbtype eq "mssql" and getMaxItems()>top #getMaxItems()#</cfif> 	
+	select <cfif dbtype eq "mssql" and getMaxItems()>top #getMaxItems()#</cfif>
 	tclassextend.type,tclassextend.subtype,tclassextend.siteID, #dataTable#.baseID as ID, extendedSort
 	from #dataTable#
 	INNER JOIN  tclassextendattributes on (#dataTable#.attributeID=tclassextendattributes.attributeID)
@@ -249,31 +249,31 @@
 	INNER JOIN  tclassextend on (tclassextendsets.subtypeID=tclassextend.subtypeID)
 
 	<cfif len(getSortBy()) and getSortBy() neq "random">
-	LEFT JOIN (select 
-			
+	LEFT JOIN (select
+
 			#variables.configBean.getClassExtensionManager().getCastString(getSortBy(),getSiteID())# extendedSort
-			 ,#dataTable#.baseID 
+			 ,#dataTable#.baseID
 			from #dataTable# inner join tclassextendattributes
 			on (#dataTable#.attributeID=tclassextendattributes.attributeID)
 			where #dataTable#.siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getSiteID()#">
 			and tclassextendattributes.name=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getSortBy()#">
 	) qExtendedSort
-	
+
 	on (#dataTable#.baseID=qExtendedSort.baseID)
 	</cfif>
-	
+
 	where
 	tclassextend.siteID=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#getSiteID()#">
 	and tclassextend.type=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#getType()#">
-	and 
+	and
 		(
 			tclassextend.subtype=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#getSubType()#">
 			<cfif getSubType() neq "Default">
 			or tclassextend.subtype=<cfqueryparam cfsqltype="cf_sql_varchar"  value="Default">
 			</cfif>
 		)
-	
-	
+
+
 		<cfif rsParams.recordcount>
 		<cfloop query="rsParams">
 			<cfset param=createObject("component","mura.queryParam").init(rsParams.relationship,
@@ -282,8 +282,8 @@
 					rsParams.condition,
 					rsParams.criteria
 				) />
-								 
-			<cfif param.getIsValid()>	
+
+			<cfif param.getIsValid()>
 				<cfif not started >
 					<cfset started = true />and (
 				<cfelse>
@@ -306,8 +306,8 @@
 						</cfif>
 					</cfif>
 				</cfif>
-				<cfif  listLen(param.getField(),".") gt 1>			
-					#param.getField()# #param.getCondition()# <cfif param.getCondition() eq "IN">(</cfif><cfqueryparam cfsqltype="cf_sql_#param.getDataType()#" value="#param.getCriteria()#" list="#iif(param.getCondition() eq 'IN',de('true'),de('false'))#"><cfif param.getCondition() eq "IN">)</cfif>  	
+				<cfif  listLen(param.getField(),".") gt 1>
+					#param.getField()# #param.getCondition()# <cfif param.getCondition() eq "IN">(</cfif><cfqueryparam cfsqltype="cf_sql_#param.getDataType()#" value="#param.getCriteria()#" list="#iif(param.getCondition() eq 'IN',de('true'),de('false'))#"><cfif param.getCondition() eq "IN">)</cfif>
 				<cfelseif len(param.getField())>
 					#dataTable#.baseID IN (
 						select #dataTable#.baseID from tclassextenddata
@@ -320,16 +320,16 @@
 						</cfif>
 						and <cfif param.getCondition() neq "like">#variables.configBean.getClassExtensionManager().getCastString(param.getField(),getSiteID())#<cfelse>attributeValue</cfif> #param.getCondition()# <cfif param.getCondition() eq "IN">(</cfif><cfqueryparam cfsqltype="cf_sql_#param.getDataType()#" value="#param.getCriteria()#" list="#iif(param.getCondition() eq 'IN',de('true'),de('false'))#"><cfif param.getCondition() eq "IN">)</cfif>)
 				</cfif>
-			</cfif>						
+			</cfif>
 		</cfloop>
 		<cfif started>)</cfif>
 	</cfif>
-	
+
 	Group By tclassextend.type,tclassextend.subtype,tclassextend.siteID, #dataTable#.baseID, extendedSort
-	
+
 	<cfif len(getSortBy())>
-		
-		
+
+
 		<cfswitch expression="#getSortBy()#">
 		<cfcase value="random">
 			<cfif dbType eq "mysql">
@@ -347,11 +347,11 @@
 		</cfdefaultcase>
 		</cfswitch>
 	</cfif>
-	
+
 	<cfif dbType eq "mysql" and getMaxItems()>limit <cfqueryparam cfsqltype="cf_sql_integer" value="#getMaxItems()#" /> </cfif>
 	<cfif dbType eq "oracle" and getMaxItems()>) where ROWNUM <= <cfqueryparam cfsqltype="cf_sql_integer" value="#getMaxItems()#" /> </cfif>
 	</cfquery>
-	
+
 	<cfreturn rs />
 </cffunction>
 

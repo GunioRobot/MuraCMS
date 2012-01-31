@@ -2,23 +2,23 @@
  * Provides a toolbar button and a dialog to add pasted html code for embed remote media,
  * or uploaded flv choose with file Browser played by  into edited contents.
  *
- * @author Vincent Mazenod   
- * @see doc on http://forge.clermont-universite.fr/wiki/ckmedia 
- * @see Based on http://github.com/n1k0/ckMedia 
+ * @author Vincent Mazenod
+ * @see doc on http://forge.clermont-universite.fr/wiki/ckmedia
+ * @see Based on http://github.com/n1k0/ckMedia
  * @see Based on http://github.com/n1k0/ckMediaEmbed
  * @license
- *  
+ *
  */
 (function() {
 
   var basePathArray=CKEDITOR.basePath.split("/");
 	  basePathArray=basePathArray.slice(3);
   var basePath="";
-	  
+
   for (var i=0; i<basePathArray.length;i++){
 	  basePath = basePath + "/" + basePathArray[i];
   }
-  
+
   var d = new Date();
   var config = {
     // General
@@ -41,7 +41,7 @@
     image:'',
     author:'',
     description:'',
-    duration:'',    
+    duration:'',
     start:'',
     title:'',
     provider:'',
@@ -70,12 +70,12 @@
     linktarget:'',
     streamer:''
   };
-  
+
   function refreshConfig(key, value)
   {
     config[key] = value;
   }
-  
+
   function processConfig()
   {
 	code = "<script type='text/javascript' src='" + config['jwplayerjs'] + "'></script>\n";
@@ -85,13 +85,13 @@
     for(option in config)
     {
       if(config[option] && option != 'div_id' &&  option != 'player_id'
-      && option != 'version' && option != 'allowfullscreen' && option != 'allowscriptaccess' 
-      && option != 'wmode' && option != 'swfobject' && option != 'yt' && option != 'replacement' 
+      && option != 'version' && option != 'allowfullscreen' && option != 'allowscriptaccess'
+      && option != 'wmode' && option != 'swfobject' && option != 'yt' && option != 'replacement'
 	  && option != 'player'  && option != 'jwplayerjs'
       {
         code += "  '" + option + "': '" + config[option] + "',\n";
       }
-    }  
+    }
     code += "  _end: 'true'\n";
     code += "});";
     code += "</script>\n";
@@ -112,10 +112,10 @@
           },
           contents  : [{
             /**
-             *  TAB - code  
-             *  simple copy / paste box for embed from youtube, vime, daylymotion etc ... 
-             *  Or see Generated code for JW Player  
-             */                          
+             *  TAB - code
+             *  simple copy / paste box for embed from youtube, vime, daylymotion etc ...
+             *  Or see Generated code for JW Player
+             */
             id : 'code',
             label : 'Embed Media Code',
             expand : true,
@@ -127,7 +127,7 @@
           },
           {
             /**
-             *  TAB - single  
+             *  TAB - single
              *  Dialog for JWplayer plays a single FLV
              */
             id : 'single',
@@ -151,7 +151,7 @@
               {
                 id : 'BrowseMediaFile_' + editor.name,
                 type : 'button',
-                hidden : true,                
+                hidden : true,
                 filebrowser :
                 {
                   action : 'Browse',
@@ -184,7 +184,7 @@
               {
                 id : 'BrowseMediaImage_' + editor.name,
                 type : 'button',
-                hidden : true,                
+                hidden : true,
                 filebrowser :
                 {
                   action : 'Browse',
@@ -230,7 +230,7 @@
                   id:  'MediaDuration_' + editor.name,
                   type: 'text',
                   'default': config['duration'],
-                  onBlur : function(){ 
+                  onBlur : function(){
                     refreshConfig('duration', this.getDialog().getContentElement('single', 'MediaDuration_' + editor.name).getValue());
                     this.getDialog().getContentElement('code', 'Code_' + editor.name).setValue(processConfig());
                   },
@@ -240,7 +240,7 @@
                   id:  'MediaStart_' + editor.name,
                   type: 'text',
                   'default': config['start'],
-                  onBlur : function(){ 
+                  onBlur : function(){
                     refreshConfig('start', this.getDialog().getContentElement('single', 'MediaStart_' + editor.name).getValue());
                     this.getDialog().getContentElement('code', 'Code_' + editor.name).setValue(processConfig());
                   },
@@ -253,7 +253,7 @@
                   id:  'MediaAuthor_' + editor.name,
                   type: 'text',
                   'default': config['author'],
-                  onBlur : function(){ 
+                  onBlur : function(){
                     refreshConfig('author', this.getDialog().getContentElement('single', 'MediaAuthor_' + editor.name).getValue());
                     this.getDialog().getContentElement('code', 'Code_' + editor.name).setValue(processConfig());
                   },
@@ -263,7 +263,7 @@
                   id:  'MediaDescription_' + editor.name,
                   type: 'text',
                   'default': config['description'],
-                  onBlur : function(){ 
+                  onBlur : function(){
                     refreshConfig('description', this.getDialog().getContentElement('single', 'MediaDescription_' + editor.name).getValue());
                     this.getDialog().getContentElement('code', 'Code_' + editor.name).setValue(processConfig());
                   },
@@ -273,7 +273,7 @@
                   id:  'MediaTitle_' + editor.name,
                   type: 'text',
                   'default': config['title'],
-                  onBlur : function(){ 
+                  onBlur : function(){
                     refreshConfig('title', this.getDialog().getContentElement('single', 'MediaTitle_' + editor.name).getValue());
                     this.getDialog().getContentElement('code', 'Code_' + editor.name).setValue(processConfig());
                   },
@@ -283,7 +283,7 @@
                   id:  'MediaProvider_' + editor.name,
                   type: 'text',
                   'default': config['provider'],
-                  onBlur : function(){ 
+                  onBlur : function(){
                     refreshConfig('provider', this.getDialog().getContentElement('single', 'MediaProvider_' + editor.name).getValue());
                     this.getDialog().getContentElement('code', 'Code_' + editor.name).setValue(processConfig());
                   },
@@ -295,7 +295,7 @@
 
           {
             /**
-             *  TAB - playlist  
+             *  TAB - playlist
              *  Dialog for JWplayer plays multiple FLV
              */
             id     : 'playlist',
@@ -403,7 +403,7 @@
 
           {
              /**
-             *  TAB - player  
+             *  TAB - player
              *  Dialog for JWplayer options
              */
             id     : 'player',
@@ -754,19 +754,19 @@
           }
         });
       }
-      
+
       editor.addCommand( 'removeMedia', new CKEDITOR.removeMedia() );
-      
+
       if(editor.contextMenu)
       {
         editor.contextMenu.addListener(function(element, selection)  //function to be run when context menu is displayed
         {
             if(! element || !element.is('img') || element.getId() == element.getParent().getId())
               return null;
-            
+
             return { removeMedia: CKEDITOR.TRISTATE_OFF };
         });
-      } 
+      }
     }
   });
 })();

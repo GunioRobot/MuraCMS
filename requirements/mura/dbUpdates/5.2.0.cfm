@@ -1,16 +1,16 @@
 <!--- If using MSSQL 2005 or greater switch from ntext to nvarchar(max) --->
 <cfif getDbType() eq "MSSQL">
-	
+
 	<cfquery name="MSSQLversion" datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 		EXEC sp_MSgetversion
 	</cfquery>
-	
+
 	<cfset MSSQLversion=left(MSSQLversion.CHARACTER_VALUE,1)>
 
 	<cfif MSSQLversion neq 8>
-		
-		<cfset tableList="tadcampaigns,tadcreatives,tadplacements,tadzones,tclassextend,tclassextendattributes,tclassextenddata,tclassextenddatauseractivity,tclassextendsets,tcontent,tcontentcategories,tcontentcomments,tcontentfeeds,temails,tformresponsepackets,tformresponsequestions,tmailinglist,tsettings,tuseraddresses,tusers">		
-		
+
+		<cfset tableList="tadcampaigns,tadcreatives,tadplacements,tadzones,tclassextend,tclassextendattributes,tclassextenddata,tclassextenddatauseractivity,tclassextendsets,tcontent,tcontentcategories,tcontentcomments,tcontentfeeds,temails,tformresponsepackets,tformresponsequestions,tmailinglist,tsettings,tuseraddresses,tusers">
+
 		<cfquery name="rsCheck" datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 		SELECT OBJECT_NAME(c.OBJECT_ID) TableName, c.name ColumnName
 		FROM sys.columns AS c
@@ -19,24 +19,24 @@
 		AND OBJECT_NAME(c.OBJECT_ID) IN (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#tablelist#">)
 		ORDER BY c.OBJECT_ID;
 		</cfquery>
-		
+
 		<cfif rsCheck.recordcount>
-			
+
 			<cfloop list="#tablelist#" index="t">
 				<cfquery name="rsFields" dbType="query">
-				SELECT * from rscheck 
+				SELECT * from rscheck
 				where tablename = <cfqueryparam cfsqltype="cf_sql_varchar" value="#t#">
 				</cfquery>
-				
+
 				<cfif rsFields.recordcount>
 					<cftry>
 					<cfloop query="rsFields">
 						<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
-							ALTER TABLE #t# ALTER COLUMN #rsFields.ColumnName# NVARCHAR(MAX) null 			
+							ALTER TABLE #t# ALTER COLUMN #rsFields.ColumnName# NVARCHAR(MAX) null
 						</cfquery>
 					</cfloop>
 					<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
-					UPDATE #t# set 
+					UPDATE #t# set
 						<cfloop query="rsFields">
 							#rsFields.ColumnName# = #rsFields.ColumnName# <cfif rsFields.currentrow lt rsFields.recordcount>,</cfif>
 						</cfloop>
@@ -81,7 +81,7 @@ select * from tcontentcomments  where 0=1
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 	IF NOT EXISTS (SELECT * FROM sysobjects WHERE id = object_id(N'[dbo].[tuserremotesessions]')
 	AND OBJECTPROPERTY(id, N'IsUserTable') = 1)
-	CREATE TABLE [dbo].[tuserremotesessions] ( 
+	CREATE TABLE [dbo].[tuserremotesessions] (
 		  [userID] [char](35) not null,
 		  [authToken] [char](32) default NULL,
 		  [data] [nvarchar](4000) default NULL,
@@ -89,17 +89,17 @@ select * from tcontentcomments  where 0=1
 		  [lastAccessed] [datetime] NOT NULL
 	) on [PRIMARY]
 	</cfquery>
-	
+
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 	IF NOT EXISTS (SELECT 1
 					FROM sysindexes
-					WHERE id = object_id(N'[dbo].[tuserremotesessions]') 
+					WHERE id = object_id(N'[dbo].[tuserremotesessions]')
 					AND status & 2048 = 2048 )
-	ALTER TABLE [dbo].[tuserremotesessions] WITH NOCHECK ADD 
-		CONSTRAINT [PK_tuserremotesessions_userID] PRIMARY KEY  CLUSTERED 
+	ALTER TABLE [dbo].[tuserremotesessions] WITH NOCHECK ADD
+		CONSTRAINT [PK_tuserremotesessions_userID] PRIMARY KEY  CLUSTERED
 		(
 			[userID]
-		)  ON [PRIMARY] 
+		)  ON [PRIMARY]
 	</cfquery>
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 	IF NOT EXISTS (SELECT name FROM sysindexes WHERE name = 'tuserremotesessions_authToken')
@@ -117,7 +117,7 @@ select * from tcontentcomments  where 0=1
 	<cfset runDBUpdate=true/>
 	</cfcatch>
 	</cftry>
-	
+
 	<cfif runDBUpdate>
 	<cftry>
 		<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
@@ -140,13 +140,13 @@ select * from tcontentcomments  where 0=1
 			  `created` datetime default NULL,
 			  `lastAccessed` datetime default NULL,
 			  PRIMARY KEY  (`userID`)
-			) 
+			)
 			</cfquery>
 			<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 			CREATE INDEX tuserremotesessions_authtoken ON tuserremotesessions(authToken)
 			</cfquery>
 		</cfcatch>
-	</cftry>	
+	</cftry>
 	</cfif>
 </cfcase>
 <cfcase value="oracle">
@@ -159,7 +159,7 @@ select * from tcontentcomments  where 0=1
 	<cfset runDBUpdate=true/>
 	</cfcatch>
 	</cftry>
-	
+
 	<cfif runDBUpdate>
 		<cftransaction>
 		<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
@@ -169,15 +169,15 @@ select * from tcontentcomments  where 0=1
 		  "DATA" varchar2(4000),
 		  "CREATED" date,
 		  "LASTACCESSED" date
-		) 
+		)
 		</cfquery>
-		
+
 		<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 		ALTER TABLE "TUSERREMOTESESSIONS" ADD CONSTRAINT "TUSERREMOTESESSIONS_PRIMARY" PRIMARY KEY ("USERID") ENABLE
 		</cfquery>
-		
+
 		<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
-		CREATE INDEX "TUSERREMOTESESSIONS_AUTHTOKEN" ON "TUSERREMOTESESSIONS" ("AUTHTOKEN") 
+		CREATE INDEX "TUSERREMOTESESSIONS_AUTHTOKEN" ON "TUSERREMOTESESSIONS" ("AUTHTOKEN")
 		</cfquery>
 		</cftransaction>
 	</cfif>
@@ -194,19 +194,19 @@ select * from tsettings where 0=1
 <cfswitch expression="#getDbType()#">
 <cfcase value="mssql">
 <cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
-ALTER TABLE tsettings ADD cacheCapacity int 
+ALTER TABLE tsettings ADD cacheCapacity int
 </cfquery>
 <cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
-ALTER TABLE tsettings ADD cacheFreeMemoryThreshold int 
+ALTER TABLE tsettings ADD cacheFreeMemoryThreshold int
 </cfquery>
 </cfcase>
 <cfcase value="mysql">
 	<cftry>
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
-	ALTER TABLE tsettings ADD COLUMN cacheCapacity int(10) 
+	ALTER TABLE tsettings ADD COLUMN cacheCapacity int(10)
 	</cfquery>
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
-	ALTER TABLE tsettings ADD COLUMN cacheFreeMemoryThreshold int(10) 
+	ALTER TABLE tsettings ADD COLUMN cacheFreeMemoryThreshold int(10)
 	</cfquery>
 	<cfcatch>
 			<!--- H2 --->
@@ -230,7 +230,7 @@ ALTER TABLE tsettings ADD cacheFreeMemoryThreshold NUMBER(10,0)
 </cfswitch>
 
 <cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
-update tsettings set 
+update tsettings set
 cacheFreeMemoryThreshold = 0,
 cacheCapacity=0
 </cfquery>
@@ -242,23 +242,23 @@ cacheCapacity=0
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 	IF NOT EXISTS (SELECT * FROM sysobjects WHERE id = object_id(N'[dbo].[tuserstrikes]')
 	AND OBJECTPROPERTY(id, N'IsUserTable') = 1)
-	CREATE TABLE [dbo].[tuserstrikes] ( 
+	CREATE TABLE [dbo].[tuserstrikes] (
 		  [username] [nvarchar](100) NOT NULL,
 		  [strikes] [int] default NULL,
 		  [lastAttempt] [datetime] default NULL
 	) on [PRIMARY]
 	</cfquery>
-	
+
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 	IF NOT EXISTS (SELECT 1
 					FROM sysindexes
-					WHERE id = object_id(N'[dbo].[tuserstrikes]') 
+					WHERE id = object_id(N'[dbo].[tuserstrikes]')
 					AND status & 2048 = 2048 )
-	ALTER TABLE [dbo].[tuserstrikes] WITH NOCHECK ADD 
-		CONSTRAINT [PK_tuserstrikes_username] PRIMARY KEY  CLUSTERED 
+	ALTER TABLE [dbo].[tuserstrikes] WITH NOCHECK ADD
+		CONSTRAINT [PK_tuserstrikes_username] PRIMARY KEY  CLUSTERED
 		(
 			[username]
-		)  ON [PRIMARY] 
+		)  ON [PRIMARY]
 	</cfquery>
 	</cftransaction>
 </cfcase>
@@ -272,7 +272,7 @@ cacheCapacity=0
 	<cfset runDBUpdate=true/>
 	</cfcatch>
 	</cftry>
-	
+
 	<cfif runDBUpdate>
 	<cftry>
 		<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
@@ -290,10 +290,10 @@ cacheCapacity=0
 			  `strikes` int(10) default NULL,
 			  `lastAttempt` datetime default NULL,
 			  PRIMARY KEY  (`username`)
-			) 
+			)
 			</cfquery>
 		</cfcatch>
-	</cftry>	
+	</cftry>
 	</cfif>
 </cfcase>
 <cfcase value="oracle">
@@ -306,7 +306,7 @@ cacheCapacity=0
 	<cfset runDBUpdate=true/>
 	</cfcatch>
 	</cftry>
-	
+
 	<cfif runDBUpdate>
 		<cftransaction>
 		<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
@@ -314,9 +314,9 @@ cacheCapacity=0
 		  "USERNAME" VARCHAR2(100) ,
 		  "STRIKES" NUMBER(10,0) ,
 		  "LASTATTEMPT" date
-		) 
+		)
 		</cfquery>
-		
+
 		<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 		ALTER TABLE "TUSERSTRIKES" ADD CONSTRAINT "TUSERSTRIKES_PRIMARY" PRIMARY KEY ("USERNAME") ENABLE
 		</cfquery>
@@ -335,14 +335,14 @@ select * from tplugins where 0=1
 <cfswitch expression="#getDbType()#">
 <cfcase value="mssql">
 <cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
-ALTER TABLE tplugins ADD loadPriority int 
+ALTER TABLE tplugins ADD loadPriority int
 </cfquery>
 
 </cfcase>
 <cfcase value="mysql">
 	<cftry>
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
-	ALTER TABLE tplugins ADD COLUMN loadPriority int(10) 
+	ALTER TABLE tplugins ADD COLUMN loadPriority int(10)
 	</cfquery>
 	<cfcatch>
 			<!--- H2 --->

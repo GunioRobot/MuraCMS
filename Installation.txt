@@ -16,7 +16,7 @@ INSTALLATION
 
 6. Login to the Mura admin using the default username of "admin" and default password of "admin". It is highly recommended you change this immediately by editing your profile upon login.
 
-7. Select "Edit Current Site" under the "Site Settings" menu located in the top right hand area of your window and enter the URL for your install. 
+7. Select "Edit Current Site" under the "Site Settings" menu located in the top right hand area of your window and enter the URL for your install.
 
 8. If you would like to send scheduled emails or have scheduled content when caching is turned on you must change the "Ping" attribute in the \config\setting.ini.cfm to 1. On start up, Mura will attempt to create a scheduled task to check for event reminders, scheduled emails and to flush cache for scheduled content. THIS IS NOT RECOMMENDED FOR SHARED HOSTING ENVIRONMENTS.
 

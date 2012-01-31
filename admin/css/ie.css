@@ -393,7 +393,7 @@ dd.categoryAssignment input.textAlt {
 	margin-bottom: 1em !important;
 	zoom:  1;
 	}
-	
+
 .navSequential li,
 .moreResults li {
 	 /* IE7 Hack for inline-block respect */
@@ -402,7 +402,7 @@ dd.categoryAssignment input.textAlt {
 	margin: 0 1px;
 	/*border: 1px solid #ccc;*/
 	}
-	
+
 .navSequential li a,
 .moreResults li a {
 	 /* IE7 Hack for inline-block respect */

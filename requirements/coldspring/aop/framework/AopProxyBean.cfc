@@ -1,14 +1,14 @@
 <!---
-	  
+
   Copyright (c) 2005, Chris Scott, David Ross, Kurt Wiersma, Sean Corfield
   All rights reserved.
-	
+
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
   You may obtain a copy of the License at
-  
+
        http://www.apache.org/licenses/LICENSE-2.0
-  
+
   Unless required by applicable law or agreed to in writing, software
   distributed under the License is distributed on an "AS IS" BASIS,
   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -47,26 +47,26 @@
  Revision 1.8  2005/10/09 22:45:25  scottc
  Forgot to add Dave to AOP license
 
-	
----> 
- 
-<cfcomponent name="${name}" 
-			displayname="AopProxyBean" 
+
+--->
+
+<cfcomponent name="${name}"
+			displayname="AopProxyBean"
 			extends="${extends}"
-			hint="Abstract Base Class for Aop Proxy Beans" 
+			hint="Abstract Base Class for Aop Proxy Beans"
 			output="false">
-			
+
 	<cffunction name="init" access="public" returntype="${extends}" output="false">
 		<cfargument name="target" type="any" required="true" />
 		<cfset variables.target = arguments.target />
 		<cfreturn this />
 	</cffunction>
-	
+
 	<cffunction name="setAdviceChains" access="public" returntype="void" output="false">
 		<cfargument name="adviceChains" type="struct" required="true" />
 		<cfset variables.adviceChains = arguments.adviceChains />
 	</cffunction>
-	
+
 	<cffunction name="getAdviceChains" access="public" returntype="struct" output="false">
 		<cfreturn variables.adviceChains />
 	</cffunction>
@@ -78,7 +78,7 @@
 		<cfset var methodInvocation = 0 />
 		<cfset var rtn = 0 />
 		<cfset var method = 0 />
-		
+
 		<!--- if an advice chain was created for this method, retrieve a methodInvocation chain from it and proceed --->
 		<cfif StructKeyExists(variables.adviceChains, arguments.methodName)>
 			<cfset method = CreateObject('component','coldspring.aop.Method').init(variables.target, arguments.methodName, arguments.args) />
@@ -88,15 +88,15 @@
 		<cfelse>
 			<!--- if there's no advice chains to execute, just call the method --->
 			<cfinvoke component="#variables.target#"
-					  method="#arguments.methodName#" 
-					  argumentcollection="#arguments.args#" 
+					  method="#arguments.methodName#"
+					  argumentcollection="#arguments.args#"
 					  returnvariable="rtn">
 			</cfinvoke>
 			<cfif isDefined('rtn')>
 				<cfreturn rtn />
 			</cfif>
 		</cfif>
-		
+
 	</cffunction>
-	
+
 </cfcomponent>

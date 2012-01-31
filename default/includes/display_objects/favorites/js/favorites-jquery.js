@@ -20,7 +20,7 @@ function effectFunction()
 {
 	$("#favoriteListMore").animate({opacity: 'toggle'});
 	return false;
-	
+
 }
 
 function saveFavorite(userID, siteID, favoriteName, favoriteLocation, favoriteType)
@@ -28,7 +28,7 @@ function saveFavorite(userID, siteID, favoriteName, favoriteLocation, favoriteTy
 	//if (!favoriteExists){
 		$("#addFavorite").fadeOut();
 		//location.href= url + "?" + pars;
-		
+
 		$.ajax({
 		   type: "GET",
 		   url: assetpath + '/includes/display_objects/favorites/ajax/saveFavorite.cfm',
@@ -50,7 +50,7 @@ function showSaveFavoriteResponse(originalRequest)
 	li.innerHTML=r.link;
 	currentPageFavoriteID=r.favoriteid;
 	mover.appendChild(li);
-	
+
 	$("#favoriteList").prepend(mover.innerHTML);
 	$("#favoriteTip").fadeOut();
 	$("#favorite" + iid).fadeIn();
@@ -70,7 +70,7 @@ function deleteFavorite(favoriteID, id)
 		   url: assetpath + '/includes/display_objects/favorites/ajax/deleteFavorite.cfm',
 		   data: 'favoriteID=' + favoriteID  + '&cacheid=' + Math.random()
 		   });
-		
+
 	var menuItems = document.getElementById(id).parentNode.getElementsByTagName('LI');	// Get an array of all favorite items
 	menuLength = (menuItems.length - 1);
 	if (menuLength == 0){
@@ -82,6 +82,6 @@ function deleteFavorite(favoriteID, id)
 	{
 		$("#addFavorite").fadeIn();
 	}
-	
+
 	return false;
 }

@@ -12,17 +12,17 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Mura CMS. If not, see <http://www.gnu.org/licenses/>.
 
-Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on 
+Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on
 Mura CMS. Thus, the terms and conditions of the GNU General Public License version 2 ("GPL") cover the entire combined work.
 
 However, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with programs
 or libraries that are released under the GNU Lesser General Public License version 2.1.
 
-In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with 
-independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without 
-Mura CMS under the license of your choice, provided that you follow these specific guidelines: 
+In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with
+independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without
+Mura CMS under the license of your choice, provided that you follow these specific guidelines:
 
-Your custom code 
+Your custom code
 
 • Must not alter any default objects in the Mura CMS database and
 • May not alter the default display of the Mura CMS logo within Mura CMS and
@@ -36,12 +36,12 @@ Your custom code
  /index.cfm
  /MuraProxy.cfc
 
-You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work 
-under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL 
+You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work
+under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL
 requires distribution of source code.
 
-For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your 
-modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
+For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your
+modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 <cfset tabLabelList=listAppend(tabLabelList,application.rbFactory.getKeyValue(session.rb,"sitemanager.content.tabs.basic"))/>
@@ -85,7 +85,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</select>
 				</dt>
 				</cfif>
-			<cfelseif attributes.type eq 'Link'>	
+			<cfelseif attributes.type eq 'Link'>
 				<cfset t="Link"/>
 				<cfsilent><cfquery name="rsst" dbtype="query">select * from rsSubTypes where type=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#t#"> and subtype not in ('Default','default')</cfquery></cfsilent>
 				<cfif rsst.recordcount>
@@ -102,7 +102,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</select>
 				</dt>
 				</cfif>
-			<cfelseif attributes.type eq 'Component'>	
+			<cfelseif attributes.type eq 'Component'>
 				<cfset t="Component"/>
 				<cfsilent><cfquery name="rsst" dbtype="query">select * from rsSubTypes where type=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#t#"> and subtype not in ('Default','default')</cfquery></cfsilent>
 				<cfif rsst.recordcount>
@@ -122,7 +122,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfif>
 		</div>
 	</cfif>--->
-	
+
 	<!---<cfif attributes.compactDisplay eq "true">
 		<cfif not listFindNoCase("Component,Form", attributes.type)>
 			<cfquery name="rsst" dbtype="query">select * from rsSubTypes where type=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#attributes.type#"> and subtype not in ('Default','default')</cfquery>
@@ -137,21 +137,21 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfloop query="rsst">
 						<option value="#t#^#rsst.subtype#" <cfif attributes.type eq t and request.contentBean.getSubType() eq rsst.subtype>selected</cfif>>#t#  / #rsst.subtype#</option>
 					</cfloop>
-					</select>	
-					</dd>								
+					</select>
+					</dd>
 			</cfif>
 		</cfif>
-			
+
 		<input type="hidden" name="closeCompactDisplay" value="true" />
 	</cfif>--->
 <cfswitch expression="#attributes.type#">
 	<cfcase value="Page,Portal,Calendar,Gallery,File,Link">
 		<dt<cfif not started> class="first"</cfif>><a href="##" class="tooltip">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.title")#<span>#application.rbFactory.getKeyValue(session.rb,"tooltip.pageTitle")#</span></a></dt>
 		<dd><input type="text" id="title" name="title" value="#HTMLEditFormat(request.contentBean.gettitle())#"  maxlength="255" class="textLong" required="true" message="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.titlerequired')#" <cfif not request.contentBean.getIsNew() and not listFind("File,Link",attributes.type)>onkeypress="openDisplay('editSEOTitles','#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.close')#');"</cfif>></dd>
-		
+
 		<dt><a href="##" class="tooltip">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.menutitle")#<span>#application.rbFactory.getKeyValue(session.rb,"tooltip.navigationTitle")#</span></a></dt>
 		<dd><input type="text" id="menuTitle" name="menuTitle" value="#HTMLEditFormat(request.contentBean.getmenuTitle())#"  maxlength="255" class="textLong" <cfif not request.contentBean.getIsNew() and not listFind("File,Link",attributes.type)>onkeypress="openDisplay('editSEOTitles','#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.close')#');"</cfif>></dd>
-		
+
 		<!---<cfif not listFind("File,Link",attributes.type)>--->
 			<dt><a href="##" class="tooltip">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.seotitles")#<span>#application.rbFactory.getKeyValue(session.rb,"tooltip.seotitles")#</span> <a href="##" id="editSEOTitlesLink" onclick="javascript: toggleDisplay('editSEOTitles','#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.expand')#','#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.close')#');return false">[#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.expand")#]</a></dt>
 			<dd id="editSEOTitles" style="display:none;">
@@ -174,7 +174,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cfif listFind("Page,Portal,Calendar,Gallery,Link",attributes.type)>
 	<cfinclude template="dsp_file_selector.cfm">
-</cfif>	
+</cfif>
 
 <cfif attributes.type neq 'Form' and  attributes.type neq 'Component' >
 	<dt><a href="##" class="tooltip">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.summary")#<span>#application.rbFactory.getKeyValue(session.rb,"tooltip.contentSummary")#</span></a> <a href="##" id="editSummaryLink" onclick="javascript: toggleDisplay('editSummary','#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.expand')#','#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.close')#'); editSummary();return false">[#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.expand")#]</a></dt>
@@ -211,27 +211,27 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				fckEditor.config.GoogleMaps_Key ='none';
 				}
 				fckEditor.toolbarset 	= '#iif(attributes.type eq "Form",de("Form"),de("Default"))#';
-				
+
 				if(fileExists("#expandPath(application.settingsManager.getSite(attributes.siteid).getThemeIncludePath())#/js/fckconfig.js.cfm"))
 				{
 				fckEditor.config["CustomConfigurationsPath"]=urlencodedformat('#application.settingsManager.getSite(attributes.siteid).getThemeAssetPath()#/js/fckconfig.js.cfm?EditorType=#attributes.type#');
 				}
-				
+
 				fckEditor.create(); // create the editor.
 			</cfscript>
 			<script type="text/javascript" language="Javascript">
 			var loadEditorCount = 0;
-			
-			function FCKeditor_OnComplete( editorInstance ) { 	
+
+			function FCKeditor_OnComplete( editorInstance ) {
 				<cfif attributes.preview eq 1>
 			   	preview('http://#application.settingsManager.getSite(attributes.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##application.contentRenderer.getURLStem(attributes.siteid,'')#?previewid=#request.contentBean.getcontenthistid()#','#request.contentBean.getTargetParams()#');
-				</cfif> 
-				htmlEditorOnComplete(editorInstance); 
+				</cfif>
+				htmlEditorOnComplete(editorInstance);
 			}
 			</script>
 		<cfelseif application.configBean.getValue("htmlEditorType") eq "none">
 			<textarea name="body" id="body">#HTMLEditFormat(request.contentBean.getBody())#</textarea>
-		<cfelse>	
+		<cfelse>
 			<textarea name="body" id="body"><cfif len(request.contentBean.getBody())>#HTMLEditFormat(request.contentBean.getBody())#<cfelse><p></p></cfif></textarea>
 			<script type="text/javascript" language="Javascript">
 			var loadEditorCount = 0;
@@ -241,13 +241,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				customConfig : 'config.js.cfm' },htmlEditorOnComplete);
 				<cfif attributes.preview eq 1>
 			   	preview('http://#application.settingsManager.getSite(attributes.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##application.contentRenderer.getURLStem(attributes.siteid,'')#?previewid=#request.contentBean.getcontenthistid()#&siteid=#request.contentBean.getsiteid()#','#request.contentBean.getTargetParams()#');
-				</cfif> 
+				</cfif>
 			</script>
 		</cfif>
 	</cfif>
-	
+
 	</dd>
-	
+
 <cfelseif attributes.type eq 'Link'>
 	<dt class="separate">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.url")#</dt>
 	<dd><input type="text" id="url" name="filename" value="#HTMLEditFormat(request.contentBean.getfilename())#" class="text" required="true" message="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.urlrequired')#"></dd>
@@ -268,11 +268,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <span id="extendSetsBasic"></span>
 
 <cfif attributes.type eq 'Form'>
-	<dt class="separate"><input name="responseChart" id="rc" type="CHECKBOX" value="1" <cfif request.contentBean.getresponseChart() eq 1>checked </cfif> class="checkbox"> <label for="rc">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.ispoll')#</label></dt> 
+	<dt class="separate"><input name="responseChart" id="rc" type="CHECKBOX" value="1" <cfif request.contentBean.getresponseChart() eq 1>checked </cfif> class="checkbox"> <label for="rc">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.ispoll')#</label></dt>
 	<dt>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.confirmationmessage')#</dt>
 	<dd><textarea name="responseMessage">#HTMLEditFormat(request.contentBean.getresponseMessage())#</textarea></dd>
 	<dt>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.responsesendto')#</dt>
-	<dd><input name="responseSendTo" value="#HTMLEditFormat(request.contentBean.getresponseSendTo())#" class="text"></dd> 
+	<dd><input name="responseSendTo" value="#HTMLEditFormat(request.contentBean.getresponseSendTo())#" class="text"></dd>
 </cfif>
 
 <cfif attributes.type neq 'Component' and attributes.type neq 'Form'>
@@ -282,9 +282,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<select name="releasehour" class="dropdown"><cfloop from="1" to="12" index="h"><option value="#h#" <cfif not LSisDate(request.contentBean.getReleaseDate())  and h eq 12 or (LSisDate(request.contentBean.getReleaseDate()) and (hour(request.contentBean.getReleaseDate()) eq h or (hour(request.contentBean.getReleaseDate()) - 12) eq h or hour(request.contentBean.getReleaseDate()) eq 0 and h eq 12))>selected</cfif>>#h#</option></cfloop></select>
 		<select name="releaseMinute" class="dropdown"><cfloop from="0" to="59" index="m"><option value="#m#" <cfif LSisDate(request.contentBean.getReleaseDate()) and minute(request.contentBean.getReleaseDate()) eq m>selected</cfif>>#iif(len(m) eq 1,de('0#m#'),de('#m#'))#</option></cfloop></select>
 		<select name="releaseDayPart" class="dropdown"><option value="AM">AM</option><option value="PM" <cfif LSisDate(request.contentBean.getReleaseDate()) and hour(request.contentBean.getReleaseDate()) gte 12>selected</cfif>>PM</option></select>
-	
+
 	</dd>
-</cfif>	
+</cfif>
 
 <cfif ((attributes.parentid neq '00000000000000000000000000000000001' and application.settingsManager.getSite(attributes.siteid).getlocking() neq 'all') or (attributes.parentid eq '00000000000000000000000000000000001' and application.settingsManager.getSite(attributes.siteid).getlocking() eq 'none')) and attributes.contentid neq '00000000000000000000000000000000001'>
 	<cfset bydate=iif(request.contentBean.getdisplay() EQ 2 or (attributes.ptype eq 'Calendar' and request.contentBean.getIsNew()),de('true'),de('false'))>
@@ -310,9 +310,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</dd>
 			</dl>
 	</dd>
-	
+
 	<cfif attributes.type neq 'Component' and application.settingsManager.getSite(attributes.siteid).getlocking() neq 'all' and attributes.type neq 'Form'>
-	
+
 	<dt>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.contentparent')#:<span id="move" class="text"> <cfif request.contentBean.getIsNew()>"#request.crumbData[1].menutitle#"<cfelse>"#request.crumbData[2].menutitle#"</cfif>
 				&nbsp;&nbsp;<a href="javascript:##;" onclick="javascript: loadSiteParents('#attributes.siteid#','#attributes.contentid#','#attributes.parentid#','',1);return false;">[#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.selectnewparent')#]</a>
 				<input type="hidden" name="parentid" value="#attributes.parentid#">
@@ -330,7 +330,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfelse>
 	<dd style="display:none;">
 		<cfif attributes.type neq 'Component' and attributes.type neq 'Form'>
-		
+
 		<input type="hidden" name="display" value="#request.contentBean.getdisplay()#">
 			<cfif attributes.contentid eq '00000000000000000000000000000000001' or (attributes.parentid eq '00000000000000000000000000000000001' and application.settingsManager.getSite(attributes.siteid).getlocking() eq 'top') or application.settingsManager.getSite(attributes.siteid).getlocking() eq 'all'>
 				<input type="hidden" name="parentid" value="#attributes.parentid#">
@@ -382,7 +382,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</dl>
 	</dd>
 	<dt><input name="isnav" id="isNav" type="CHECKBOX" value="1" <cfif request.contentBean.getisnav() eq 1 or request.contentBean.getisNew() eq 1>checked</cfif> class="checkbox"> <label for="isNav"><a href="##" class="tooltip">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.isnav')#<span>#application.rbFactory.getKeyValue(session.rb,"tooltip.includeSiteNav")#</span></a></label></dt>
-	<dt><input  name="target" id="Target" type="CHECKBOX" value="_blank" <cfif request.contentBean.gettarget() eq "_blank">checked</cfif> class="checkbox" onclick="javascript: this.checked?toggleDisplay2('editTargetParams',true):toggleDisplay2('editTargetParams',false);"> <label for="Target"><a href="##" class="tooltip">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.newwindow')#<span>#application.rbFactory.getKeyValue(session.rb,"tooltip.openNewWindow")#</span></a></label></dt>  
+	<dt><input  name="target" id="Target" type="CHECKBOX" value="_blank" <cfif request.contentBean.gettarget() eq "_blank">checked</cfif> class="checkbox" onclick="javascript: this.checked?toggleDisplay2('editTargetParams',true):toggleDisplay2('editTargetParams',false);"> <label for="Target"><a href="##" class="tooltip">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.newwindow')#<span>#application.rbFactory.getKeyValue(session.rb,"tooltip.openNewWindow")#</span></a></label></dt>
 	<dd id="editTargetParams" <cfif  request.contentBean.gettarget() neq "_blank">style="display: none;"</cfif> class="clearfix">
 	<cfinclude template="dsp_buildtargetparams.cfm"> <input name="targetParams" value="#request.contentBean.getTargetParams()#" type="hidden">
 	</dd>
@@ -393,7 +393,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <dt>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.addnotes')# <a href="" id="editNoteLink" onclick="toggleDisplay('editNote','#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.expand')#','#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.close')#');return false;">[#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.expand')#]</a></dt>
 <dd id="editNote" style="display: none;">
-<textarea name="notes" rows="8" class="alt" id="abstract"></textarea>	
+<textarea name="notes" rows="8" class="alt" id="abstract"></textarea>
 </dd>
 </dl>
 </div>

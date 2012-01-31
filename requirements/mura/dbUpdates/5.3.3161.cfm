@@ -6,7 +6,7 @@ select * from tcontent where 0=1
 <cfswitch expression="#getDbType()#">
 <cfcase value="mssql">
 <cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
-ALTER TABLE tcontent ADD mobileExclude tinyint 
+ALTER TABLE tcontent ADD mobileExclude tinyint
 </cfquery>
 <cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 CREATE INDEX [IX_tcontent_mobileExclude] ON [dbo].[tcontent]([mobileExclude]) ON [PRIMARY]
@@ -15,7 +15,7 @@ CREATE INDEX [IX_tcontent_mobileExclude] ON [dbo].[tcontent]([mobileExclude]) ON
 <cfcase value="mysql">
 	<cftry>
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
-	ALTER TABLE tcontent ADD COLUMN mobileExclude tinyint(3) 
+	ALTER TABLE tcontent ADD COLUMN mobileExclude tinyint(3)
 	</cfquery>
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 	CREATE INDEX IX_tcontent_mobileExclude ON tcontent (mobileExclude)
@@ -36,7 +36,7 @@ CREATE INDEX [IX_tcontent_mobileExclude] ON [dbo].[tcontent]([mobileExclude]) ON
 ALTER TABLE tcontent ADD mobileExclude NUMBER(3,0)
 </cfquery>
 <cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
-CREATE INDEX "IDX_TCONTENT_MOBILEEXCLUDE" ON tcontent (mobileExclude) 
+CREATE INDEX "IDX_TCONTENT_MOBILEEXCLUDE" ON tcontent (mobileExclude)
 </cfquery>
 </cfcase>
 </cfswitch>

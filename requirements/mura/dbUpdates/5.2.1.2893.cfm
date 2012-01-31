@@ -3,7 +3,7 @@
 <cfquery name="MSSQLversion" datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 	EXEC sp_MSgetversion
 </cfquery>
-	
+
 <cfset MSSQLversion=left(MSSQLversion.CHARACTER_VALUE,1)>
 
 <cfif MSSQLversion neq 8>
@@ -15,7 +15,7 @@
 <cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 IF NOT EXISTS (SELECT * FROM sysobjects WHERE id = object_id(N'[dbo].[ttrash]')
 AND OBJECTPROPERTY(id, N'IsUserTable') = 1)
-CREATE TABLE [dbo].[ttrash] ( 
+CREATE TABLE [dbo].[ttrash] (
 	  [objectID] [char](35) NOT NULL,
 	  [parentID] [char](35) NOT NULL,
 	  [siteID] [varchar](25) NOT NULL,
@@ -29,31 +29,31 @@ CREATE TABLE [dbo].[ttrash] (
 ) on [PRIMARY]
 </cfquery>
 
-<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">	
+<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 IF NOT EXISTS (SELECT 1
 				FROM sysindexes
-				WHERE id = object_id(N'[dbo].[ttrash]') 
+				WHERE id = object_id(N'[dbo].[ttrash]')
 				AND status & 2048 = 2048 )
-ALTER TABLE [dbo].[ttrash] WITH NOCHECK ADD 
-	CONSTRAINT [PK_ttrash] PRIMARY KEY  CLUSTERED 
+ALTER TABLE [dbo].[ttrash] WITH NOCHECK ADD
+	CONSTRAINT [PK_ttrash] PRIMARY KEY  CLUSTERED
 	(
 		[objectID]
-	)  ON [PRIMARY] 
+	)  ON [PRIMARY]
 </cfquery>
 
-<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">	
+<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 IF NOT EXISTS (SELECT name FROM sysindexes WHERE name = 'IX_ttrash_deleteddate')
 CREATE INDEX IX_ttrash_deleteddate ON ttrash (deleteddate)
 </cfquery>
-<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">	
+<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 IF NOT EXISTS (SELECT name FROM sysindexes WHERE name = 'IX_ttrash_siteid')
 CREATE INDEX IX_ttrash_siteid ON ttrash (siteid)
 </cfquery>
-<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">	
+<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 IF NOT EXISTS (SELECT name FROM sysindexes WHERE name = 'IX_ttrash_objectclass')
 CREATE INDEX IX_ttrash_objectclass ON ttrash (objectclass)
 </cfquery>
-<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">	
+<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 IF NOT EXISTS (SELECT name FROM sysindexes WHERE name = 'IX_ttrash_parentid')
 CREATE INDEX IX_ttrash_parentid ON ttrash (parentid)
 </cfquery>
@@ -61,7 +61,7 @@ CREATE INDEX IX_ttrash_parentid ON ttrash (parentid)
 </cfcase>
 <cfcase value="mysql">
 	<cftry>
-	
+
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 	CREATE TABLE IF NOT EXISTS  `ttrash` (
 	  objectID char(35) NOT NULL,
@@ -81,7 +81,7 @@ CREATE INDEX IX_ttrash_parentid ON ttrash (parentid)
 	  KEY IX_ttrash_parentid (`parentID`)
 	) ENGINE=#variables.instance.MYSQLEngine# DEFAULT CHARSET=utf8
 	</cfquery>
-	
+
 	<cfcatch>
 		<cftry>
 		<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
@@ -97,7 +97,7 @@ CREATE INDEX IX_ttrash_parentid ON ttrash (parentid)
 		  deletedDate datetime default NULL,
 		  deletedBy varchar(50) NOT NULL,
 		  PRIMARY KEY  (`objectID`)
-		) 
+		)
 		</cfquery>
 		<cfcatch></cfcatch>
 		</cftry>
@@ -121,15 +121,15 @@ select * from ttrash where 0=1
 	CREATE TABLE "TTRASH" (
 	"OBJECTID" CHAR(35),
 	"PARENTID" CHAR(35),
-	"SITEID" VARCHAR2(25), 
+	"SITEID" VARCHAR2(25),
 	"OBJECTCLASS" VARCHAR2(50),
 	"OBJECTTYPE" VARCHAR2(50),
 	"OBJECTSUBTYPE" VARCHAR2(50),
-	"OBJECTLABEL" VARCHAR2(255), 
-	"OBJECTSTRING" CLOB, 
+	"OBJECTLABEL" VARCHAR2(255),
+	"OBJECTSTRING" CLOB,
 	"DELETEDDATE" DATE,
 	"DELETEDBY" VARCHAR2(50)
-   ) 
+   )
 	lob (OBJECTSTRING) STORE AS (
 	TABLESPACE "USERS" ENABLE STORAGE IN ROW CHUNK 8192 PCTVERSION 10
 	NOCACHE LOGGING
@@ -167,13 +167,13 @@ select * from tfiles where 0=1
 <cfswitch expression="#getDbType()#">
 <cfcase value="mssql">
 <cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
-ALTER TABLE tfiles ADD deleted tinyint 
+ALTER TABLE tfiles ADD deleted tinyint
 </cfquery>
 </cfcase>
 <cfcase value="mysql">
 	<cftry>
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
-	ALTER TABLE tfiles ADD COLUMN deleted tinyint(3) 
+	ALTER TABLE tfiles ADD COLUMN deleted tinyint(3)
 	</cfquery>
 	<cfcatch>
 			<!--- H2 --->

@@ -1,11 +1,11 @@
 ﻿<cfoutput>
 <script>
 var remoteFeedConfiguratorTitle='#JSStringFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.configurator.remotefeedtitle"))#';
-var localIndexConfiguratorTitle='#JSStringFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.configurator.localindextitle"))#';		
-var categorySummaryConfiguratorTitle='#JSStringFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.configurator.categorysummarytitle"))#';	
-var slideShowConfiguratorTitle='#JSStringFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.configurator.slideshowtitle"))#';	
-var relatedContentConfiguratorTitle='#JSStringFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.configurator.relatedcontenttitle"))#';		
-var genericConfiguratorTitle='#JSStringFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.configurator.generictitle"))#';	
+var localIndexConfiguratorTitle='#JSStringFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.configurator.localindextitle"))#';
+var categorySummaryConfiguratorTitle='#JSStringFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.configurator.categorysummarytitle"))#';
+var slideShowConfiguratorTitle='#JSStringFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.configurator.slideshowtitle"))#';
+var relatedContentConfiguratorTitle='#JSStringFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.configurator.relatedcontenttitle"))#';
+var genericConfiguratorTitle='#JSStringFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.configurator.generictitle"))#';
 var genericConfiguratorMessage='#JSStringFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.configurator.genericmessage"))#';
 var contentid='#attributes.contentid#';
 var parentid='#attributes.parentid#';

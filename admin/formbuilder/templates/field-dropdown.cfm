@@ -52,15 +52,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<li><div class="ui-button" id="button-trash" title="#mmRBF.getKeyValue(session.rb,'formbuilder.delete')#"></div></li>
 				</ul>
 			</div>
-			
+
 			<div class="ui-tabs" id="ui-tabs">
-			
+
 			<ul class="ui-tabs-nav">
 				<li class="ui-state-default ui-corner-top"><a href="##mura-tb-form-tab-basic"><span>Basic</span></a></li>
 				<li class="ui-state-default ui-corner-top"><a href="##mura-tb-form-tab-advanced"><span>Advanced</span></a></li>
 				<li class="ui-state-default ui-corner-top"><a href="##mura-tb-form-tab-validation"><span>Validation</span></a></li>
 			</ul>
-			
+
 			<div class="ui-tabs-panel" id="mura-tb-form-tab-basic">
 			
 					<ul class="template-form">

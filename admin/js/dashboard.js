@@ -134,4 +134,3 @@ function loadEmailActivity(siteID)	{
 			);
 		return false;
 	}
-	

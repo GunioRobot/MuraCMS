@@ -12,17 +12,17 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Mura CMS. If not, see <http://www.gnu.org/licenses/>.
 
-Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on 
+Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on
 Mura CMS. Thus, the terms and conditions of the GNU General Public License version 2 ("GPL") cover the entire combined work.
 
 However, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with programs
 or libraries that are released under the GNU Lesser General Public License version 2.1.
 
-In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with 
-independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without 
-Mura CMS under the license of your choice, provided that you follow these specific guidelines: 
+In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with
+independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without
+Mura CMS under the license of your choice, provided that you follow these specific guidelines:
 
-Your custom code 
+Your custom code
 
 • Must not alter any default objects in the Mura CMS database and
 • May not alter the default display of the Mura CMS logo within Mura CMS and
@@ -36,12 +36,12 @@ Your custom code
  /index.cfm
  /MuraProxy.cfc
 
-You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work 
-under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL 
+You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work
+under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL
 requires distribution of source code.
 
-For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your 
-modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
+For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your
+modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 <cfcomponent extends="mura.cfobject" output="false">
@@ -51,10 +51,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="init" returntype="any" output="false" access="public">
 	<cfargument name="configBean">
 	<cfargument name="contentRenderer">
-	
+
 	<cfset variables.configBean=arguments.configBean />
 	<cfset variables.contentRenderer=arguments.contentRenderer />
-	
+
 	<cfreturn this />
 </cffunction>
 
@@ -63,28 +63,28 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfargument name="dbUsername" required="true" default="#application.configBean.getDbUsername()#">
 <cfargument name="dbPassword" required="true" default="#application.configBean.getDbPassword()#">
 	<cfset var rs="">
-	
+
 	<cfif arguments.datasource neq variables.configBean.getDatasource()>
 		<cfset arguments.dbUsername="">
 		<cfset arguments.dbPassword="">
 	</cfif>
-	
+
 	<cfquery name="rs" datasource="#arguments.datasource#" username="#arguments.dbUsername#" password="#arguments.dbPassword#">
-	select tclassextend.subtypeid, tclassextend.siteid, tclassextend.basekeyfield, tclassextend.datatable, tclassextend.type, 
-	tclassextend.subtype, tclassextendsets.extendsetid, tclassextendsets.categoryid, tclassextendsets.name extendsetname, 
-	tclassextendsets.container, tclassextendattributes.attributeid, tclassextendattributes.name attributename, 
+	select tclassextend.subtypeid, tclassextend.siteid, tclassextend.basekeyfield, tclassextend.datatable, tclassextend.type,
+	tclassextend.subtype, tclassextendsets.extendsetid, tclassextendsets.categoryid, tclassextendsets.name extendsetname,
+	tclassextendsets.container, tclassextendattributes.attributeid, tclassextendattributes.name attributename,
 	<cfif variables.configBean.getDBType() eq "oracle">
 		to_char(tclassextendattributes.label) as label
 	<cfelse>
 		tclassextendattributes.label
-	</cfif>, 
-	tclassextendattributes.hint, tclassextendattributes.type inputtype, tclassextendattributes.required, 
-	tclassextendattributes.validation, tclassextendattributes.regex, tclassextendattributes.message, tclassextendattributes.optionlist, 
+	</cfif>,
+	tclassextendattributes.hint, tclassextendattributes.type inputtype, tclassextendattributes.required,
+	tclassextendattributes.validation, tclassextendattributes.regex, tclassextendattributes.message, tclassextendattributes.optionlist,
 	tclassextendattributes.optionlabellist, tclassextendattributes.defaultvalue
 	from tclassextend
 	inner join tclassextendsets on (tclassextend.subtypeid=tclassextendsets.subtypeid)
 	inner join tclassextendattributes on (tclassextendsets.extendsetid=tclassextendattributes.extendsetid)
-	order by tclassextend.siteID, tclassextend.type, tclassextend.subtype, tclassextendsets.orderno, tclassextendattributes.orderno 
+	order by tclassextend.siteID, tclassextend.type, tclassextend.subtype, tclassextendsets.orderno, tclassextendattributes.orderno
 	</cfquery>
 
 	<cfreturn rs>
@@ -136,15 +136,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var subtype=getSubTypeBean() />
 	<cfset subtype.setSubTypeID(arguments.SubTypeID)/>
 	<cfset subtype.load() />
-	
+
 	<cfreturn subtype />
 </cffunction>
 
 <cffunction name="deleteSubType" access="public" returntype="array">
 <cfargument name="subTypeID">
 	<cfset var subtype=getSubTypeBean() />
-	<cfset subtype.setSubTypeID(arguments.subtypeID)/> 
-	<cfset subType.delete() />		
+	<cfset subtype.setSubTypeID(arguments.subtypeID)/>
+	<cfset subType.delete() />
 </cffunction>
 
 <cffunction name="getExtendedData" access="public" returntype="any">
@@ -153,9 +153,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="type">
 	<cfargument name="subtype">
 	<cfargument name="siteid">
-	
+
 	<cfif structKeyExists(arguments,"type") and  structKeyExists(arguments,"subtype") and  structKeyExists(arguments,"siteID")>
-		<cfreturn createObject("component","mura.extend.extendData").init(variables.configBean,arguments.baseID,arguments.dataTable, arguments.type, arguments.subType, arguments.siteID) />	
+		<cfreturn createObject("component","mura.extend.extendData").init(variables.configBean,arguments.baseID,arguments.dataTable, arguments.type, arguments.subType, arguments.siteID) />
 	<cfelse>
 		<cfreturn createObject("component","mura.extend.extendData").init(variables.configBean,arguments.baseID,arguments.dataTable) />
 	</cfif>
@@ -179,7 +179,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <!--- process non-file attributes --->
 <cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
-select attributeID,name,validation,message from tclassextendattributes where 
+select attributeID,name,validation,message from tclassextendattributes where
 ExtendSetID in(<cfloop from="1" to="#setLen#" index="s">
 		'#listgetat(arguments.data.extendSetID,s)#'<cfif s lt setlen>,</cfif>
 		</cfloop>)
@@ -188,10 +188,10 @@ ExtendSetID in(<cfloop from="1" to="#setLen#" index="s">
 
 <cfloop query="rs">
 	<cfset key="ext#rs.attributeID#"/>
-	
+
 	<cfif structKeyExists(arguments.data,key)
 		or structKeyExists(arguments.data,rs.name)>
-		
+
 		<cfif structKeyExists(arguments.data,key) and len(arguments.data[key])>
 			<cfset theValue=arguments.data[key]>
 		<cfelseif structKeyExists(arguments.data,rs.name) and len(arguments.data[rs.name])>
@@ -227,7 +227,7 @@ ExtendSetID in(<cfloop from="1" to="#setLen#" index="s">
 				</cfif>
 			</cfif>
 		</cfif>
-			
+
 	</cfif>
 </cfloop>
 </cfif>
@@ -267,7 +267,7 @@ ExtendSetID in(<cfloop from="1" to="#setLen#" index="s">
 </cfif>
 <!--- process non-file attributes --->
 <cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
-select attributeID,name,validation,message from tclassextendattributes where 
+select attributeID,name,validation,message from tclassextendattributes where
 ExtendSetID in(<cfloop from="1" to="#setLen#" index="s">
 		'#listgetat(arguments.data.extendSetID,s)#'<cfif s lt setlen>,</cfif>
 		</cfloop>)
@@ -276,10 +276,10 @@ ExtendSetID in(<cfloop from="1" to="#setLen#" index="s">
 
 <cfloop query="rs">
 	<cfset key="ext#rs.attributeID#"/>
-	
+
 	<cfif structKeyExists(arguments.data,key)
 		or structKeyExists(arguments.data,rs.name)>
-		
+
 		<cfif structKeyExists(arguments.data,key) and len(arguments.data[key])>
 			<cfset theValue=arguments.data[key]>
 		<cfelseif structKeyExists(arguments.data,rs.name) and len(arguments.data[rs.name])>
@@ -287,13 +287,13 @@ ExtendSetID in(<cfloop from="1" to="#setLen#" index="s">
 		<cfelse>
 			<cfset theValue="">
 		</cfif>
-		
+
 		<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
-			delete from #arguments.dataTable# 
+			delete from #arguments.dataTable#
 			where baseID=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.baseID#">
 			and attributeID = <cfqueryparam cfsqltype="cf_sql_numeric"  value="#rs.attributeID#">
 		</cfquery>
-			
+
 		<cfquery  datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 			insert into #arguments.dataTable# (baseID,attributeID,siteID,stringvalue,attributeValue,datetimevalue,numericvalue,remoteID
 			)
@@ -302,16 +302,16 @@ ExtendSetID in(<cfloop from="1" to="#setLen#" index="s">
 			<cfqueryparam cfsqltype="cf_sql_varchar"  value="#rs.attributeID#">,
 			<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.data.siteID#">,
 			<cfqueryparam cfsqltype="cf_sql_varchar"  value="#left(theValue,255)#">,
-			
+
 			<cfif len(theValue)>
-				
+
 				<cfif rs.validation eq "Date">
 					<cfif lsisDate(theValue)>
 						<cftry>
 						<cfset theValue = lsparseDateTime(theValue) />
 						<cfqueryparam cfsqltype="cf_sql_longvarchar"  value="#theValue#">,
 						<cfqueryparam cfsqltype="cf_sql_timestamp" value="#theValue#">,
-						null						
+						null
 						<cfcatch>
 							<cfset theValue = parseDateTime(theValue) />
 							<cfqueryparam cfsqltype="cf_sql_longvarchar"  value="#theValue#">,
@@ -319,7 +319,7 @@ ExtendSetID in(<cfloop from="1" to="#setLen#" index="s">
 							null
 						</cfcatch>
 						</cftry>
-					<cfelseif isDate(theValue)>	
+					<cfelseif isDate(theValue)>
 						<cfset theValue = parseDateTime(theValue) />
 						<cfqueryparam cfsqltype="cf_sql_longvarchar"  value="#theValue#">,
 						<cfqueryparam cfsqltype="cf_sql_timestamp" value="#theValue#">,
@@ -343,7 +343,7 @@ ExtendSetID in(<cfloop from="1" to="#setLen#" index="s">
 					<cfqueryparam cfsqltype="cf_sql_longvarchar"  value="#theValue#">,
 					null,
 					null
-				</cfif>	
+				</cfif>
 			<cfelse>
 				null,
 				null,
@@ -352,13 +352,13 @@ ExtendSetID in(<cfloop from="1" to="#setLen#" index="s">
 			<cfqueryparam cfsqltype="cf_sql_longvarchar"  value="#remoteID#">
 			)
 		</cfquery>
-		
+
 	</cfif>
 </cfloop>
 
 <!--- process file attributes --->
 <cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
-select attributeID,name from tclassextendattributes where 
+select attributeID,name from tclassextendattributes where
 ExtendSetID in(<cfloop from="1" to="#setLen#" index="s">
 		'#listgetat(arguments.data.extendSetID,s)#'<cfif s lt setlen>,</cfif>
 		</cfloop>)
@@ -370,43 +370,43 @@ ExtendSetID in(<cfloop from="1" to="#setLen#" index="s">
 	<cfset key="ext#rs.attributeID#"/>
 	<cfset deletekey1="extDelete#rs.attributeID#"/>
 	<cfset deletekey2="extDelete#rs.name#"/>
-	
+
 	<!--- if a new file has been submitted or a delete key exists, delete any existing file --->
 	<cfif (structKeyExists(arguments.data,key) and len(arguments.data[key]))
 		or (structKeyExists(arguments.data,rs.name) and len(arguments.data[rs.name]))
-		or structKeyExists(arguments.data,deletekey1) 
+		or structKeyExists(arguments.data,deletekey1)
 		or structKeyExists(arguments.data,deletekey2)>
-	
-	
+
+
 		<cfset fileID=getAttribute(arguments.baseID,rs.attributeID,arguments.dataTable)/>
-		
+
 		<cfif len(fileID)>
-			
+
 			<cfset fileManager.deleteIfNotUsed(fileID,arguments.baseID)/>
-			
+
 			<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
-			delete from #arguments.dataTable# 
+			delete from #arguments.dataTable#
 			where baseID=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.baseID#">
 			and attributeID = <cfqueryparam cfsqltype="cf_sql_numeric"  value="#rs.attributeID#">
 		 	</cfquery>
-		 	
+
 		 	<cfset fileID=""/>
-		</cfif>	
+		</cfif>
 
 	</cfif>
-		
+
 	<!--- if a new file has been submitted , save it --->
 	<cfif (structKeyExists(arguments.data,key) and len(arguments.data[key]))
 		or (structKeyExists(arguments.data,rs.name) and len(arguments.data[rs.name])) and not
-		(structKeyExists(arguments.data,deletekey1) 
+		(structKeyExists(arguments.data,deletekey1)
 		or structKeyExists(arguments.data,deletekey2))>
-		
+
 		<cfif structKeyExists(arguments.data,key) and len(arguments.data[key])>
 			<cfset formField=key />
 		<cfelse>
 			<cfset formField=rs.name />
 		</cfif>
-		
+
 		<!--- Check to see if it's a posted binary file--->
 		<cfif not isValid('UUID',arguments.data[formField])>
 			<cfif fileManager.isPostedFile(arguments.data[formField])>
@@ -415,13 +415,13 @@ ExtendSetID in(<cfloop from="1" to="#setLen#" index="s">
 			<cfelse>
 				<cfset tempFile=fileManager.emulateUpload(arguments.data[formField])>
 			</cfif>
-		
+
 			<cfset theFileStruct=fileManager.process(tempFile,arguments.data.siteID) />
 			<cfset fileID=fileManager.create(theFileStruct.fileObj,arguments.baseID,arguments.data.siteID,tempFile.ClientFile,tempFile.ContentType,tempFile.ContentSubType,tempFile.FileSize,arguments.data.moduleID,tempFile.ServerFileExt,theFileStruct.fileObjSmall,theFileStruct.fileObjMedium,createUUID(),theFileStruct.fileObjSource) />
 		<cfelse>
 			<cfset fileID=arguments.data[formField]>
-		</cfif>	
-		
+		</cfif>
+
 		<cfquery  datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 			insert into #arguments.dataTable# (baseID,attributeID,siteID,attributeValue,stringvalue,remoteID)
 			values (
@@ -430,10 +430,10 @@ ExtendSetID in(<cfloop from="1" to="#setLen#" index="s">
 			<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.data.siteID#">,
 			<cfqueryparam cfsqltype="cf_sql_varchar"  value="#fileID#">,
 			<cfqueryparam cfsqltype="cf_sql_varchar"  value="#fileID#">,
-			<cfqueryparam cfsqltype="cf_sql_longvarchar"  value="#remoteID#">	
+			<cfqueryparam cfsqltype="cf_sql_longvarchar"  value="#remoteID#">
 			)
 		</cfquery>
-					
+
 	</cfif>
 
 </cfloop>
@@ -464,14 +464,14 @@ ExtendSetID in(<cfloop from="1" to="#setLen#" index="s">
 </cfif>
 <!--- preserve data from extendsets that were'nt submitted --->
 <cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
-select #arguments.dataTable#.dataID, #arguments.dataTable#.baseID, #arguments.dataTable#.attributeID,#arguments.dataTable#.siteID, #arguments.dataTable#.attributevalue, 
+select #arguments.dataTable#.dataID, #arguments.dataTable#.baseID, #arguments.dataTable#.attributeID,#arguments.dataTable#.siteID, #arguments.dataTable#.attributevalue,
 #arguments.dataTable#.datetimevalue, #arguments.dataTable#.numericvalue, #arguments.dataTable#.stringvalue, tclassextendattributes.name from #arguments.dataTable#
 inner join tclassextendattributes on ( #arguments.dataTable#.attributeID=tclassextendattributes.attributeID)
 inner join tclassextendsets on (tclassextendattributes.extendsetID=tclassextendsets.extendsetID)
 inner join tclassextend on (tclassextendsets.subtypeID=tclassextend.subtypeID)
- where 
+ where
 tclassextend.type=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.type#">
-and 
+and
 	(
 		tclassextend.subtype=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.subtype#">
 		<cfif arguments.subType neq "Default">
@@ -485,7 +485,7 @@ and baseID=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.preserveI
 and tclassextendattributes.extendSetID not in (<cfloop from="1" to="#setLen#" index="s">
 		'#listgetat(arguments.data.extendSetID,s)#'<cfif s lt setlen>,</cfif>
 		</cfloop>)
-</cfif>		
+</cfif>
 </cfquery>
 
 <cfloop query="rs">
@@ -496,22 +496,22 @@ and tclassextendattributes.extendSetID not in (<cfloop from="1" to="#setLen#" in
 		<cfqueryparam cfsqltype="cf_sql_numeric"  value="#rs.attributeID#">,
 		<cfqueryparam cfsqltype="cf_sql_varchar"  value="#rs.siteID#">,
 		<cfif len(rs.attributeValue)>
-			<cfqueryparam cfsqltype="cf_sql_varchar"  value="#rs.attributeValue#">	
+			<cfqueryparam cfsqltype="cf_sql_varchar"  value="#rs.attributeValue#">
 		<cfelse>
 			null
 		</cfif>,
 		<cfif len(rs.datetimevalue)>
-			<cfqueryparam cfsqltype="cf_sql_timestamp" value="#rs.datetimevalue#">	
+			<cfqueryparam cfsqltype="cf_sql_timestamp" value="#rs.datetimevalue#">
 		<cfelse>
 			null
 		</cfif>,
 		<cfif len(rs.numericvalue)>
-			<cfqueryparam cfsqltype="cf_sql_numeric"  value="#rs.numericvalue#">	
+			<cfqueryparam cfsqltype="cf_sql_numeric"  value="#rs.numericvalue#">
 		<cfelse>
 			null
 		</cfif>,
 		<cfif len(rs.stringvalue)>
-			<cfqueryparam cfsqltype="cf_sql_varchar"  value="#rs.stringvalue#">	
+			<cfqueryparam cfsqltype="cf_sql_varchar"  value="#rs.stringvalue#">
 		<cfelse>
 			null
 		</cfif>,
@@ -522,14 +522,14 @@ and tclassextendattributes.extendSetID not in (<cfloop from="1" to="#setLen#" in
 
 <!--- preserve get non file attributes that were'nt submitted along with extendedset  --->
 <cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
-select #arguments.dataTable#.dataID, #arguments.dataTable#.baseID, #arguments.dataTable#.attributeID,#arguments.dataTable#.siteID, #arguments.dataTable#.attributevalue, 
+select #arguments.dataTable#.dataID, #arguments.dataTable#.baseID, #arguments.dataTable#.attributeID,#arguments.dataTable#.siteID, #arguments.dataTable#.attributevalue,
 #arguments.dataTable#.datetimevalue, #arguments.dataTable#.numericvalue, #arguments.dataTable#.stringvalue, tclassextendattributes.name  from #arguments.dataTable#
 inner join tclassextendattributes on ( #arguments.dataTable#.attributeID=tclassextendattributes.attributeID)
 inner join tclassextendsets on (tclassextendattributes.extendsetID=tclassextendsets.extendsetID)
 inner join tclassextend on (tclassextendsets.subtypeID=tclassextend.subtypeID)
- where 
+ where
 tclassextend.type=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.type#">
-and 
+and
 	(
 		tclassextend.subtype=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.subtype#">
 		<cfif arguments.subType neq "Default">
@@ -543,7 +543,7 @@ and baseID=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.preserveI
 and tclassextendattributes.extendSetID in (<cfloop from="1" to="#setLen#" index="s">
 		'#listgetat(arguments.data.extendSetID,s)#'<cfif s lt setlen>,</cfif>
 		</cfloop>)
-</cfif>		
+</cfif>
 and tclassextendattributes.type!='File'
 </cfquery>
 
@@ -551,7 +551,7 @@ and tclassextendattributes.type!='File'
 <cfset key="ext#rs.attributeID#"/>
 <cfif not structKeyExists(arguments.data,key)
 	and not structKeyExists(arguments.data,rs.name)>
-		
+
 		<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 						insert into #arguments.dataTable# (baseID,attributeID,siteID,attributeValue,datetimevalue,numericvalue,stringvalue,remoteID)
 						values (
@@ -559,42 +559,42 @@ and tclassextendattributes.type!='File'
 						<cfqueryparam cfsqltype="cf_sql_numeric"  value="#rs.attributeID#">,
 						<cfqueryparam cfsqltype="cf_sql_varchar"  value="#rs.siteID#">,
 						<cfif len(rs.attributeValue)>
-						<cfqueryparam cfsqltype="cf_sql_varchar"  value="#rs.attributeValue#">	
+						<cfqueryparam cfsqltype="cf_sql_varchar"  value="#rs.attributeValue#">
 						<cfelse>
 						null
 						</cfif>,
 						<cfif len(rs.datetimevalue)>
-							<cfqueryparam cfsqltype="cf_sql_timestamp" value="#rs.datetimevalue#">	
+							<cfqueryparam cfsqltype="cf_sql_timestamp" value="#rs.datetimevalue#">
 						<cfelse>
 							null
 						</cfif>,
 						<cfif len(rs.numericvalue)>
-							<cfqueryparam cfsqltype="cf_sql_numeric"  value="#rs.numericvalue#">	
+							<cfqueryparam cfsqltype="cf_sql_numeric"  value="#rs.numericvalue#">
 						<cfelse>
 							null
 						</cfif>,
 						<cfif len(rs.stringvalue)>
-							<cfqueryparam cfsqltype="cf_sql_varchar"  value="#rs.stringvalue#">	
+							<cfqueryparam cfsqltype="cf_sql_varchar"  value="#rs.stringvalue#">
 						<cfelse>
 							null
 						</cfif>,
 						<cfqueryparam cfsqltype="cf_sql_varchar"  value="#remoteID#">
 						)
 			</cfquery>
-		
+
 	</cfif>
-</cfloop>	
+</cfloop>
 
 <!--- preserve  Files from submitted extendset and make sure that is they were'nt newly submitted that the fileID is carried forward--->
 <cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
-select #arguments.dataTable#.dataID, #arguments.dataTable#.baseID, #arguments.dataTable#.attributeID,#arguments.dataTable#.siteID, #arguments.dataTable#.attributevalue, 
+select #arguments.dataTable#.dataID, #arguments.dataTable#.baseID, #arguments.dataTable#.attributeID,#arguments.dataTable#.siteID, #arguments.dataTable#.attributevalue,
 #arguments.dataTable#.datetimevalue, #arguments.dataTable#.numericvalue, #arguments.dataTable#.stringvalue, tclassextendattributes.name from #arguments.dataTable#
 inner join tclassextendattributes on ( #arguments.dataTable#.attributeID=tclassextendattributes.attributeID)
 inner join tclassextendsets on (tclassextendattributes.extendsetID=tclassextendsets.extendsetID)
 inner join tclassextend on (tclassextendsets.subtypeID=tclassextend.subtypeID)
- where 
+ where
 tclassextend.type=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.type#">
-and 
+and
 	(
 		tclassextend.subtype=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.subtype#">
 		<cfif arguments.subType neq "Default">
@@ -607,22 +607,22 @@ and baseID=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.preserveI
 and tclassextendattributes.extendSetID in (<cfloop from="1" to="#setLen#" index="s">
 		'#listgetat(arguments.data.extendSetID,s)#'<cfif s lt setlen>,</cfif>
 		</cfloop>)
-</cfif>		
+</cfif>
 and tclassextendattributes.type='File'
 </cfquery>
 
 <cfloop query="rs">
 		<cfset key="ext#rs.attributeID#"/>
 		<cfset deletekey1="extDelete#rs.attributeID#"/>
-		<cfset deletekey2="extDelete#rs.name#"/> 
-		
+		<cfset deletekey2="extDelete#rs.name#"/>
+
 		<cfif not((structKeyExists(arguments.data,key) and len(arguments.data[key]))
 			or (structKeyExists(arguments.data,rs.name) and len(arguments.data[rs.name]))
-			or structKeyExists(arguments.data,deletekey1) 
+			or structKeyExists(arguments.data,deletekey1)
 			or structKeyExists(arguments.data,deletekey2))
 			and len(rs.attributeValue)>
-		
-		
+
+
 						<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 						insert into #arguments.dataTable# (baseID,attributeID,siteID,attributeValue,stringvalue,remoteID)
 						values (
@@ -630,12 +630,12 @@ and tclassextendattributes.type='File'
 						<cfqueryparam cfsqltype="cf_sql_numeric"  value="#rs.attributeID#">,
 						<cfqueryparam cfsqltype="cf_sql_varchar"  value="#rs.siteID#">,
 						<cfif len(rs.attributeValue)>
-						<cfqueryparam cfsqltype="cf_sql_varchar"  value="#rs.attributeValue#">	
+						<cfqueryparam cfsqltype="cf_sql_varchar"  value="#rs.attributeValue#">
 						<cfelse>
 						null
 						</cfif>,
 						<cfif len(rs.stringvalue)>
-						<cfqueryparam cfsqltype="cf_sql_varchar"  value="#rs.stringvalue#">	
+						<cfqueryparam cfsqltype="cf_sql_varchar"  value="#rs.stringvalue#">
 						<cfelse>
 						null
 						</cfif>,
@@ -668,8 +668,8 @@ and tclassextendattributes.type='File'
 <cfargument name="activeOnly" default="false">
 <cfset var rs = ""/>
 <cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
-	select * from tclassextend 
-	where 
+	select * from tclassextend
+	where
 	siteid=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.siteid#">
 	<cfif arguments.activeOnly>
 		and isActive=1
@@ -686,8 +686,8 @@ and tclassextendattributes.type='File'
 <cfargument name="activeOnly" default="false">
 <cfset var rs = ""/>
 <cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
-	select * from tclassextend 
-	where 
+	select * from tclassextend
+	where
 	siteid=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.siteid#">
 	and	type=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.type#">
 	<cfif arguments.activeOnly>
@@ -707,7 +707,7 @@ and tclassextendattributes.type='File'
 	<cfquery name="rs" datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 	update tclassextendattributes
 	set orderno=#a#
-	where 
+	where
 	attributeID=<cfqueryparam cfsqltype="cf_sql_numeric"  value="#listGetAt(arguments.attributeID,a)#">
 	</cfquery>
 </cfloop>
@@ -722,7 +722,7 @@ and tclassextendattributes.type='File'
 	<cfquery name="rs" datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 	update tclassextendsets
 	set orderno=#s#
-	where 
+	where
 	extendSetID=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#listGetAt(arguments.extendSetID,s)#">
 	</cfquery>
 </cfloop>
@@ -738,7 +738,7 @@ and tclassextendattributes.type='File'
 	<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
 	select #arguments.dataTable#.attributeValue,tclassextendattributes.defaultValue,#arguments.dataTable#.attributeID,tclassextendattributes.validation from tclassextendattributes
 	left join #arguments.dataTable# ON (tclassextendattributes.attributeID=#arguments.dataTable#.attributeID)
-	where 
+	where
 	#arguments.dataTable#.baseID=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.baseID#">
 	and (
 		<cfif isNumeric(arguments.key)>
@@ -746,7 +746,7 @@ and tclassextendattributes.type='File'
 		or</cfif>
 		 tclassextendattributes.name=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.key#">)
 	</cfquery>
-	
+
 	<cfif len(rs.attributeID)>
 		<cfif rs.validation eq "Date">
 			<cfset tempDate=rs.attributeValue>
@@ -771,21 +771,21 @@ and tclassextendattributes.type='File'
 	<cfquery name="rsFiles" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
 		select attributeValue from #arguments.dataTable#
 		inner join tclassextendattributes on (#arguments.dataTable#.attributeID=tclassextendattributes.attributeID)
-		where 
+		where
 		tclassextendattributes.type='File'
 		and #arguments.dataTable#.baseid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.baseid#"/>
 		and #arguments.dataTable#.attributeValue is not null
 	</cfquery>
-		
+
 	<cfloop query="rsFiles">
 		<cfset fileManager.deleteIfNotUsed(rsFiles.attributeValue,arguments.baseID)/>
 	</cfloop>
 
 	<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
-		delete from #arguments.dataTable# where 
+		delete from #arguments.dataTable# where
 	    baseid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.baseid#"/>
-	</cfquery>		
-		
+	</cfquery>
+
 </cffunction>
 
 <cffunction name="getExtendedAttributeList" output="false" returntype="query">
@@ -793,10 +793,10 @@ and tclassextendattributes.type='File'
 <cfargument name="baseTable" required="true" default="tcontent">
 <cfargument name="activeOnly" requierd="true" default="false">
 	<cfset var rs="">
-	
+
 	<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
 		select tclassextend.type, tclassextend.subType, tclassextendattributes.attributeID, tclassextend.baseTable, tclassextend.baseKeyField, tclassextend.dataTable, tclassextendattributes.name attribute
-		from tclassextendattributes 
+		from tclassextendattributes
 		inner join tclassextendsets on (tclassextendsets.extendSetID=tclassextendattributes.extendSetID)
 		inner join tclassextend on (tclassextendsets.subTypeID=tclassextend.subTypeID)
 		where tclassextend.siteID = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteid#">
@@ -806,7 +806,7 @@ and tclassextendattributes.type='File'
 		</cfif>
 		order by tclassextend.type, tclassextend.subType, tclassextendattributes.name
 	</cfquery>
-	
+
 	<cfreturn rs>
 </cffunction>
 
@@ -818,8 +818,8 @@ and tclassextendattributes.type='File'
 <cfif variables.configBean.getStrictExtendedData()>
 	<cfif not structKeyExists(arguments,"datatype")>
 		<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
-				select validation from tclassextendattributes 
-				where 
+				select validation from tclassextendattributes
+				where
 				<cfif isNumeric(arguments.attribute)>
 				attributeID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.attribute#">
 				<cfelse>
@@ -829,7 +829,7 @@ and tclassextendattributes.type='File'
 		</cfquery>
 		<cfset arguments.datatype=rs.validation>
 	</cfif>
-	
+
 	<cfswitch expression="#arguments.datatype#">
 	<cfcase value="Numeric">
 		<cfreturn "numericvalue">
@@ -863,67 +863,67 @@ and tclassextendattributes.type='File'
 				</cfcase>
 				<cfcase value="mssql">
 				update tclassextenddata
-				
+
 				set datetimevalue=null,
 					numericvalue=null,
 					stringvalue=null
-				
-				from tclassextenddata 
-				inner join tcontent on (tclassextenddata.baseID=tcontent.contentHistID
-										and tcontent.active=1)
-				where attributeValue is not null
-				</cfcase>
-				<cfcase value="oracle">
-				update tclassextenddata 				
-				set datetimevalue=null,
-					numericvalue=null,
-					stringvalue=null
-				where dataID in (Select 
-						dataID
-						from tclassextenddata 
-						inner join tcontent on (tclassextenddata.baseID=tcontent.contentHistID
-												and tcontent.active=1)
-						where attributeValue is not null
-					) 
-				
-				</cfcase>
-				</cfswitch>
-			</cfquery>
-			
-			<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
-			<cfswitch expression="#variables.configBean.getDBType()#">
-				<cfcase value="mysql">
-				update tclassextenddata
-				inner join tcontent on (tclassextenddata.baseID=tcontent.contentHistID
-										and tcontent.active=1)
-				set stringvalue=Left(attributeValue,255)
-				where attributeValue is not null
-				</cfcase>
-				<cfcase value="mssql">
-				update tclassextenddata
-				
-				set stringvalue=left(attributeValue,255)
-					
+
 				from tclassextenddata
 				inner join tcontent on (tclassextenddata.baseID=tcontent.contentHistID
 										and tcontent.active=1)
-				where attributeValue is not null							
+				where attributeValue is not null
 				</cfcase>
 				<cfcase value="oracle">
-				update tclassextenddata 				
-				set stringvalue=DBMS_LOB.SUBSTR(attributeValue,255,1)
-				where dataID in (Select 
+				update tclassextenddata
+				set datetimevalue=null,
+					numericvalue=null,
+					stringvalue=null
+				where dataID in (Select
 						dataID
-						from tclassextenddata 
+						from tclassextenddata
 						inner join tcontent on (tclassextenddata.baseID=tcontent.contentHistID
 												and tcontent.active=1)
 						where attributeValue is not null
-					) 
-										
+					)
+
 				</cfcase>
 				</cfswitch>
 			</cfquery>
-			
+
+			<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+			<cfswitch expression="#variables.configBean.getDBType()#">
+				<cfcase value="mysql">
+				update tclassextenddata
+				inner join tcontent on (tclassextenddata.baseID=tcontent.contentHistID
+										and tcontent.active=1)
+				set stringvalue=Left(attributeValue,255)
+				where attributeValue is not null
+				</cfcase>
+				<cfcase value="mssql">
+				update tclassextenddata
+
+				set stringvalue=left(attributeValue,255)
+
+				from tclassextenddata
+				inner join tcontent on (tclassextenddata.baseID=tcontent.contentHistID
+										and tcontent.active=1)
+				where attributeValue is not null
+				</cfcase>
+				<cfcase value="oracle">
+				update tclassextenddata
+				set stringvalue=DBMS_LOB.SUBSTR(attributeValue,255,1)
+				where dataID in (Select
+						dataID
+						from tclassextenddata
+						inner join tcontent on (tclassextenddata.baseID=tcontent.contentHistID
+												and tcontent.active=1)
+						where attributeValue is not null
+					)
+
+				</cfcase>
+				</cfswitch>
+			</cfquery>
+
 			<cfif variables.configBean.getStrictExtendedData()>
 				<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 					<cfswitch expression="#variables.configBean.getDBType()#">
@@ -938,10 +938,10 @@ and tclassextendattributes.type='File'
 					</cfcase>
 					<cfcase value="mssql">
 					update tclassextenddata
-					
+
 					set datetimevalue=cast(subString(stringvalue,6,19) as dateTime)
-					
-					from tclassextenddata 
+
+					from tclassextenddata
 					inner join tclassextendattributes on (tclassextendattributes.attributeID=tclassextenddata.attributeID
 														and  tclassextendattributes.validation='date')
 					inner join tcontent on (tclassextenddata.baseID=tcontent.contentHistID
@@ -949,21 +949,21 @@ and tclassextendattributes.type='File'
 					where isDate(subString(stringvalue,6,19))=1
 					</cfcase>
 					<cfcase value="oracle">
-					update tclassextenddata 				
+					update tclassextenddata
 					set datetimevalue=to_date(subStr(stringvalue,6,19), 'YYYY-MM-DD HH24:MI:SS')
-					where dataID in (Select 
+					where dataID in (Select
 							dataID
-							from tclassextenddata 
+							from tclassextenddata
 							inner join tclassextendattributes on (tclassextendattributes.attributeID=tclassextenddata.attributeID
 																and lower(tclassextendattributes.validation)='date')
 							inner join tcontent on (tclassextenddata.baseID=tcontent.contentHistID
 													and tcontent.active=1)
 							where attributeValue is not null
-						) 
+						)
 					</cfcase>
 					</cfswitch>
 				</cfquery>
-				
+
 				<!--- Make sure MySQL does not have any values set to '0000-00-00 00:00:00' --->
 				<cfif variables.configBean.getDBType() eq "MYSQL">
 					<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
@@ -976,7 +976,7 @@ and tclassextendattributes.type='File'
 					where datetimevalue = '0000-00-00 00:00:00'
 					</cfquery>
 				</cfif>
-				
+
 				<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 					<cfswitch expression="#variables.configBean.getDBType()#">
 					<cfcase value="mysql">
@@ -990,10 +990,10 @@ and tclassextendattributes.type='File'
 					</cfcase>
 					<cfcase value="mssql">
 					update tclassextenddata
-					
+
 					set numericvalue=cast(stringvalue as FLOAT)
-					
-					from tclassextenddata 
+
+					from tclassextenddata
 					inner join tclassextendattributes on (tclassextendattributes.attributeID=tclassextenddata.attributeID
 														and  tclassextendattributes.validation='numeric')
 					inner join tcontent on (tclassextenddata.baseID=tcontent.contentHistID
@@ -1001,27 +1001,27 @@ and tclassextendattributes.type='File'
 					where isNumeric(stringvalue)=1
 					</cfcase>
 					<cfcase value="oracle">
-					update tclassextenddata 				
+					update tclassextenddata
 					set numericvalue=cast(stringvalue as NUMBER)
-					where dataID in (Select 
+					where dataID in (Select
 							dataID
-							from tclassextenddata 
+							from tclassextenddata
 							inner join tclassextendattributes on (tclassextendattributes.attributeID=tclassextenddata.attributeID
 																and lower(tclassextendattributes.validation)='numeric')
 							inner join tcontent on (tclassextenddata.baseID=tcontent.contentHistID
 													and tcontent.active=1)
 							where attributeValue is not null
 							and LENGTH(TRIM(TRANSLATE(stringvalue, ' +-.0123456789', ' '))) is null
-						) 
+						)
 					</cfcase>
 					</cfswitch>
 				</cfquery>
 			</cfif>
-			
+
 		</cfif>
-		
+
 		<cfif arguments.type eq "Both" or arguments.type eq "User">
-			
+
 			<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 			<cfswitch expression="#variables.configBean.getDBType()#">
 				<cfcase value="mysql">
@@ -1047,7 +1047,7 @@ and tclassextendattributes.type='File'
 				</cfcase>
 				</cfswitch>
 			</cfquery>
-			
+
 			<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 			<cfswitch expression="#variables.configBean.getDBType()#">
 				<cfcase value="mysql">
@@ -1067,7 +1067,7 @@ and tclassextendattributes.type='File'
 				</cfcase>
 				</cfswitch>
 			</cfquery>
-			
+
 			<cfif variables.configBean.getStrictExtendedData()>
 				<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 					<cfswitch expression="#variables.configBean.getDBType()#">
@@ -1080,28 +1080,28 @@ and tclassextendattributes.type='File'
 					</cfcase>
 					<cfcase value="mssql">
 					update tclassextenddatauseractivity
-					
+
 					set datetimevalue=cast(subString(stringvalue,6,19) as dateTime)
-					
-					from tclassextenddatauseractivity 
+
+					from tclassextenddatauseractivity
 					inner join tclassextendattributes on (tclassextendattributes.attributeID=tclassextenddatauseractivity.attributeID
 														and  tclassextendattributes.validation='date')
 					where isDate(subString(stringvalue,6,19))=1
 					</cfcase>
 					<cfcase value="oracle">
-					update tclassextenddatauseractivity 				
+					update tclassextenddatauseractivity
 					set datetimevalue=to_date(subStr(to_char(stringvalue),6,19), 'YYYY-MM-DD HH24:MI:SS')
-					where dataID in (Select 
+					where dataID in (Select
 							dataID
-							from tclassextenddatauseractivity 
+							from tclassextenddatauseractivity
 							inner join tclassextendattributes on (tclassextendattributes.attributeID=tclassextenddatauseractivity.attributeID
 																and lower(tclassextendattributes.validation)='date')
 							where attributeValue is not null
-						) 
+						)
 					</cfcase>
 					</cfswitch>
 				</cfquery>
-				
+
 				<!--- Make sure MySQL does not have any values set to '0000-00-00 00:00:00' --->
 				<cfif variables.configBean.getDBType() eq "MYSQL">
 					<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
@@ -1112,7 +1112,7 @@ and tclassextendattributes.type='File'
 					where datetimevalue = '0000-00-00 00:00:00'
 					</cfquery>
 				</cfif>
-				
+
 				<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 					<cfswitch expression="#variables.configBean.getDBType()#">
 					<cfcase value="mysql">
@@ -1124,38 +1124,38 @@ and tclassextendattributes.type='File'
 					</cfcase>
 					<cfcase value="mssql">
 					update tclassextenddatauseractivity
-					
+
 					set numericvalue=cast(stringvalue as FLOAT)
-					
-					from tclassextenddatauseractivity 
+
+					from tclassextenddatauseractivity
 					inner join tclassextendattributes on (tclassextendattributes.attributeID=tclassextenddatauseractivity.attributeID
 														and  tclassextendattributes.validation='numeric')
 					where isNumeric(stringvalue)=1
 					</cfcase>
 					<cfcase value="oracle">
-					update tclassextenddatauseractivity 				
+					update tclassextenddatauseractivity
 					set numericvalue=cast(stringvalue as NUMBER)
-					where dataID in (Select 
+					where dataID in (Select
 							dataID
-							from tclassextenddatauseractivity 
+							from tclassextenddatauseractivity
 							inner join tclassextendattributes on (tclassextendattributes.attributeID=tclassextenddatauseractivity.attributeID
 																and lower(tclassextendattributes.validation)='numeric')
 							where attributeValue is not null
 							and LENGTH(TRIM(TRANSLATE(stringvalue, ' +-.0123456789', ' '))) is null
-						) 
+						)
 					</cfcase>
 					</cfswitch>
 				</cfquery>
 			</cfif>
 		</cfif>
-	
+
 </cffunction>
 
 <cffunction name="syncDefinitions" output="false">
 <cfargument name="fromSiteID" default="">
 <cfargument name="toSiteID" default="">
 <cfargument name="type" default="">
-<cfargument name="subType" default="">	
+<cfargument name="subType" default="">
 
 <cfset var rsSubTypes=getSubTypes(arguments.fromSiteID)>
 <cfset var extendSets="">
@@ -1171,27 +1171,27 @@ and tclassextendattributes.type='File'
 <cfset var attributes="">
 
 <cfif len(arguments.type)>
-	<cfquery name="rsSubTypes" dbtype="query">	
+	<cfquery name="rsSubTypes" dbtype="query">
 		select * from rsSubTypes where type=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.type#">
 		<cfif len(arguments.subType)>
 		and subtype=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.subtype#">
-		</cfif> 
+		</cfif>
 	</cfquery>
 </cfif>
 
 <cfloop query="rsSubTypes">
 	<cfset sourceSubType=getSubTypeByID(rsSubTypes.subTypeID)>
 	<cfset destSubType=getSubTypeByName(rsSubTypes.type,rsSubTypes.subType,arguments.toSiteID)>
-	
+
 	<cfset destSubType.setDataTable(sourceSubType.getDataTable())>
 	<cfset destSubType.setBaseTable(sourceSubType.getBaseTable())>
 	<cfset destSubType.setBaseKeyField(sourceSubType.getBaseKeyField())>
 	<cfset destSubType.setIsActive(sourceSubType.getIsActive())>
-	
+
 	<cfset destSubType.save()>
-	
+
 	<cfset extendSets=sourceSubType.getExtendSets(activeOnly=false)>
-	
+
 	<cfif arrayLen(extendSets)>
 		<cfloop from="1" to="#arrayLen(extendSets)#" index="s">
 			<cfset sourceExtendSet=extendSets[s]>
@@ -1200,14 +1200,14 @@ and tclassextendattributes.type='File'
 			<cfset destExtendSet.setIsActive(sourceExtendSet.getIsActive())>
 			<cfset destExtendSet.setOrderNo(sourceExtendSet.getOrderNo())>
 			<cfset destExtendSet.save()>
-			
+
 			<cfset attributes=sourceExtendSet.getAttributes()>
-			
+
 			<cfif arrayLen(attributes)>
 				<cfloop from="1" to="#arrayLen(attributes)#" index="a">
 					<cfset sourceAttribute=attributes[a]>
 					<cfset destAttribute=destExtendSet.getAttributeByName(sourceAttribute.getName())>
-					
+
 					<cfset destAttribute.setName(sourceAttribute.getName())>
 					<cfset destAttribute.setHint(sourceAttribute.getHint())>
 					<cfset destAttribute.setType(sourceAttribute.getType())>
@@ -1224,7 +1224,7 @@ and tclassextendattributes.type='File'
 					<cfset destAttribute.save()>
 				</cfloop>
 			</cfif>
-			
+
 		</cfloop>
 	</cfif>
 </cfloop>

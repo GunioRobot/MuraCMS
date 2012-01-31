@@ -14,24 +14,24 @@
 
 	<!--- forward normal getters to the default getValue method --->
 	<cfif listFindNoCase("set,get",prefix) and len(arguments.MissingMethodName) gt 3>
-		<cfset prop=right(arguments.MissingMethodName,len(arguments.MissingMethodName)-3)>	
+		<cfset prop=right(arguments.MissingMethodName,len(arguments.MissingMethodName)-3)>
 		<cfif prefix eq "get">
 			<cfreturn getValue(prop)>
 		<cfelseif prefix eq "set" and not structIsEmpty(MissingMethodArguments)>
-			<cfset setValue(prop,MissingMethodArguments[1])>	
+			<cfset setValue(prop,MissingMethodArguments[1])>
 			<cfreturn this>
 		</cfif>
 	</cfif>
-	
+
 	<!--- otherwise get the bean and if the method exsists forward request --->
 	<cfset bean=getUserBean()>
-	
+
 	<cfif not structIsEmpty(MissingMethodArguments)>
 		<cfinvoke component="#bean#" method="#MissingMethodName#" argumentcollection="#MissingMethodArguments#" returnvariable="theValue">
 	<cfelse>
 		<cfinvoke component="#bean#" method="#MissingMethodName#" returnvariable="theValue">
 	</cfif>
-		
+
 	<cfif isDefined("theValue")>
 		<cfreturn theValue>
 	<cfelse>
@@ -43,13 +43,13 @@
 </cfif>
 
 </cffunction>
-		
+
 <cffunction name="init" access="public" returntype="any" output="false">
 	<cfreturn this>
 </cffunction>
 
 <cffunction name="getValue" access="public" returntype="any" output="false">
-	<cfargument name="property">	
+	<cfargument name="property">
 	<cfset var theValue="">
 	<cfif isDefined('get#arguments.property#')>
 		<cfreturn evaluate('get#arguments.property#()')>
@@ -61,12 +61,12 @@
 		<cfreturn theValue>
 	<cfelse>
 		<cfreturn session.mura[arguments.property]>
-	</cfif>	
+	</cfif>
 </cffunction>
 
 <cffunction name="setValue" access="public" returntype="any" output="false">
 	<cfargument name="property">
-	<cfargument name="propertyValue">	
+	<cfargument name="propertyValue">
 	<cfset session.mura[arguments.property]=arguments.propertyValue>
 	<cfset getUserBean().setValue(arguments.property, arguments.propertyValue)>
 	<cfreturn this>
@@ -98,16 +98,16 @@
 	<cfset var siteid=session.mura.siteID>
 	<cfset var publicPool="">
 	<cfset var privatePool="">
-	
+
 	<cfif hasSession()>
 		<cfset siteid=session.mura.siteID>
 		<cfif structKeyExists(request,"siteid")>
 			<cfset siteID=request.siteID>
 		</cfif>
-		
+
 		<cfset publicPool=application.settingsManager.getSite(siteid).getPublicUserPoolID()>
 		<cfset privatePool=application.settingsManager.getSite(siteid).getPrivateUserPoolID()>
-		
+
 		<cfif session.mura.isLoggedIn and len(siteID)>
 			<cfif structKeyExists(arguments,"isPublic")>
 				<cfif arguments.isPublic>
@@ -130,11 +130,11 @@
 	<cfset var siteid=session.mura.siteID>
 	<cfif hasSession()>
 		<cfset siteid=session.mura.siteID>
-		
+
 		<cfif structKeyExists(request,"siteid")>
 			<cfset siteID=request.siteID>
 		</cfif>
-	
+
 		<cfreturn application.permUtility.isPrivateUser(siteid)>
 	<cfelse>
 		<cfreturn false>
@@ -149,7 +149,7 @@
 	</cfif>
 </cffunction>
 
-<cffunction name="isLoggedIn" access="public" returntype="boolean" output="false">	
+<cffunction name="isLoggedIn" access="public" returntype="boolean" output="false">
 	<cfif hasSession()>
 		<cfreturn session.mura.isLoggedIn>
 	<cfelse>
@@ -162,7 +162,7 @@
 </cffunction>
 
 <cffunction name="logout" access="public" returntype="any" output="false">
-	
+
 	<cfset getBean('loginManager').logout()>
 	<cfreturn this>
 </cffunction>

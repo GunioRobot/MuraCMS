@@ -48,7 +48,7 @@ select * from tclassextenddata  where 0=1
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 	ALTER TABLE tclassextenddata ADD stringvalue [nvarchar](255) default NULL
 	</cfquery>
-	
+
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 	CREATE INDEX [IX_extend_date1] ON [dbo].[tclassextenddata]([datetimevalue]) ON [PRIMARY]
 	</cfquery>
@@ -70,7 +70,7 @@ select * from tclassextenddata  where 0=1
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 	ALTER TABLE tclassextenddata ADD COLUMN stringvalue varchar(255) default NULL
 	</cfquery>
-	
+
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 	CREATE INDEX IX_extend_date1 ON tclassextenddata (datetimevalue)
 	</cfquery>
@@ -91,7 +91,7 @@ select * from tclassextenddata  where 0=1
 			<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 			ALTER TABLE tclassextenddata ADD COLUMN stringvalue varchar(255) default NULL
 			</cfquery>
-			
+
 			<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 			CREATE INDEX IX_extend_date1 ON tclassextenddata (datetimevalue)
 			</cfquery>
@@ -114,20 +114,20 @@ select * from tclassextenddata  where 0=1
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 	ALTER TABLE tclassextenddata ADD stringvalue varchar2(255) default NULL
 	</cfquery>
-	
+
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
-	CREATE INDEX "IDX_EXTEND_DATE1" ON tclassextenddata (datetimevalue) 
+	CREATE INDEX "IDX_EXTEND_DATE1" ON tclassextenddata (datetimevalue)
 	</cfquery>
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
-	CREATE INDEX "IDX_EXTEND_NUMERIC1" ON tclassextenddata (numericvalue) 
+	CREATE INDEX "IDX_EXTEND_NUMERIC1" ON tclassextenddata (numericvalue)
 	</cfquery>
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
-	CREATE INDEX "IDX_EXTEND_STRING1" ON tclassextenddata (stringvalue) 
+	CREATE INDEX "IDX_EXTEND_STRING1" ON tclassextenddata (stringvalue)
 	</cfquery>
 </cfcase>
 
 </cfswitch>
-	
+
 	<cftry>
 	<cfset getClassExtensionManager().resetTypedData("Content")>
 	<cfcatch></cfcatch>
@@ -173,7 +173,7 @@ select * from tclassextenddatauseractivity  where 0=1
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 	ALTER TABLE tclassextenddatauseractivity ADD COLUMN stringvalue varchar(255) default NULL
 	</cfquery>
-	
+
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 	CREATE INDEX IX_extend_date2 ON tclassextenddatauseractivity (datetimevalue)
 	</cfquery>
@@ -194,7 +194,7 @@ select * from tclassextenddatauseractivity  where 0=1
 			<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 			ALTER TABLE tclassextenddatauseractivity ADD COLUMN stringvalue varchar(255) default NULL
 			</cfquery>
-			
+
 			<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 			CREATE INDEX IX_extend_date2 ON tclassextenddatauseractivity (datetimevalue)
 			</cfquery>
@@ -217,15 +217,15 @@ select * from tclassextenddatauseractivity  where 0=1
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 	ALTER TABLE tclassextenddatauseractivity ADD stringvalue varchar2(255)
 	</cfquery>
-	
+
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
-	CREATE INDEX "IDX_EXTEND_DATE2" ON tclassextenddatauseractivity (datetimevalue) 
+	CREATE INDEX "IDX_EXTEND_DATE2" ON tclassextenddatauseractivity (datetimevalue)
 	</cfquery>
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
-	CREATE INDEX "IDX_EXTEND_NUMERIC2" ON tclassextenddatauseractivity (numericvalue) 
+	CREATE INDEX "IDX_EXTEND_NUMERIC2" ON tclassextenddatauseractivity (numericvalue)
 	</cfquery>
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
-	CREATE INDEX "IDX_EXTEND_STRING2" ON tclassextenddatauseractivity (stringvalue) 
+	CREATE INDEX "IDX_EXTEND_STRING2" ON tclassextenddatauseractivity (stringvalue)
 	</cfquery>
 </cfcase>
 

@@ -12,17 +12,17 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Mura CMS. If not, see <http://www.gnu.org/licenses/>.
 
-Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on 
+Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on
 Mura CMS. Thus, the terms and conditions of the GNU General Public License version 2 ("GPL") cover the entire combined work.
 
 However, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with programs
 or libraries that are released under the GNU Lesser General Public License version 2.1.
 
-In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with 
-independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without 
-Mura CMS under the license of your choice, provided that you follow these specific guidelines: 
+In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with
+independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without
+Mura CMS under the license of your choice, provided that you follow these specific guidelines:
 
-Your custom code 
+Your custom code
 
 • Must not alter any default objects in the Mura CMS database and
 • May not alter the default display of the Mura CMS logo within Mura CMS and
@@ -36,12 +36,12 @@ Your custom code
  /index.cfm
  /MuraProxy.cfc
 
-You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work 
-under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL 
+You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work
+under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL
 requires distribution of source code.
 
-For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your 
-modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
+For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your
+modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 
@@ -61,10 +61,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="os0" type="string" required="Yes"  default="">
 	<cfargument name="on1" type="string" required="Yes"  default="">
 	<cfargument name="os1" type="string" required="Yes"  default="">
- 
-	
+
+
     <cfif structKeyExists(VARIABLES.cart, arguments.item_number)>
-      	<cfset VARIABLES.cart[arguments.item_number].quantity = 
+      	<cfset VARIABLES.cart[arguments.item_number].quantity =
              VARIABLES.cart[arguments.item_number].quantity + arguments.quantity>
     <cfelse>
 			<cfset VARIABLES.cart[arguments.item_number] = structNew()>
@@ -81,19 +81,19 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset  VARIABLES.cart[arguments.item_number].os1 = arguments.os1 >
 	<cfset  VARIABLES.cart[arguments.item_number].item_name = arguments.item_name >
 
-  </cffunction> 
- 
+  </cffunction>
+
   <cffunction name="Update" access="public" returnType="void" output="false"
               hint="Updates an items quantity in the shopping cart">
     <cfargument name="item_number" type="string" required="Yes">
     <cfargument name="quantity" type="numeric" required="Yes">
 
     <cfif arguments.quantity gt 0>
-      <cfset VARIABLES.cart[arguments.item_number].quantity = arguments.quantity>    
+      <cfset VARIABLES.cart[arguments.item_number].quantity = arguments.quantity>
     <cfelse>
       <cfset remove(arguments.item_number)>
     </cfif>
-  </cffunction> 
+  </cffunction>
 
 
   <cffunction name="Remove" access="public" returnType="void" output="false"
@@ -101,20 +101,20 @@ version 2 without this exception.  You may, if you choose, apply this exception 
     <cfargument name="item_number" type="string" required="Yes">
 
     <cfset structDelete(VARIABLES.cart, arguments.item_number)>
-  </cffunction> 
- 
+  </cffunction>
+
   <cffunction name="Empty" access="public" returnType="void" output="false"
               hint="Removes all items from the shopping cart">
     <cfset structClear(VARIABLES.cart)>
   </cffunction>
- 
+
   <cffunction name="List" access="public" returnType="query" output="false"
-              hint="Returns a query object containing all items in shopping 
+              hint="Returns a query object containing all items in shopping
               cart. The query object has two columns: MerchID and Quantity.">
 
     <cfset var q = queryNew("item_number,item_name,amount,quantity,shipping,shipping2,handling,on0,os0,on1,os1")>
     <cfset var key = "">
-   
+
 
     <cfloop collection="#VARIABLES.cart#" item="key">
     <cfset queryAddRow(q)>
@@ -131,7 +131,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset querySetCell(q, "os1", VARIABLES.cart[key].os1)>
     </cfloop>
 
-    <cfreturn q> 
-  </cffunction> 
+    <cfreturn q>
+  </cffunction>
 
 </cfcomponent>

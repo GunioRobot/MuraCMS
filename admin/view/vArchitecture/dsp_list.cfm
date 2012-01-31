@@ -12,17 +12,17 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Mura CMS. If not, see <http://www.gnu.org/licenses/>.
 
-Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on 
+Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on
 Mura CMS. Thus, the terms and conditions of the GNU General Public License version 2 ("GPL") cover the entire combined work.
 
 However, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with programs
 or libraries that are released under the GNU Lesser General Public License version 2.1.
 
-In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with 
-independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without 
-Mura CMS under the license of your choice, provided that you follow these specific guidelines: 
+In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with
+independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without
+Mura CMS under the license of your choice, provided that you follow these specific guidelines:
 
-Your custom code 
+Your custom code
 
 • Must not alter any default objects in the Mura CMS database and
 • May not alter the default display of the Mura CMS logo within Mura CMS and
@@ -36,12 +36,12 @@ Your custom code
  /index.cfm
  /MuraProxy.cfc
 
-You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work 
-under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL 
+You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work
+under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL
 requires distribution of source code.
 
-For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your 
-modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
+For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your
+modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 <cfsilent>
@@ -79,55 +79,55 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	if(not structKeyExists(session.flatViewArgs,session.siteid)){
 		session.flatViewArgs["#session.siteid#"]=structNew();
 	}
-	
+
 	if(not structKeyExists(session.flatViewArgs["#session.siteid#"],"moduleid")){
 		session.flatViewArgs["#session.siteid#"].moduleid=attributes.moduleid;
 	}
-	
+
 	if(not structKeyExists(session.flatViewArgs["#session.siteid#"],"sortby")){
 		session.flatViewArgs["#session.siteid#"].sortby="lastupdate";
 	}
-	
+
 	if(not structKeyExists(session.flatViewArgs["#session.siteid#"],"sortdirection")){
 		session.flatViewArgs["#session.siteid#"].sortdirection="desc";
 	}
-	
+
 	if(not structKeyExists(session.flatViewArgs["#session.siteid#"],"lockid")){
 		session.flatViewArgs["#session.siteid#"].lockid=attributes.lockid;
 	}
-	
+
 	if(not structKeyExists(session.flatViewArgs["#session.siteid#"],"assignments")){
 		session.flatViewArgs["#session.siteid#"].assignments=attributes.assignments;
 	}
-	
+
 	if(not structKeyExists(session.flatViewArgs["#session.siteid#"],"categoryid")){
 		session.flatViewArgs["#session.siteid#"].categoryid=attributes.categoryid;
 	}
-	
+
 	if(not structKeyExists(session.flatViewArgs["#session.siteid#"],"tag")){
 		session.flatViewArgs["#session.siteid#"].tag=attributes.tag;
 	}
-	
+
 	if(not structKeyExists(session.flatViewArgs["#session.siteid#"],"page")){
 		session.flatViewArgs["#session.siteid#"].page=attributes.page;
 	}
-	
+
 	if(not structKeyExists(session.flatViewArgs["#session.siteid#"],"type")){
 		session.flatViewArgs["#session.siteid#"].type="";
 	}
-	
+
 	if(not structKeyExists(session.flatViewArgs["#session.siteid#"],"subtype")){
 		session.flatViewArgs["#session.siteid#"].subtype=attributes.subtype;
 	}
-	
+
 	if(not structKeyExists(session.flatViewArgs["#session.siteid#"],"report")){
 		session.flatViewArgs["#session.siteid#"].report="";
 	}
-	
+
 	if(not structKeyExists(session.flatViewArgs["#session.siteid#"],"keywords")){
 		session.flatViewArgs["#session.siteid#"].keywords="";
 	}
-	
+
 	if(not structKeyExists(session.flatViewArgs["#session.siteid#"],"tab")){
 		session.flatViewArgs["#session.siteid#"].tab=0;
 	}
@@ -148,7 +148,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cfif isdefined('attributes.orderperm') and (attributes.orderperm eq 'editor' or (attributes.orderperm eq 'author' and application.configBean.getSortPermission() eq "author"))>
 	<cflock type="exclusive" name="editingContent#attributes.siteid#" timeout="60">
-		
+
 		<cfif attributes.sorted>
 			<cfset current=application.serviceFactory.getBean("content").loadBy(contentID=attributes.topID, siteid=attributes.siteID)>
 			<cfset current.setSortBy(attributes.sortBy)>
@@ -157,7 +157,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset variables.pluginEvent.setValue("contentBean")>
 			<cfset application.pluginManager.announceEvent("onBeforeContentSort",pluginEvent)>
 		</cfif>
-		
+
 		<cfif isdefined('attributes.orderid') >
 			<cfloop from="1" to="#listlen(attributes.orderid)#" index="i">
 				<cfset newOrderNo=(attributes.startrow+i)-1>
@@ -177,11 +177,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</cfquery>
 			</cfloop>
 		</cfif>
-		
+
 		<cfif attributes.sorted>
 			<cfset application.pluginManager.announceEvent("onAfterContentSort",pluginEvent)>
 		</cfif>
-		
+
 		<cfset application.settingsManager.getSite(attributes.siteid).purgeCache()>
 	</cflock>
 </cfif>
@@ -191,7 +191,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cfsilent>
 
 <cfoutput>
-<script>	
+<script>
 siteID='#session.siteID#';
 <cfif session.copySiteID eq attributes.siteID>
 copyContentID = '#session.copyContentID#';
@@ -203,7 +203,7 @@ copySiteID = '';
 copyAll = 'false';
 </cfif>
 </script>
- 
+
 <h2>#application.rbFactory.getKeyValue(session.rb,"sitemanager.sitemanager")#</h2>
 <form novalidate="novalidate" id="siteSearch" name="siteSearch" method="get">
     <!---<h3>#application.rbFactory.getKeyValue(session.rb,"sitemanager.contentsearch")#</h3>--->
@@ -226,22 +226,22 @@ copyAll = 'false';
 		<div id="tabArchitectual">
 		<div id="gridContainer"><img class="loadProgress" src="images/progress_bar.gif"></div>
 		</div>
-		
+
 		<div id="tabFlat">
 			<img class="loadProgress" src="images/progress_bar.gif">
 		</div>
-		
+
 </div>
 <script type="text/javascript">
 var archViewLoaded=false;
 var flatViewLoaded=false;
 
 function initFlatViewArgs(){
-	return {siteid:'#JSStringFormat(session.siteID)#', 
-			moduleid:'#JSStringFormat(session.flatViewArgs["#session.siteID#"].moduleid)#', 
-			sortby:'#JSStringFormat(session.flatViewArgs["#session.siteID#"].sortby)#', 
-			sortdirection:'#JSStringFormat(session.flatViewArgs["#session.siteID#"].sortdirection)#', 
-			page:'#JSStringFormat(session.flatViewArgs["#session.siteID#"].page)#',	
+	return {siteid:'#JSStringFormat(session.siteID)#',
+			moduleid:'#JSStringFormat(session.flatViewArgs["#session.siteID#"].moduleid)#',
+			sortby:'#JSStringFormat(session.flatViewArgs["#session.siteID#"].sortby)#',
+			sortdirection:'#JSStringFormat(session.flatViewArgs["#session.siteID#"].sortdirection)#',
+			page:'#JSStringFormat(session.flatViewArgs["#session.siteID#"].page)#',
 			tag:'#JSStringFormat(session.flatViewArgs["#session.siteID#"].tag)#',
 			categoryid:'#JSStringFormat(session.flatViewArgs["#session.siteID#"].categoryid)#',
 			lockid:'#JSStringFormat(session.flatViewArgs["#session.siteID#"].lockid)#',
@@ -255,9 +255,9 @@ function initFlatViewArgs(){
 var flatViewArgs=initFlatViewArgs();
 
 function initSiteManagerTabContent(index){
-	
+
 	jQuery.get("./index.cfm","fuseaction=carch.siteManagerTab&tab=" + index);
-	
+
 	switch(index){
 		case 0:
 		if (!archViewLoaded) {
@@ -275,9 +275,9 @@ function initSiteManagerTabContent(index){
 
 jQuery("##viewTabs").bind( "tabsselect", function(event,ui){
 	initSiteManagerTabContent(ui.index)
-});	
+});
 
-initSiteManagerTabContent(#attributes.activeTab#);			
+initSiteManagerTabContent(#attributes.activeTab#);
 </script>
 </cfoutput>
 <cfinclude template="draftpromptjs.cfm">

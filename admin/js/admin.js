@@ -1,33 +1,33 @@
-/* This file is part of Mura CMS. 
+/* This file is part of Mura CMS.
 
-	Mura CMS is free software: you can redistribute it and/or modify 
-	it under the terms of the GNU General Public License as published by 
-	the Free Software Foundation, Version 2 of the License. 
+	Mura CMS is free software: you can redistribute it and/or modify
+	it under the terms of the GNU General Public License as published by
+	the Free Software Foundation, Version 2 of the License.
 
-	Mura CMS is distributed in the hope that it will be useful, 
-	but WITHOUT ANY WARRANTY; without even the implied warranty of 
-	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the 
-	GNU General Public License for more details. 
+	Mura CMS is distributed in the hope that it will be useful,
+	but WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+	GNU General Public License for more details.
 
-	You should have received a copy of the GNU General Public License 
-	along with Mura CMS.  If not, see <http://www.gnu.org/licenses/>. 
+	You should have received a copy of the GNU General Public License
+	along with Mura CMS.  If not, see <http://www.gnu.org/licenses/>.
 
-	Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on 
+	Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on
 	Mura CMS. Thus, the terms and conditions of the GNU General Public License version 2 ("GPL") cover the entire combined work.
-	
+
 	However, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with programs
 	or libraries that are released under the GNU Lesser General Public License version 2.1.
-	
-	In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with 
-	independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without 
-	Mura CMS under the license of your choice, provided that you follow these specific guidelines: 
-	
-	Your custom code 
-	
+
+	In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with
+	independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without
+	Mura CMS under the license of your choice, provided that you follow these specific guidelines:
+
+	Your custom code
+
 	• Must not alter any default objects in the Mura CMS database and
 	• May not alter the default display of the Mura CMS logo within Mura CMS and
 	• Must not alter any files in the following directories.
-	
+
 	 /admin/
 	 /tasks/
 	 /config/
@@ -35,13 +35,13 @@
 	 /Application.cfc
 	 /index.cfm
 	 /MuraProxy.cfc
-	
-	You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work 
-	under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL 
+
+	You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work
+	under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL
 	requires distribution of source code.
-	
-	For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your 
-	modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
+
+	For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your
+	modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 	version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS. */
 
 function loadObject(url,target,message) {
@@ -50,7 +50,7 @@ function loadObject(url,target,message) {
 	var tg=target;
 
    processReqChange=function() {
-   		
+
 		if (req.readyState == 4) {
 			// only if "OK"
 			if (req.status == 200) {
@@ -58,9 +58,9 @@ function loadObject(url,target,message) {
 			}
 		}
 	}
-	
+
 	document.getElementById(tg).innerHTML=message;
-	 
+
     if (window.XMLHttpRequest) {
         req = new XMLHttpRequest();
         req.onreadystatechange = processReqChange;
@@ -86,7 +86,7 @@ var dtExample ="12/31/2014";
 
 function isInteger(s){
 	var i;
-    for (i = 0; i < s.length; i++){   
+    for (i = 0; i < s.length; i++){
         // Check that current character is number.
         var c = s.charAt(i);
         if (((c < "0") || (c > "9"))) return false;
@@ -100,7 +100,7 @@ function stripCharsInBag(s, bag){
     var returnString = "";
     // Search through string's characters one by one.
     // If character is not in bag, append to returnString.
-    for (i = 0; i < s.length; i++){   
+    for (i = 0; i < s.length; i++){
         var c = s.charAt(i);
         if (bag.indexOf(c) == -1) returnString += c;
     }
@@ -117,14 +117,14 @@ function DaysArray(n) {
 		this[i] = 31
 		if (i==4 || i==6 || i==9 || i==11) {this[i] = 30}
 		if (i==2) {this[i] = 29}
-   } 
+   }
    return this
 }
 
 function isDate(dtStr,fldName){
 	var daysInMonth = DaysArray(12);
 	var dtArray= dtStr.split(dtCh);
-	
+
 	if (dtArray.length != 3){
 		//alert("The date format for the "+fldName+" field should be : short")
 		return false
@@ -132,25 +132,25 @@ function isDate(dtStr,fldName){
 	var strMonth=dtArray[dtFormat[0]];
 	var strDay=dtArray[dtFormat[1]];
 	var strYear=dtArray[dtFormat[2]];
-	
+
 	/*
 	if(strYear.length == 2){
 		strYear="20" + strYear;
 	}
 	*/
-	
+
 	strYr=strYear;
-	
+
 	if (strDay.charAt(0)=="0" && strDay.length>1) strDay=strDay.substring(1)
 	if (strMonth.charAt(0)=="0" && strMonth.length>1) strMonth=strMonth.substring(1)
 	for (var i = 1; i <= 3; i++) {
 		if (strYr.charAt(0)=="0" && strYr.length>1) strYr=strYr.substring(1)
 	}
-	
+
 	month=parseInt(strMonth)
 	day=parseInt(strDay)
 	year=parseInt(strYr)
-		
+
 	if (month<1 || month>12){
 		//alert("Please enter a valid month in the "+fldName+" field")
 		return false
@@ -184,7 +184,7 @@ function stripe(theclass) {
   jQuery('table.' + theclass + ' tr').each(
 		function(index) {
 			if(index % 2){
-				jQuery(this).addClass('alt');	
+				jQuery(this).addClass('alt');
 			} else {
 				jQuery(this).removeClass('alt');
 			}
@@ -193,7 +193,7 @@ function stripe(theclass) {
    jQuery('div.mura-grid.' + theclass + ' dl').each(
 		function(index) {
 			if(index % 2){
-				jQuery(this).addClass('alt');	
+				jQuery(this).addClass('alt');
 			} else {
 				jQuery(this).removeClass('alt');
 			}
@@ -207,40 +207,40 @@ function stripe(theclass) {
 newWindow = null
 
 function toggleDisplay(id,expand,close){
-	
-	
-	
+
+
+
 		if(document.getElementById(id).style.display== 'none'){
-			
+
 			 document.getElementById(id).style.display='';
 			 if( document.getElementById(id + 'Link')){
-			  var theLink = document.getElementById(id + 'Link'); 
+			  var theLink = document.getElementById(id + 'Link');
 			  theLink.innerHTML='[' + close + ']';
 			  }
-			
-		} 
-		else 
+
+		}
+		else
 		{
 			 document.getElementById(id).style.display='none';
 			 if( document.getElementById(id + 'Link')){
-			  var theLink = document.getElementById(id + 'Link'); 
+			  var theLink = document.getElementById(id + 'Link');
 			   theLink.innerHTML='[' + expand + ']';
 		  		}
-				
-		}	  
+
+		}
 }
 
 function openDisplay(id,close){
-		
+
 	if(document.getElementById(id).style.display== 'none'){
-		
+
 		 jQuery("#" + id).slideDown();
 		 if( document.getElementById(id + 'Link')){
-		  var theLink = document.getElementById(id + 'Link'); 
+		  var theLink = document.getElementById(id + 'Link');
 		  theLink.innerHTML='[' + close + ']';
 		  }
 		 document.getElementById(id).style.display="";
-	} 
+	}
 
 }
 
@@ -292,7 +292,7 @@ function getValidationMessage(theField, defaultMessage){
 		return theField.getAttribute('message') + '\n';
 	} else {
 		return getValidationFieldName(theField).toUpperCase() + defaultMessage + '\n';
-	}	
+	}
 }
 
 function getValidationType(theField){
@@ -354,56 +354,56 @@ function validateForm(theForm) {
 		var startAt;
 		var firstErrorNode;
 		var validationType='';
-		var frmInputs = theForm.getElementsByTagName("input");	
+		var frmInputs = theForm.getElementsByTagName("input");
 		for (f=0; f < frmInputs.length; f++) {
 		 theField=frmInputs[f];
 		 validationType=getValidationType(theField);
-		 
+
 			if(theField.style.display==""){
 				if(getValidationIsRequired(theField) && theField.value == "" )
-					{	
+					{
 						if (!started) {
 						started=true;
 						startAt=f;
 						firstErrorNode="input";
 						}
-						
+
 						errors += getValidationMessage(theField,' is required.');
-						 			
+
 					}
 				else if(validationType != ''){
-						
+
 					if(validationType=='EMAIL' && theField.value != '' && !isEmail(theField.value))
-					{	
+					{
 						if (!started) {
 						started=true;
 						startAt=f;
 						firstErrorNode="input";
 						}
-						
+
 						errors += getValidationMessage(theField,' must be a valid email address.');
-								
+
 					}
-	
+
 					else if(validationType=='NUMERIC' && theField.value != '' && isNaN(theField.value))
-					{	
+					{
 						if(!isNaN(theField.value.replace(/\$|\,|\%/g,'')))
 						{
 							theField.value=theField.value.replace(/\$|\,|\%/g,'');
-	
+
 						} else {
 							if (!started) {
 							started=true;
 							startAt=f;
 							firstErrorNode="input";
 							}
-						
+
 							 errors += getValidationMessage(theField,' must be numeric.');
-						}					
+						}
 					}
-					
+
 					else if(validationType=='REGEX' && theField.value !='' && hasValidationRegex(theField))
-					{	
+					{
 						var re = new RegExp(getValidationRegex(theField));
 						if(!theField.value.match(re))
 						{
@@ -412,21 +412,21 @@ function validateForm(theForm) {
 							startAt=f;
 							firstErrorNode="input";
 							}
-						
+
 							 errors += getValidationMessage(theField,' is not valid.');
-						}					
+						}
 					}
-					else if(validationType=='MATCH' 
+					else if(validationType=='MATCH'
 							&& hasValidationMatchField(theField) && theField.value != theForm[getValidationMatchField(theField)].value)
-					{	
+					{
 						if (!started) {
 						started=true;
 						startAt=f;
 						firstErrorNode="input";
 						}
-						
+
 						errors += getValidationMessage(theField, ' must match' + getValidationMatchField(theField) + '.' );
-									
+
 					}
 					else if(validationType=='DATE' && theField.value != '' && !isDate(theField.value))
 					{
@@ -435,34 +435,34 @@ function validateForm(theForm) {
 						startAt=f;
 						firstErrorNode="input";
 						}
-						
+
 						errors += getValidationMessage(theField, ' must be a valid date [MM/DD/YYYY].' );
-						 
+
 					}
 				}
-					
+
 			}
 		}
-		var frmTextareas = theForm.getElementsByTagName("textarea");	
+		var frmTextareas = theForm.getElementsByTagName("textarea");
 		for (f=0; f < frmTextareas.length; f++) {
-		
-			
+
+
 				theField=frmTextareas[f];
 				validationType=getValidationType(theField);
-				 
+
 				if(theField.style.display=="" && getValidationIsRequired(theField) && theField.value == "" )
-				{	
+				{
 					if (!started) {
 					started=true;
 					startAt=f;
 					firstErrorNode="textarea";
 					}
-					
-					errors += getValidationMessage(theField, ' is required.' );		
-				}	
+
+					errors += getValidationMessage(theField, ' is required.' );
+				}
 				else if(validationType != ''){
 					if(validationType=='REGEX' && theField.value !='' && hasValidationRegex(theField))
-					{	
+					{
 						var re = new RegExp(getValidationRegex(theField));
 						if(!theField.value.match(re))
 						{
@@ -471,31 +471,31 @@ function validateForm(theForm) {
 							startAt=f;
 							firstErrorNode="input";
 							}
-						
+
 							errors += getValidationMessage(theField, ' is not valid.' );
-						}					
+						}
 					}
 				}
 		}
-		
-		var frmSelects = theForm.getElementsByTagName("select");	
+
+		var frmSelects = theForm.getElementsByTagName("select");
 		for (f=0; f < frmSelects.length; f++) {
 				theField=frmSelects[f];
 				validationType=getValidationType(theField);
 				if(theField.style.display=="" && getValidationIsRequired(theField) && theField.options[theField.selectedIndex].value == "")
-				{	
+				{
 					if (!started) {
 					started=true;
 					startAt=f;
 					firstErrorNode="select";
 					}
-					
-					errors += getValidationMessage(theField, ' is required.' );	
-				}	
+
+					errors += getValidationMessage(theField, ' is required.' );
+				}
 		}
-		
+
 		if(errors != ""){
-			
+
 			if(firstErrorNode=="input"){
 				frmInputs[startAt].focus();
 			}
@@ -505,7 +505,7 @@ function validateForm(theForm) {
 			else if (firstErrorNode=="select"){
 				frmSelects[startAt].focus();
 			}
-			
+
 			jQuery("#alertDialogMessage").html(errors);
 			jQuery("#alertDialog").dialog({
 				resizable: false,
@@ -526,7 +526,7 @@ function validateForm(theForm) {
 					}
 				}
 			});
-			
+
 			return false;
 		}
 		else
@@ -541,16 +541,16 @@ function submitForm(frm,action,msg){
 	var message=msg;
 	var currentFrm=frm;
 	if(validateForm(frm)){
-		
+
 		if(typeof(action) != 'undefined' && action!='delete'){
-			var frmInputs = frm.getElementsByTagName("input");	
+			var frmInputs = frm.getElementsByTagName("input");
 			for (f=0; f < frmInputs.length; f++){
 				if(frmInputs[f].getAttribute('name')=='action'){
 				frmInputs[f].setAttribute('value',action);
 				}
 			}
-			
-		
+
+
 		} else if (action=='delete'){
 			jQuery("#alertDialogMessage").html(message);
 			jQuery("#alertDialog").dialog({
@@ -559,7 +559,7 @@ function submitForm(frm,action,msg){
 					buttons: {
 						'YES': function() {
 							jQuery(this).dialog('close');
-							var frmInputs = currentFrm.getElementsByTagName("input");	
+							var frmInputs = currentFrm.getElementsByTagName("input");
 							for (f=0; f < frmInputs.length; f++){
 								if(frmInputs[f].getAttribute('name')=='action'){
 								frmInputs[f].setAttribute('value',action);
@@ -572,7 +572,7 @@ function submitForm(frm,action,msg){
 						}
 					}
 				});
-			
+
 			return false;
 		}
 
@@ -584,19 +584,19 @@ function submitForm(frm,action,msg){
 
 		}
 		}
-		
+
 		jQuery('#actionIndicator').each(function(){
-			jQuery(this).show();	
+			jQuery(this).show();
 			});
 
 		jQuery('#actionButtons').each(function(){
-			jQuery(this).hide();	
+			jQuery(this).hide();
 			});
-		
+
 		frm.submit();
 		formSubmitted = true;
-	
-	}	
+
+	}
 	return false;
 }
 
@@ -615,7 +615,7 @@ sfHover = function() {
 	}
 }
 if (window.attachEvent) window.attachEvent("onload", sfHover);
-	
+
 function checkKeyPressed(evt, form)
 {
   evt = (evt) ? evt : (window.event) ? event : null;
@@ -625,17 +625,17 @@ function checkKeyPressed(evt, form)
                    ((evt.keyCode) ? evt.keyCode :
                    ((evt.which) ? evt.which : 0));
     if (charCode == 13) document.getElementById(form).submit();
-  }    
+  }
 }
 
 
 function preview(url,targetParams){
-	
+
 	if(targetParams==''){
-	newWindow=window.open(url,'previewWin'); 
+	newWindow=window.open(url,'previewWin');
 	}
 	else{
-		newWindow=window.open(url,'previewWin',targetParams); 
+		newWindow=window.open(url,'previewWin',targetParams);
 	}
 	newWindow.focus();
 	void(0);
@@ -681,18 +681,18 @@ function setHTMLEditors() {
 				oFCKeditor.ReplaceTextarea();
 				editors.push(oFCKeditor);
 			} else {
-				
+
 				var instance=CKEDITOR.instances[allPageTags[i].id];
 				if (instance) {
 					CKEDITOR.remove(instance);
-				} 
-				
+				}
+
 				if(jQuery(document.getElementById(allPageTags[i].id)).val() == ''){
 					jQuery(document.getElementById(allPageTags[i].id)).val("<p></p>")
 				}
-				
+
 				jQuery(document.getElementById(allPageTags[i].id)).ckeditor( { toolbar: 'Default',customConfig : 'config.js.cfm' },htmlEditorOnComplete);
-				
+
 			}
 		}
 	}
@@ -700,8 +700,8 @@ function setHTMLEditors() {
 
 var HTMLEditorLoadCount=0;
 
-function htmlEditorOnComplete( editorInstance ) { 	
-	
+function htmlEditorOnComplete( editorInstance ) {
+
 	if( htmlEditorType=='fckeditor'){
 		editorInstance.ResetIsDirty();
 		var totalIntances=FCKeditorAPI.Instances;
@@ -709,32 +709,32 @@ function htmlEditorOnComplete( editorInstance ) {
 		var instance=jQuery(editorInstance).ckeditorGet();
 		instance.resetDirty();
 		var totalIntances=CKEDITOR.instances;
-		CKFinder.setupCKEditor( 
-			instance, 
-			{ basePath : context + '/tasks/widgets/ckfinder/', 
+		CKFinder.setupCKEditor(
+			instance,
+			{ basePath : context + '/tasks/widgets/ckfinder/',
 			rememberLastFolder : false
 			} ) ;
 	}
-	
+
 	HTMLEditorLoadCount++;
-    
+
     var count = 0;
 
     for (k in totalIntances){ count++ }
-  
+
     try{
 	    if (HTMLEditorLoadCount >= count ) {
-	    	document.getElementById("actionButtons").style.display="block";	
+	    	document.getElementById("actionButtons").style.display="block";
 	    } else {
 	    	document.getElementById("actionButtons").style.display="none";
 	   	}
     } catch(err) {}
-   
- 
+
+
 }
 
 function setDatePickers(target,locale,delim){
-	
+
 	if(jQuery.datepicker.regional[locale]==undefined){
 		var _locale=locale.substring(0, 2);
 	}else{
@@ -743,7 +743,7 @@ function setDatePickers(target,locale,delim){
 
 	if(jQuery.datepicker.regional[_locale]!=undefined){
 		jQuery(target).each(
-			function(index) {			
+			function(index) {
 				jQuery(this).datepicker(jQuery.datepicker.regional[_locale])
 				.datepicker( "option", "changeYear", true )
 				.datepicker( "option", "changeMonth", true );
@@ -762,7 +762,7 @@ function setDatePickers(target,locale,delim){
 
 function setTabs(target,activetab){
 	jQuery(target).each(
-		function(index) {			
+		function(index) {
 			jQuery(this).tabs().fadeIn()
 			.find(".ui-corner-all")
 			.each(
@@ -772,27 +772,27 @@ function setTabs(target,activetab){
 			)
 		}
 	);
-	
+
 	jQuery(".ui-tabs .ui-tabs .ui-tabs-nav li").each(
-			function(index) {			
+			function(index) {
 				jQuery(this).removeClass("ui-corner-top").addClass("ui-corner-all");
 			}
 		);
-	
+
 	jQuery(".initActiveTab").each(
-			function(index) {			
+			function(index) {
 				jQuery(this).tabs("select",activetab);
 			}
 		);
-	
+
 	jQuery(".tabPreloader").each(
-			function(index) {			
+			function(index) {
 				jQuery(this).hide();
 			}
 		);
-	
+
 	jQuery(".tooltip").each(
-			function(index) {			
+			function(index) {
 				jQuery(this).attr("onclick","return false;");
 			}
 		);
@@ -802,21 +802,21 @@ function setAccordions(target,activepanel){
 	jQuery(target).each(
 			function(index) {
 				if(activepanel != null){
-					jQuery(this).accordion({ active: activepanel })	
+					jQuery(this).accordion({ active: activepanel })
 				} else {
 					jQuery(this).accordion();
 				}
 			}
 	);
-}	
+}
 
 function setCheckboxTrees(){
 	jQuery('.checkboxTree').each(
 		function(){
 			jQuery(this).collapsibleCheckboxTree({
-			checkParents : false, 
-			checkChildren : false, 
-			uncheckChildren : true, 
+			checkParents : false,
+			checkChildren : false,
+			uncheckChildren : true,
 			initialState : 'default'
 			}
 		);
@@ -838,11 +838,11 @@ jQuery("#alertDialog").dialog({
 
 return false;
 }
- 
+
 function confirmDialog(message,yesAction,noAction){
 	_yesAction=yesAction;
 	_noAction=noAction;
-	
+
 	jQuery("#alertDialogMessage").html(message);
 	jQuery("#alertDialog").dialog({
 			resizable: false,
@@ -856,7 +856,7 @@ function confirmDialog(message,yesAction,noAction){
 					} else {
 						location.href=_yesAction;
 					}
-					
+
 					},
 				'NO': function() {
 					jQuery(this).dialog('close');
@@ -872,7 +872,7 @@ function confirmDialog(message,yesAction,noAction){
 			}
 		});
 
-	return false;	
+	return false;
 }
 
 var start=new Date();
@@ -882,21 +882,21 @@ function CountDown(){
 	var now=new Date();
 	now=Date.parse(now)/1000;
 	var x=parseInt(sessionTimeout-(now-start),10);
-	var hours = Math.floor(x/3600); 
-	var minutes = Math.floor((x-(hours*3600))/60); 
+	var hours = Math.floor(x/3600);
+	var minutes = Math.floor((x-(hours*3600))/60);
 	var seconds = x-((hours*3600)+(minutes*60));
 	minutes=(minutes <= 9)?'0' + minutes:minutes;
 	seconds=(seconds <= 9)?'0' + seconds:seconds;
-	
+
 	if(document.getElementById('clock').innerHTML != undefined ){document.getElementById('clock').innerHTML = hours  + ':' + minutes + ':' + seconds ;}
 
 	if(x>0){
 		timerID=setTimeout("CountDown()", 100)
 	}else{
-	
+
 		if(document.getElementById('clock').innerHTML != undefined ){document.getElementById('clock').innerHTML = 0  + ':' + 0 + ':' + 0 ;}
 		//location.href=context + "/admin/index.cfm?fuseaction=cLogin.logout"
-		
+
 	}
 }
 
@@ -940,7 +940,7 @@ function getDialogPosition(){
 			var editorTop = jQuery("#frontEndToolsModalBody", window.parent.document).position().top;
 			var t = Math.floor((windowHeight - dialogHeight) / 2) + scrollTop - editorTop;
 			return ["center", t];
-		} 
+		}
 		catch(err){
 			return ["center", 0];
 		}

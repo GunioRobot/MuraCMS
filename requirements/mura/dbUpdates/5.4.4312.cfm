@@ -4,7 +4,7 @@ select siteID from tsettings where siteID not in (select siteID from tsystemobje
 
 <cfloop query="rscheck">
 	<cfquery  datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
-		INSERT INTO tsystemobjects (Object,SiteID,Name,OrderNo) 
+		INSERT INTO tsystemobjects (Object,SiteID,Name,OrderNo)
 		VALUES (
 		'multilevel_nav',
 		<cfqueryparam cfsqltype="cf_sql_varchar" value="#rscheck.siteID#">,

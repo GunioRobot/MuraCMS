@@ -13,29 +13,29 @@ var currentChangesetID="";
 
 var publishitemfromchangeset="#JSStringFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.publishitemfromchangeset'))#"
 function removeChangesetPrompt(changesetID){
-	
+
 	if(currentChangesetID!="" && changesetID!=currentChangesetID){
 		jQuery("##removeChangesetContainer").show();
 	} else {
 		jQuery("##removeChangesetContainer").hide();
 		document.getElementById("_removePreviousChangeset").checked=false;
 	}
-	
+
 	currentChangesetSelection=changesetID;
 }
 
 function saveToChangeset(changesetid,siteid,keywords){
-	
+
 	var url = 'index.cfm';
 	var pars = 'fuseaction=cArch.availablechangesets&compactDisplay=true&siteid=' + siteid  + '&keywords=' + keywords + '&changesetid=' + changesetid +'&cacheid=' + Math.random();
 	var d = jQuery('##changesetContainer');
 	d.html('<img class="loadProgress" src="images/progress_bar.gif">');
-	jQuery.get(url + "?" + pars, 
+	jQuery.get(url + "?" + pars,
 			function(data) {
 			jQuery('##changesetContainer').html(data);
 			stripe('stripe');
 			});
-		
+
 		jQuery("##changesetContainer").dialog({
 			resizable: false,
 			modal: true,
@@ -51,14 +51,14 @@ function saveToChangeset(changesetid,siteid,keywords){
 					} else {
 						saveConfiguratorToChangeset(currentChangesetSelection,document.getElementById("_removePreviousChangeset").checked);
 					}
-						
+
 						return false;
 					}
 			}
 		});
-	
-	
-	return false;	
+
+
+	return false;
 }
 </script>
 <div style="display:none" title="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.assigntochangeset"))#" id="changesetContainer">

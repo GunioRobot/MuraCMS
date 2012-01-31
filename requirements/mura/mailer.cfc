@@ -12,17 +12,17 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Mura CMS. If not, see <http://www.gnu.org/licenses/>.
 
-Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on 
+Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on
 Mura CMS. Thus, the terms and conditions of the GNU General Public License version 2 ("GPL") cover the entire combined work.
 
 However, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with programs
 or libraries that are released under the GNU Lesser General Public License version 2.1.
 
-In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with 
-independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without 
-Mura CMS under the license of your choice, provided that you follow these specific guidelines: 
+In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with
+independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without
+Mura CMS under the license of your choice, provided that you follow these specific guidelines:
 
-Your custom code 
+Your custom code
 
 • Must not alter any default objects in the Mura CMS database and
 • May not alter the default display of the Mura CMS logo within Mura CMS and
@@ -36,12 +36,12 @@ Your custom code
  /index.cfm
  /MuraProxy.cfc
 
-You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work 
-under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL 
+You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work
+under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL
 requires distribution of source code.
 
-For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your 
-modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
+For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your
+modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 <cfcomponent extends="mura.cfobject" output="false">
@@ -54,7 +54,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset variables.settingsManager=arguments.settingsManager />
 		<cfset variables.contentRenderer=arguments.contentRenderer />
 		<cfset variables.sendFromMailServerUserName=variables.configBean.getSendFromMailServerUserName()>
-		
+
 <cfreturn this />
 </cffunction>
 
@@ -107,7 +107,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset mailServerTLS=variables.configBean.getMailserverTLS()/>
 		<cfset mailServerSSL=variables.configBean.getMailserverSSL()/>
 	</cfif>
-	
+
 	<cfif not variables.sendFromMailServerUserName>
 		<cfif len(arguments.siteID)>
 			<cfset fromEmail=variables.settingsManager.getSite(arguments.siteid).getContact() />
@@ -115,15 +115,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset fromEmail=variables.configBean.getAdminEmail() />
 		</cfif>
 	</cfif>
-		
+
 	<cfif not len(fromEmail)>
 		<cfset fromEmail=MailServerUsernameEmail />
 	</cfif>
 
 <cfif isStruct(arguments.args) and len(filteredSendto)>
-	
+
 	<cfset fields=arguments.args>
-	
+
 	<cfif not structKeyExists(fields,"fieldnames")>
 	<cfset fields.fieldnames=""/>
 	<cfloop collection="#fields#" item="fn">
@@ -136,24 +136,24 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset tmt_cr = Chr(13) & Chr(10)>
 	<cfset tmt_mail_head = "This form was sent at: #LSDateFormat(Now())# #LSTimeFormat(Now(),'short')# #tmt_cr#">
 	<cfloop index="form_element" list="#fields.fieldnames#">
-	
-		<cfif form_element neq 'siteid' 
-				and right(form_element,2) neq ".X" 
-				and right(form_element,2) neq ".Y" 
-				and form_element neq 'doaction' 
-				and form_element neq 'userid' 
-				and  form_element neq 'password2' 
-				and form_element neq 'submit' 
+
+		<cfif form_element neq 'siteid'
+				and right(form_element,2) neq ".X"
+				and right(form_element,2) neq ".Y"
+				and form_element neq 'doaction'
+				and form_element neq 'userid'
+				and  form_element neq 'password2'
+				and form_element neq 'submit'
 				and form_element neq 'sendto'
 				and form_element neq 'HKEY'
 				and form_element neq 'UKEY'
 				and structkeyexists(fields, form_element)>
-			
+
 			<cfif findNoCase('attachment',form_element) and isValid("UUID",fields['#form_element#'])>
-				
+
 				<cfset redirectID=createUUID() />
 				<cfset reviewLink='http://#application.settingsManager.getSite(arguments.siteID).getDomain()##variables.configBean.getServerPort()##application.configBean.getContext()#/tasks/render/file/index.cfm?fileID=#fields["#form_element#"]#&method=attachment' />
-	
+
 				<cfquery datasource="#variables.configBean.getDatasource()#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 				insert into tredirects (redirectID,URL,created) values(
 				<cfqueryparam cfsqltype="cf_sql_varchar" value="#redirectID#" >,
@@ -161,31 +161,31 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#">
 				)
 				</cfquery>
-				
+
 				<cfset tmt_mail_body = tmt_mail_body & form_element & ": " & "http://#application.settingsManager.getSite(arguments.siteID).getDomain()##variables.configBean.getServerPort()##application.configBean.getContext()##variables.contentRenderer.getURLStem(arguments.siteID,redirectID)#" & tmt_cr>
-				
+
 			<cfelse>
 				<cfset tmt_mail_body = tmt_mail_body & form_element & ": " & fields['#form_element#'] & tmt_cr>
 			</cfif>
-		
+
 		</cfif>
-	
+
 	</cfloop>
 <cftry>
 <cfif useDefaultSMTPServer>
-<cfmail to="#filteredSendTo#" 
+<cfmail to="#filteredSendTo#"
 		from='"#arguments.from#" <#fromEmail#>'
-		subject="#arguments.subject#" 
+		subject="#arguments.subject#"
 		replyto="#arguments.replyto#"
 		bcc="#arguments.bcc#">#tmt_mail_head#
 #trim(tmt_mail_body)#
 </cfmail>
 <cfelse>
-<cfmail to="#filteredSendTo#" 
+<cfmail to="#filteredSendTo#"
 		from='"#arguments.from#" <#fromEmail#>'
-		subject="#arguments.subject#" 
-		server="#MailServerIp#" 
-		username="#MailServerUsername#" 
+		subject="#arguments.subject#"
+		server="#MailServerIp#"
+		username="#MailServerUsername#"
 		password="#MailServerPassword#"
 		port="#mailserverPort#"
 		useTLS="#mailserverTLS#"
@@ -197,11 +197,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cfif>
 <cfcatch>
 <cfif len(arguments.siteid)>
-<cfthrow type="Invalid Mail Settings" 
+<cfthrow type="Invalid Mail Settings"
             message="The current mail server settings for the site '#arguments.siteID#' are not valid.">
-			
+
 <cfelse>
-<cfthrow type="Invalid Mail Settings" 
+<cfthrow type="Invalid Mail Settings"
             message="The current mail server settings in the settings.ini are not valid.">
 </cfif>
 </cfcatch>
@@ -252,7 +252,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset mailServerTLS=variables.configBean.getMailserverTLS()/>
 		<cfset mailServerSSL=variables.configBean.getMailserverSSL()/>
 	</cfif>
-		
+
 	<cfif not variables.sendFromMailServerUserName>
 		<cfif len(arguments.siteID)>
 			<cfset fromEmail=variables.settingsManager.getSite(arguments.siteid).getContact() />
@@ -260,30 +260,30 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset fromEmail=variables.configBean.getAdminEmail() />
 		</cfif>
 	</cfif>
-		
+
 	<cfif not len(fromEmail)>
 		<cfset fromEmail=MailServerUsernameEmail />
 		<cfif isValidEmailFormat(mailServerUsernameEmail)>
 			<cfset mailServerFailto=mailServerUsernameEmail />
 		</cfif>
 	</cfif>
-	
+
 	<cftry>
 	<cfif useDefaultSMTPServer>
-		<cfmail to="#filteredSendTo#" 
+		<cfmail to="#filteredSendTo#"
 				from='"#arguments.from#" <#fromEmail#>'
-				subject="#arguments.subject#" 
+				subject="#arguments.subject#"
 				replyto="#arguments.replyto#"
 				failto="#mailServerFailto#"
 				type="text"
 				mailerid="#arguments.mailerID#"
 				bcc="#arguments.bcc#">#trim(arguments.text)#</cfmail>
 	<cfelse>
-		<cfmail to="#filteredSendTo#" 
+		<cfmail to="#filteredSendTo#"
 				from='"#arguments.from#" <#fromEmail#>'
-				subject="#arguments.subject#" 
-				server="#MailServerIp#" 
-				username="#MailServerUsername#" 
+				subject="#arguments.subject#"
+				server="#MailServerIp#"
+				username="#MailServerUsername#"
 				password="#MailServerPassword#"
 				port="#mailserverPort#"
 				useTLS="#mailserverTLS#"
@@ -296,11 +296,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 	<cfcatch>
 		<cfif len(arguments.siteid)>
-			<cfthrow type="Invalid Mail Settings" 
+			<cfthrow type="Invalid Mail Settings"
 	            message="The current mail server settings for the site '#arguments.siteID#' are not valid.">
-				
+
 		<cfelse>
-			<cfthrow type="Invalid Mail Settings" 
+			<cfthrow type="Invalid Mail Settings"
 	            message="The current mail server settings in the settings.ini are not valid.">
 		</cfif>
 	</cfcatch>
@@ -351,7 +351,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset mailServerTLS=variables.configBean.getMailserverTLS()/>
 		<cfset mailServerSSL=variables.configBean.getMailserverSSL()/>
 	</cfif>
-	
+
 	<cfif not variables.sendFromMailServerUserName>
 		<cfif len(arguments.siteID)>
 			<cfset fromEmail=variables.settingsManager.getSite(arguments.siteid).getContact() />
@@ -359,7 +359,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset fromEmail=variables.configBean.getAdminEmail() />
 		</cfif>
 	</cfif>
-		
+
 	<cfif not len(fromEmail)>
 		<cfset fromEmail=MailServerUsernameEmail />
 		<cfif isValidEmailFormat(mailServerUsernameEmail)>
@@ -369,20 +369,20 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<cftry>
 	<cfif useDefaultSMTPServer>
-		<cfmail to="#filteredSendTo#" 
+		<cfmail to="#filteredSendTo#"
 				from='"#arguments.from#" <#fromEmail#>'
-				subject="#arguments.subject#" 
+				subject="#arguments.subject#"
 				replyto="#arguments.replyto#"
 				failto="#mailServerFailto#"
 				type="html"
 				mailerid="#arguments.mailerID#"
 				bcc="#arguments.bcc#">#trim(arguments.html)#</cfmail>
 	<cfelse>
-		<cfmail to="#filteredSendTo#" 
+		<cfmail to="#filteredSendTo#"
 				from='"#arguments.from#" <#fromEmail#>'
-				subject="#arguments.subject#" 
-				server="#MailServerIp#" 
-				username="#MailServerUsername#" 
+				subject="#arguments.subject#"
+				server="#MailServerIp#"
+				username="#MailServerUsername#"
 				password="#MailServerPassword#"
 				port="#mailserverPort#"
 				useTLS="#mailserverTLS#"
@@ -395,11 +395,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 	<cfcatch>
 		<cfif len(arguments.siteid)>
-			<cfthrow type="Invalid Mail Settings" 
+			<cfthrow type="Invalid Mail Settings"
 	            message="The current mail server settings for the site '#arguments.siteID#' are not valid.">
-				
+
 		<cfelse>
-			<cfthrow type="Invalid Mail Settings" 
+			<cfthrow type="Invalid Mail Settings"
 	            message="The current mail server settings in the settings.ini are not valid.">
 		</cfif>
 	</cfcatch>
@@ -451,7 +451,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset mailServerTLS=variables.configBean.getMailserverTLS()/>
 		<cfset mailServerSSL=variables.configBean.getMailserverSSL()/>
 	</cfif>
-	
+
 	<cfif not variables.sendFromMailServerUserName>
 		<cfif len(arguments.siteID)>
 			<cfset fromEmail=variables.settingsManager.getSite(arguments.siteid).getContact() />
@@ -459,7 +459,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset fromEmail=variables.configBean.getAdminEmail() />
 		</cfif>
 	</cfif>
-		
+
 	<cfif not len(fromEmail)>
 		<cfset fromEmail=MailServerUsernameEmail />
 		<cfif isValidEmailFormat(mailServerUsernameEmail)>
@@ -469,9 +469,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<cftry>
 	<cfif useDefaultSMTPServer>
-		<cfmail to="#filteredSendTo#" 
+		<cfmail to="#filteredSendTo#"
 				from='"#arguments.from#" <#fromEmail#>'
-				subject="#arguments.subject#" 
+				subject="#arguments.subject#"
 				replyto="#arguments.replyto#"
 				failto="#mailServerFailto#"
 				type="html"
@@ -481,11 +481,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfmailpart type="text">#trim(arguments.text)#</cfmailpart>
 				</cfmail>
 	<cfelse>
-		<cfmail to="#filteredSendTo#" 
+		<cfmail to="#filteredSendTo#"
 				from='"#arguments.from#" <#fromEmail#>'
-				subject="#arguments.subject#" 
-				server="#MailServerIp#" 
-				username="#MailServerUsername#" 
+				subject="#arguments.subject#"
+				server="#MailServerIp#"
+				username="#MailServerUsername#"
 				password="#MailServerPassword#"
 				port="#mailserverPort#"
 				useTLS="#mailserverTLS#"
@@ -501,11 +501,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 	<cfcatch>
 		<cfif len(arguments.siteid)>
-			<cfthrow type="Invalid Mail Settings" 
+			<cfthrow type="Invalid Mail Settings"
 	            message="The current mail server settings for the site '#arguments.siteID#' are not valid.">
-				
+
 		<cfelse>
-			<cfthrow type="Invalid Mail Settings" 
+			<cfthrow type="Invalid Mail Settings"
 	            message="The current mail server settings in the settings.ini are not valid.">
 		</cfif>
 	</cfcatch>
@@ -521,10 +521,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="filterEmails" output="false">
 	<cfargument name="emails">
-	
+
 	<cfset var returnList="">
 	<cfset var i="">
-	
+
 	<cfif len(arguments.emails)>
 		<cfloop list="#arguments.emails#" index="i">
 			<cfif isValidEmailFormat(i)>
@@ -532,7 +532,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfif>
 		</cfloop>
 	</cfif>
-	
+
 	<cfreturn returnList>
 </cffunction>
 

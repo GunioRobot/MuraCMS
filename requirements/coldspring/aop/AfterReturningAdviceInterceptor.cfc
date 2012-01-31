@@ -1,14 +1,14 @@
 <!---
-	  
+
   Copyright (c) 2005, Chris Scott, David Ross, Kurt Wiersma, Sean Corfield
   All rights reserved.
-	
+
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
   You may obtain a copy of the License at
-  
+
        http://www.apache.org/licenses/LICENSE-2.0
-  
+
   Unless required by applicable law or agreed to in writing, software
   distributed under the License is distributed on an "AS IS" BASIS,
   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -29,43 +29,43 @@
  Revision 1.3  2005/10/09 22:45:24  scottc
  Forgot to add Dave to AOP license
 
-	
----> 
- 
-<cfcomponent name="AfterReturningAdviceInterceptor" 
-			displayname="AfterReturningAdviceInterceptor" 
-			extends="coldspring.aop.MethodInterceptor" 
-			hint="Interceptor for handling After Advice" 
+
+--->
+
+<cfcomponent name="AfterReturningAdviceInterceptor"
+			displayname="AfterReturningAdviceInterceptor"
+			extends="coldspring.aop.MethodInterceptor"
+			hint="Interceptor for handling After Advice"
 			output="false">
-			
+
 	<cfset variables.adviceType = 'afterReturningInterceptor' />
-			
+
 	<cffunction name="init" access="public" returntype="coldspring.aop.MethodInterceptor" output="false">
 		<cfargument name="afterReturningAdvice" type="coldspring.aop.AfterReturningAdvice" required="true" />
 		<cfset variables.afterReturningAdvice = arguments.afterReturningAdvice />
 		<cfreturn this />
 	</cffunction>
-	
+
 	<cffunction name="invokeMethod" access="public" returntype="any">
 		<cfargument name="methodInvocation" type="coldspring.aop.MethodInvocation" required="true" />
 		<cfset var args = StructNew() />
 		<cfset var rtn = arguments.methodInvocation.proceed()>
-		
+
 		<cfset args.method = arguments.methodInvocation.getMethod() />
 		<cfset args.args = arguments.methodInvocation.getArguments() />
 		<cfset args.target = arguments.methodInvocation.getTarget() />
-		
+
 		<cfif isDefined('rtn')>
 			<cfset args.returnVal = rtn />
 		</cfif>
-		
+
 		<cfset variables.afterReturningAdvice.afterReturning(argumentCollection=args) />
-		
+
 		<cfif isDefined('rtn')>
 			<cfreturn rtn />
 		</cfif>
-		
-		<!--- 
+
+		<!---
 		<cfif isDefined('rtn')>
 			<cfreturn variables.afterReturningAdvice.afterReturning(rtn,
 				   				arguments.methodInvocation.getMethod(),
@@ -80,5 +80,5 @@
 		--->
 
 	</cffunction>
-	
+
 </cfcomponent>

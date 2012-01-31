@@ -19,11 +19,11 @@
 
 <cffunction name="getQuery" output="false" returntype="query">
 	<cfset var rs="">
-	
+
 	<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
 	select * from tuserstrikes where username=<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.instance.username#">
 	</cfquery>
-	
+
 	<cfif not rs.recordcount>
 		<cfquery name="rs" datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 		insert into tuserstrikes (username,strikes,lastAttempt) values (
@@ -32,17 +32,17 @@
 		<cfqueryparam cfsqltype="cf_sql_timestamp" value="#dateAdd("n",-1,now())#">
 		)
 		</cfquery>
-		
+
 		<cfreturn getQuery()>
 	<cfelse>
 		<cfreturn rs>
 	</cfif>
-	
+
 </cffunction>
 
 <cffunction name="load" output="false" returntype="void">
 	<cfset var rs=getQuery()>
-	
+
 	<cfif isDate(rs.lastAttempt) and rs.lastAttempt gte dateAdd("n",-variables.blockedDuration,now())>
 		<cfset setLastAttempt(rs.lastAttempt)>
 		<cfset setStrikes(rs.strikes)>
@@ -50,7 +50,7 @@
 		<cfset setLastAttempt(dateAdd("n",-1,now()))>
 		<cfset setStrikes(0)>
 		<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
-		update tuserstrikes set 
+		update tuserstrikes set
 		strikes=0,
 		lastAttempt=<cfqueryparam cfsqltype="cf_sql_timestamp" value="#getLastAttempt()#">
 		where username=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getUsername()#">
@@ -89,12 +89,12 @@
 
 <cffunction name="addStrike" output="false" returntype="void">
 	<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
-		update tuserstrikes set 
+		update tuserstrikes set
 		strikes=strikes + 1,
 		lastAttempt=<cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#">
 		where username=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getUsername()#">
 	</cfquery>
-	
+
 	<cfset load()>
 </cffunction>
 
@@ -112,12 +112,12 @@
 
 <cffunction name="clear" output="false" returntype="void">
 	<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
-		update tuserstrikes set 
+		update tuserstrikes set
 		strikes=0,
 		lastAttempt=<cfqueryparam cfsqltype="cf_sql_timestamp" value="#dateAdd("n",-1,now())#">
 		where username=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getUsername()#">
 	</cfquery>
-	
+
 	<cfset load()>
 </cffunction>
 </cfcomponent>

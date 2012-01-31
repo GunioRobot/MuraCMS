@@ -17,7 +17,7 @@ select domainAlias from tsettings  where 0=1
 	<cfquery name="MSSQLversion" datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 		EXEC sp_MSgetversion
 	</cfquery>
-	
+
 	<cfset MSSQLversion=left(MSSQLversion.CHARACTER_VALUE,1)>
 
 	<cfif MSSQLversion neq 8>
@@ -25,7 +25,7 @@ select domainAlias from tsettings  where 0=1
 	<cfelse>
 		<cfset MSSQLlob="[ntext]">
 	</cfif>
-	
+
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 	ALTER TABLE tsettings ADD domainAlias #MSSQLlob# NULL
 	</cfquery>

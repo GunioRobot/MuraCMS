@@ -12,17 +12,17 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Mura CMS. If not, see <http://www.gnu.org/licenses/>.
 
-Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on 
+Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on
 Mura CMS. Thus, the terms and conditions of the GNU General Public License version 2 ("GPL") cover the entire combined work.
 
 However, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with programs
 or libraries that are released under the GNU Lesser General Public License version 2.1.
 
-In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with 
-independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without 
-Mura CMS under the license of your choice, provided that you follow these specific guidelines: 
+In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with
+independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without
+Mura CMS under the license of your choice, provided that you follow these specific guidelines:
 
-Your custom code 
+Your custom code
 
 • Must not alter any default objects in the Mura CMS database and
 • May not alter the default display of the Mura CMS logo within Mura CMS and
@@ -36,12 +36,12 @@ Your custom code
  /index.cfm
  /MuraProxy.cfc
 
-You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work 
-under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL 
+You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work
+under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL
 requires distribution of source code.
 
-For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your 
-modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
+For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your
+modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 
@@ -74,37 +74,37 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="startRow" type="numeric" />
 	<cfargument name="pageBuffer" type="numeric" default="5" />
 	<cfset var nextn=structnew() />
-	
+
 	<cfset nextn.TotalRecords=data.RecordCount>
-	<cfset nextn.RecordsPerPage=arguments.RecordsPerPage> 
+	<cfset nextn.RecordsPerPage=arguments.RecordsPerPage>
 	<cfset nextn.NumberOfPages=Ceiling(nextn.TotalRecords/nextn.RecordsPerPage)>
-	<cfset nextn.CurrentPageNumber=Ceiling(arguments.StartRow/nextn.RecordsPerPage)> 
-	
+	<cfset nextn.CurrentPageNumber=Ceiling(arguments.StartRow/nextn.RecordsPerPage)>
+
 	<cfif nextn.CurrentPageNumber gt arguments.pageBuffer>
 		<cfset nextn.firstPage= nextn.CurrentPageNumber - arguments.pageBuffer />
 	<cfelse>
 		<cfset nextn.firstPage= 1 />
 	</cfif>
-	
+
 	<cfset nextN.lastPage =nextn.firstPage + (2 * arguments.pageBuffer) + 1/>
 	<cfif nextn.NumberOfPages lt nextN.lastPage>
 		<cfset nextN.lastPage=nextn.NumberOfPages />
 	</cfif>
-	
+
 	<cfset nextn.next=nextn.CurrentPageNumber+1 />
 	<cfif nextn.next gt nextn.NumberOfPages>
 		<cfset nextn.next=1 />
 	</cfif>
 	<cfset nextn.next=(nextn.next*nextN.recordsperpage) - nextn.RecordsPerPage +1 />
-	
+
 	<cfset nextn.previous=nextn.CurrentPageNumber-1 />
 	<cfif nextn.previous lt 1>
 		<cfset nextn.previous=1 />
 	</cfif>
 	<cfset nextn.previous=(nextn.previous*nextN.recordsperpage) - nextn.RecordsPerPage +1 />
-	
-	<cfset nextn.through=iif(nextn.totalRecords lt nextn.next,nextn.totalrecords,nextn.next-1)> 
-	
+
+	<cfset nextn.through=iif(nextn.totalRecords lt nextn.next,nextn.totalrecords,nextn.next-1)>
+
 	<cfreturn nextn />
 </cffunction>
 
@@ -123,30 +123,30 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</CFLOOP>
 
 <cfreturn str />
-</cffunction> 
+</cffunction>
 
 <cffunction name="createRequiredSiteDirectories" returntype="void" output="false" access="public">
 <cfargument name="siteid" type="string" default="" required="yes"/>
-	
+
 	<!--- make sure that the file cache directory exists, for node level files --->
-	<cfif not directoryExists("#variables.configBean.getFileDir()##variables.configBean.getFileDelim()##arguments.siteid##variables.configBean.getFileDelim()#cache#variables.configBean.getFileDelim()#file")> 
-	
-		<cfif not directoryExists("#variables.configBean.getFileDir()##variables.configBean.getFileDelim()##arguments.siteid#")> 
+	<cfif not directoryExists("#variables.configBean.getFileDir()##variables.configBean.getFileDelim()##arguments.siteid##variables.configBean.getFileDelim()#cache#variables.configBean.getFileDelim()#file")>
+
+		<cfif not directoryExists("#variables.configBean.getFileDir()##variables.configBean.getFileDelim()##arguments.siteid#")>
 			<cfset variables.fileWriter.createDir(directory="#variables.configBean.getFileDir()##variables.configBean.getFileDelim()##arguments.siteid#")>
 		</cfif>
-	
-		<cfif not directoryExists("#variables.configBean.getFileDir()##variables.configBean.getFileDelim()##arguments.siteid##variables.configBean.getFileDelim()#cache")> 
+
+		<cfif not directoryExists("#variables.configBean.getFileDir()##variables.configBean.getFileDelim()##arguments.siteid##variables.configBean.getFileDelim()#cache")>
 			<cfset variables.fileWriter.createDir(directory="#variables.configBean.getFileDir()##variables.configBean.getFileDelim()##arguments.siteid##variables.configBean.getFileDelim()#cache")>
 		</cfif>
-		
+
 		<cfset variables.fileWriter.createDir(directory="#variables.configBean.getFileDir()##variables.configBean.getFileDelim()##arguments.siteid##variables.configBean.getFileDelim()#cache#variables.configBean.getFileDelim()#file")>
 	</cfif>
-	
+
 	<!--- make sure that the asset directory exists, for fckeditor assets --->
-	<cfif not directoryExists("#variables.configBean.getAssetDir()##variables.configBean.getFileDelim()##arguments.siteid##variables.configBean.getFileDelim()#assets")> 
+	<cfif not directoryExists("#variables.configBean.getAssetDir()##variables.configBean.getFileDelim()##arguments.siteid##variables.configBean.getFileDelim()#assets")>
 		<cfset variables.fileWriter.createDir(directory="#variables.configBean.getAssetDir()##variables.configBean.getFileDelim()##arguments.siteid##variables.configBean.getFileDelim()#assets")>
 	</cfif>
-	
+
 </cffunction>
 
 <cffunction name="logEvent" returntype="void" output="false" access="public">
@@ -165,7 +165,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cfset msg="#msg# By #user# from #request.remoteAddr#" />
 
-	<cflog 
+	<cflog
 		text="#msg#"
 		file="#arguments.file#"
 		type="#arguments.type#"
@@ -193,23 +193,23 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var i="">
 	<cfset var errors=arrayNew(1)>
 	<cfset var copyItem="">
-	
-	<cfif arguments.baseDir neq arguments.destDir>	
+
+	<cfif arguments.baseDir neq arguments.destDir>
 		<cfdirectory directory="#arguments.baseDir#" name="rsAll" action="list" recurse="true" />
 		<!--- filter out Subversion hidden folders --->
 		<cfquery name="rsAll" dbtype="query">
 			SELECT * FROM rsAll
-			WHERE 
+			WHERE
 			directory NOT LIKE '%#variables.configBean.getFileDelim()#.svn%'
 			and directory NOT LIKE '%#variables.configBean.getFileDelim()#.git%'
 			AND name not like '.%'
-			
+
 			<cfif len(arguments.excludeList)>
 				<cfloop list="#arguments.excludeList#" index="i">
 					and directory NOT LIKE '%#i#%'
 				</cfloop>
 			</cfif>
-			
+
 			<cfif isDate(arguments.sinceDate)>
 				and dateLastModified >= #createODBCDateTime(arguments.sinceDate)#
 			</cfif>
@@ -220,11 +220,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset variables.fileWriter.createDir(directory=copyItem)>
 			<cfcatch><!---<cfset arrayAppend(errors,copyItem)>---></cfcatch>
 		</cftry>
-		
+
 		<cfquery name="rs" dbtype="query">
 			select * from rsAll where lower(type) = 'dir'
 		</cfquery>
-		
+
 		<cfloop query="rs">
 			<cfset copyItem="#replace('#rs.directory##variables.configBean.getFileDelim()#',arguments.baseDir,arguments.destDir)##rs.name##variables.configBean.getFileDelim()#">
 			<cfif not DirectoryExists(copyItem)>
@@ -234,24 +234,24 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cftry>
 			</cfif>
 		</cfloop>
-		
+
 		<cfquery name="rs" dbtype="query">
 			select * from rsAll where lower(type) = 'file'
 		</cfquery>
-		
+
 		<cfloop query="rs">
 			<cfset copyItem="#replace('#rs.directory##variables.configBean.getFileDelim()#',arguments.baseDir,arguments.destDir)#">
 			<cfif fileExists(copyItem)>
 				<cffile action="delete" file="#copyItem#">
 			</cfif>
-			
+
 			<cftry>
 				<cfset variables.fileWriter.copyFile(source="#rs.directory##variables.configBean.getFileDelim()##rs.name#", destination=copyItem, sinceDate=arguments.sinceDate)>
 				<cfcatch><cfset arrayAppend(errors,copyItem)></cfcatch>
 			</cftry>
 		</cfloop>
 	</cfif>
-	
+
 	<cfreturn errors>
 </cffunction>
 
@@ -259,24 +259,24 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="baseDir" default="" required="yes">
 	<cfset var rs=""/>
 	<cfdirectory directory="#baseDir#" name="rs" action="delete" recurse="yes">
-	
+
 </cffunction>
 
 <cffunction name="arrayFind" returntype="numeric">
 	<cfargument name="array" required="yes" type="array">
 	<cfargument name="stringa" required="yes" type="string">
 		<cfset var i=0>
-		
+
 		<cfif stringa is "">
 		<cfreturn i>
 		</cfif>
-		
+
 		<cfloop index="i" from="1" to="#arrayLen(array)#">
 		<cfif array[i] is stringa>
 		<cfreturn i>
 		</cfif>
 		</cfloop>
-	
+
 	<cfreturn i>
 </cffunction>
 
@@ -302,7 +302,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		#createODBCDateTime(now())#
 		)
 	</cfquery>
-	
+
 	<cfreturn redirectID />
 </cffunction>
 
@@ -378,7 +378,7 @@ delim = Replace(delim, "_Separator_", "|", "ALL");
 
 list = rereplace(list, "(" & delim & ")(" & delim & ")", "\1" & nullString & "\2", "ALL");
 list = rereplace(list, "(" & delim & ")(" & delim & ")", "\1" & nullString & "\2", "ALL");
-    
+
 return list;
 </cfscript>
 </cffunction>
@@ -431,16 +431,16 @@ QuerySetCell( myQuery , colName[ c ] , myArray[ r ][colName[ c ] ] , r );
 
 <cffunction name="queryRowToStruct" access="public" output="false" returntype="struct">
 	<cfargument name="qry" type="query" required="true">
-		
+
 		<cfscript>
 			/**
 			 * Makes a row of a query into a structure.
-			 * 
-			 * @param query 	 The query to work with. 
-			 * @param row 	 Row number to check. Defaults to row 1. 
-			 * @return Returns a structure. 
-			 * @author Nathan Dintenfass (nathan@changemedia.com) 
-			 * @version 1, December 11, 2001 
+			 *
+			 * @param query 	 The query to work with.
+			 * @param row 	 Row number to check. Defaults to row 1.
+			 * @return Returns a structure.
+			 * @author Nathan Dintenfass (nathan@changemedia.com)
+			 * @version 1, December 11, 2001
 			 */
 			//by default, do this to the first row of the query
 			var row = 1;
@@ -456,7 +456,7 @@ QuerySetCell( myQuery , colName[ c ] , myArray[ r ][colName[ c ] ] , r );
 			//loop over the cols and build the struct from the query row
 			for(ii = 1; ii lte arraylen(cols); ii = ii + 1){
 				stReturn[cols[ii]] = qry[cols[ii]][row];
-			}		
+			}
 			//return the struct
 			return stReturn;
 		</cfscript>
@@ -467,7 +467,7 @@ Author: John Mason, mason@fusionlink.com
 Blog: www.codfusion.com--->
 <cffunction name="isValidCFVariableName" output="false" access="public" returntype="Any">
 		<cfargument name="text" required="true" type="String">
-		<cfset var local = StructNew()/>	
+		<cfset var local = StructNew()/>
 		<cfset local.result = true/>
 
 		<cfif len(arguments.text) eq 0>
@@ -483,7 +483,7 @@ Blog: www.codfusion.com--->
 		<cfreturn local.result/>
 	</cffunction>
 
-<!--- 
+<!---
 Blog:http://www.modernsignal.com/coldfusionhttponlycookie--->
 <cffunction name="SetCookie" hint="Replacement for cfcookie that handles httponly cookies" output="false" returntype="void">
     <cfargument name="name" type="string" required="true">
@@ -495,13 +495,13 @@ Blog:http://www.modernsignal.com/coldfusionhttponlycookie--->
     <cfargument name="httponly" type="boolean" default="false">
     <cfset var c = "">
     <cfset var expDate = "">
-	
+
 	<cfif server.coldfusion.productname eq "BlueDragon">
 		<cfset c = "#LCase(name)#=#value#;">
 	<cfelse>
 		<cfset c = "#UCase(name)#=#value#;">
 	</cfif>
-	
+
     <cfswitch expression="#Arguments.expires#">
         <cfcase value="">
         </cfcase>

@@ -53,7 +53,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfelseif field.fieldtype.fieldtype eq "checkbox">
 		<p>#arguments.field.label#
 	<cfelseif field.fieldtype.fieldtype eq "hidden">
-	
+
 	<cfelse>
 		<label for="#arguments.field.name#"<cfif arguments.field.isrequired> class="req"</cfif>>#arguments.field.label#<cfif arguments.field.isrequired> <ins>Required</ins></cfif>
 	</cfif>

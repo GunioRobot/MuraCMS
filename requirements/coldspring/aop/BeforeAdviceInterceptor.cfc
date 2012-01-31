@@ -1,14 +1,14 @@
 <!---
-	  
+
   Copyright (c) 2005, Chris Scott, David Ross, Kurt Wiersma, Sean Corfield
   All rights reserved.
-	
+
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
   You may obtain a copy of the License at
-  
+
        http://www.apache.org/licenses/LICENSE-2.0
-  
+
   Unless required by applicable law or agreed to in writing, software
   distributed under the License is distributed on an "AS IS" BASIS,
   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -29,33 +29,33 @@
  Revision 1.3  2005/10/09 22:45:24  scottc
  Forgot to add Dave to AOP license
 
-	
----> 
- 
-<cfcomponent name="BeforeAdviceInterceptor" 
-			displayname="BeforeAdviceInterceptor" 
-			extends="coldspring.aop.MethodInterceptor" 
-			hint="Interceptor for handling Before Advice" 
+
+--->
+
+<cfcomponent name="BeforeAdviceInterceptor"
+			displayname="BeforeAdviceInterceptor"
+			extends="coldspring.aop.MethodInterceptor"
+			hint="Interceptor for handling Before Advice"
 			output="false">
-			
+
 	<cfset variables.adviceType = 'beforeInterceptor' />
-			
+
 	<cffunction name="init" access="public" returntype="coldspring.aop.MethodInterceptor" output="false">
 		<cfargument name="beforeAdvice" type="coldspring.aop.BeforeAdvice" required="true" />
 		<cfset variables.beforeAdvice = arguments.beforeAdvice />
 		<cfreturn this />
 	</cffunction>
-	
+
 	<cffunction name="invokeMethod" access="public" returntype="any">
 		<cfargument name="methodInvocation" type="coldspring.aop.MethodInvocation" required="true" />
 		<cfset var args = StructNew() />
 		<cfset args.method = arguments.methodInvocation.getMethod() />
 		<cfset args.args = arguments.methodInvocation.getArguments() />
 		<cfset args.target = arguments.methodInvocation.getTarget() />
-		
+
 		<cfset variables.beforeAdvice.before(argumentCollection=args) />
-							
+
 		<cfreturn arguments.methodInvocation.proceed()>
 	</cffunction>
-	
+
 </cfcomponent>

@@ -13,7 +13,7 @@ You should have received a copy of the GNU General Public License
 along with Mura CMS. If not, see <http://www.gnu.org/licenses/>.
 
 Linking Mura CMS statically or dynamically with other modules constitutes
-the preparation of a derivative work based on Mura CMS. Thus, the terms and      
+the preparation of a derivative work based on Mura CMS. Thus, the terms and
 conditions of the GNU General Public License version 2 (GPL) cover the entire combined work.
 
 However, as a special exception, the copyright holders of Mura CMS grant you permission

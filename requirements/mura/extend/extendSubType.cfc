@@ -12,17 +12,17 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Mura CMS. If not, see <http://www.gnu.org/licenses/>.
 
-Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on 
+Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on
 Mura CMS. Thus, the terms and conditions of the GNU General Public License version 2 ("GPL") cover the entire combined work.
 
 However, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with programs
 or libraries that are released under the GNU Lesser General Public License version 2.1.
 
-In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with 
-independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without 
-Mura CMS under the license of your choice, provided that you follow these specific guidelines: 
+In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with
+independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without
+Mura CMS under the license of your choice, provided that you follow these specific guidelines:
 
-Your custom code 
+Your custom code
 
 • Must not alter any default objects in the Mura CMS database and
 • May not alter the default display of the Mura CMS logo within Mura CMS and
@@ -36,12 +36,12 @@ Your custom code
  /index.cfm
  /MuraProxy.cfc
 
-You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work 
-under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL 
+You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work
+under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL
 requires distribution of source code.
 
-For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your 
-modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
+For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your
+modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 <cfcomponent extends="mura.cfobject" output="false">
@@ -61,7 +61,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="init" returntype="any" output="false" access="public">
 	<cfargument name="configBean">
 	<cfargument name="contentRenderer">
-	
+
 	<cfset variables.configBean=arguments.configBean />
 	<cfset variables.contentRenderer=arguments.contentRenderer />
 	<cfset variables.classExtensionManager=variables.configBean.getClassExtensionManager()>
@@ -78,7 +78,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="load">
 	<cfset var rs=""/>
 		<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
-		select * from tclassextend 
+		select * from tclassextend
 		where subTypeID=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#getsubtypeID()#">
 		or (
 			siteid=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#getSiteID()#">
@@ -87,7 +87,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			)
 		order by type,subType
 		</cfquery>
-	
+
 	<cfif rs.recordcount>
 		<cfset set(rs) />
 	</cfif>
@@ -98,9 +98,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfargument name="data" type="any" required="true">
 
 		<cfset var prop=""/>
-		
+
 		<cfif isquery(arguments.data)>
-		
+
 			<cfset setSubTypeID(arguments.data.subTypeID) />
 			<cfset setSiteID(arguments.data.siteID) />
 			<cfset setType(arguments.data.type) />
@@ -109,21 +109,21 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset setDataTable(arguments.data.DataTable) />
 			<cfset setbaseKeyField(arguments.data.baseKeyField) />
 			<cfset setIsActive(arguments.data.isActive) />
-			
+
 		<cfelseif isStruct(arguments.data)>
-		
+
 			<cfloop collection="#arguments.data#" item="prop">
 				<cfif isdefined("variables.instance.#prop#")>
 					<cfset evaluate("set#prop#(arguments.data[prop])") />
 				</cfif>
 			</cfloop>
-			
+
 		</cfif>
-		
+
 		<cfset validate() />
 		<cfreturn this>
 </cffunction>
-  
+
 <cffunction name="validate" access="public" output="false">
 	<cfset variables.instance.errors=structnew() />
 	<cfreturn this>
@@ -235,19 +235,19 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset var s=0/>
 
 	<cfset rsSets=getSetsQuery(arguments.inherit,arguments.doFilter,arguments.filter,arguments.container,arguments.activeOnly)/>
-	
+
 	<cfif rsSets.recordcount>
 		<cfset tempArray=createObject("component","mura.queryTool").init(rsSets).toArray() />
-		
+
 		<cfloop from="1" to="#rsSets.recordcount#" index="s">
-			
+
 			<cfset extendSetBean=getExtendSetBean() />
 			<cfset extendSetBean.set(tempArray[s]) />
 			<cfset arrayAppend(extendArray,extendSetBean)/>
 		</cfloop>
-		
+
 	</cfif>
-	
+
 	<cfreturn extendArray />
 </cffunction>
 
@@ -265,7 +265,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfcase>
 		</cfswitch>
 	</cfif>
-	
+
 	<cfif not len(getBaseKeyField())>
 		<cfswitch expression="#getType()#">
 			<cfcase value="Page,Portal,Component,File,Link,Calendar,Gallery">
@@ -276,7 +276,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfcase>
 		</cfswitch>
 	</cfif>
-	
+
 	<cfif not len(getDataTable())>
 		<cfswitch expression="#getType()#">
 			<cfcase value="Page,Portal,Component,File,Link,Calendar,Gallery">
@@ -291,9 +291,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
 	select subTypeID,type,subtype,siteid from tclassextend where subTypeID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getSubTypeID()#">
 	</cfquery>
-	
+
 	<cfif rs.recordcount>
-		
+
 		<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 		update tclassextend set
 		siteID = <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(getSiteID() neq '',de('no'),de('yes'))#" value="#getSiteID()#">,
@@ -305,23 +305,23 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		isActive = #getIsActive()#
 		where subTypeID=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#getSubTypeID()#">
 		</cfquery>
-		
+
 		<cfif rs.type neq getType() or rs.subtype neq getSubType() and getBaseTable() neq "Custom">
 			<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 				update #getBaseTable()# set
 				type = <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(getType() neq '',de('no'),de('yes'))#" value="#getType()#">,
 				subType = <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(getSubType() neq '',de('no'),de('yes'))#" value="#getSubType()#" maxlength="25">
-				where 
+				where
 				subType = <cfqueryparam cfsqltype="cf_sql_varchar" value="#rs.subtype#" maxlength="25">
 				and type = <cfqueryparam cfsqltype="cf_sql_varchar" value="#rs.type#">
 				and siteID = <cfqueryparam cfsqltype="cf_sql_varchar" value="#rs.siteID#">
-			</cfquery>	
+			</cfquery>
 		</cfif>
-		
+
 	<cfelse>
-	
+
 		<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
-		Insert into tclassextend (subTypeID,siteID,type,subType,baseTable,baseKeyField,dataTable,isActive) 
+		Insert into tclassextend (subTypeID,siteID,type,subType,baseTable,baseKeyField,dataTable,isActive)
 		values(
 		<cfqueryparam cfsqltype="cf_sql_varchar"  value="#getsubTypeID()#">,
 		<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(getSiteID() neq '',de('no'),de('yes'))#" value="#getSiteID()#">,
@@ -339,9 +339,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset extendSetBean.save() />
 		--->
 	</cfif>
-	
+
 	<cfset variables.classExtensionManager.purgeDefinitionsQuery()>
-	
+
 	<cfreturn this>
 </cffunction>
 
@@ -357,7 +357,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfif>
 	</cfloop>
 	</cfif>
-	
+
 	<cfset extendSet=getExtendSetBean()>
 	<cfset extendSet.setName(arguments.name)>
 	<cfreturn extendSet/>
@@ -369,36 +369,36 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 
 	<cfset rsSets=getSetsQuery()/>
-	
-	<cfif rsSets.recordcount>	
+
+	<cfif rsSets.recordcount>
 		<cfloop query="rsSets">
 			<cfset deleteSet(rsSets.ExtendSetID)/>
 		</cfloop>
 	</cfif>
-	
+
 	<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
-	delete from tclassextend 
-	where 
+	delete from tclassextend
+	where
 	subTypeID=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#getsubtypeID()#">
 	</cfquery>
-	
+
 	<cfif getBaseTable() neq "Custom">
 		<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 		update #getBaseTable()#
 		set subType='Default'
-		where 
+		where
 		siteID=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#getSiteID()#">
 		and subType=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#getsubtype()#">
 		</cfquery>
 	</cfif>
 	<cfset variables.classExtensionManager.purgeDefinitionsQuery()>
-	
+
 </cffunction>
 
 <cffunction name="loadSet" access="public" returntype="any">
 <cfargument name="ExtendSetID">
 <cfset var extendSetBean=getExtendSetBean() />
-	
+
 	<cfset extendSetBean.setExtendSetID(arguments.ExtendSetID)/>
 	<cfset extendSetBean.load()/>
 	<cfreturn extendSetBean/>
@@ -416,7 +416,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfelse>
 		<cfset extendSet=data />
 	</cfif>
-	
+
 	<cfset extendSet.setSubTypeID(getSubTypeID())/>
 	<cfset extendSet.setSiteID(getSiteID())/>
 	<cfset extendSet.save()/>
@@ -427,7 +427,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="deleteSet" access="public">
 <cfargument name="ExtendSetID">
 <cfset var extendSetBean=getExtendSetBean() />
-			
+
 			<cfset extendSetBean.setExtendSetID(ExtendSetID) />
 			<cfset extendSetBean.delete() />
 </cffunction>
@@ -445,9 +445,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset var fLen=listLen(arguments.filter)/>
 
 		<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
-		select tclassextendsets.ExtendSetID,tclassextendsets.subTypeID,tclassextendsets.name,tclassextendsets.orderno,tclassextendsets.isActive,tclassextendsets.siteID,tclassextendsets.categoryID,tclassextendsets.orderno,0 as setlevel 
+		select tclassextendsets.ExtendSetID,tclassextendsets.subTypeID,tclassextendsets.name,tclassextendsets.orderno,tclassextendsets.isActive,tclassextendsets.siteID,tclassextendsets.categoryID,tclassextendsets.orderno,0 as setlevel
 		from tclassextendsets
-		inner join tclassextend on (tclassextendsets.subtypeid=tclassextend.subtypeID) 
+		inner join tclassextend on (tclassextendsets.subtypeid=tclassextend.subtypeID)
 		where tclassextendsets.subTypeID=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#getsubtypeID()#">
 		and tclassextendsets.siteID=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#getSiteID()#">
 		<cfif arguments.activeOnly>
@@ -456,21 +456,21 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfif arguments.doFilter and fLen>
 		and (
 		<cfloop from="1" to="#fLen#" index="f">
-		tclassextendsets.categoryID like '%#listGetAt(arguments.filter,f)#%' <cfif f lt fLen>or</cfif> 
+		tclassextendsets.categoryID like '%#listGetAt(arguments.filter,f)#%' <cfif f lt fLen>or</cfif>
 		</cfloop>
 		)
 		<cfelseif arguments.doFilter>
 		and tclassextendsets.categoryID is null
 		</cfif>
-		
+
 		<cfif len(arguments.container)>
 		and tclassextendsets.container=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.container#">
 		</cfif>
-		
+
 		<cfif arguments.inherit and getSubType() neq "Default">
 			Union All
 
-			select tclassextendsets.ExtendSetID,tclassextendsets.subTypeID,tclassextendsets.name,tclassextendsets.orderno,tclassextendsets.isActive,tclassextendsets.siteID,tclassextendsets.categoryID,tclassextendsets.orderno,1 as setlevel from tclassextendsets 
+			select tclassextendsets.ExtendSetID,tclassextendsets.subTypeID,tclassextendsets.name,tclassextendsets.orderno,tclassextendsets.isActive,tclassextendsets.siteID,tclassextendsets.categoryID,tclassextendsets.orderno,1 as setlevel from tclassextendsets
 		    Inner Join tclassextend
 		    On (tclassextendsets.subTypeID=tclassextend.subTypeID)
 			where
@@ -480,7 +480,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfif arguments.doFilter and fLen>
 			and (
 			<cfloop from="1" to="#fLen#" index="f">
-			tclassextendsets.categoryID like '%#listGetAt(arguments.filter,f)#%' <cfif f lt fLen>or</cfif> 
+			tclassextendsets.categoryID like '%#listGetAt(arguments.filter,f)#%' <cfif f lt fLen>or</cfif>
 			</cfloop>
 			)
 			<cfelseif arguments.doFilter>
@@ -495,7 +495,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfquery name="rsFinal" dbtype="query">
 		select * from rs order by setlevel desc, orderno
 		</cfquery>
-		
+
 	<cfreturn rsFinal />
 </cffunction>
 

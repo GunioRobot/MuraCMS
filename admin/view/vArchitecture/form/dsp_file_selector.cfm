@@ -5,14 +5,14 @@
 <cfif attributes.type neq 'File'>
 <dt>
 <cfelse>
-<dt class="separate">	
+<dt class="separate">
 </cfif>
 
 <cfif attributes.ptype eq 'Gallery' or attributes.type neq 'File'>
 	<a href="##" class="tooltip">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.selectimage')#<span>#application.rbFactory.getKeyValue(session.rb,'tooltip.selectimage')#</span></a>
 <cfelse>
 	#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.selectfile')#
-</cfif>	
+</cfif>
 </dt>
 
 <cfif not lockedBySomeElse>
@@ -34,7 +34,7 @@
 		<script>
 			jQuery("##file").change(function(){
 				jQuery("##mura-revision-type").fadeIn();
-			});	
+			});
 		</script>
 	</cfif>
 	</dd>
@@ -45,10 +45,10 @@
 			</cfif>
 			<cfif attributes.type neq 'File'>
 				<span id="selectAssocImage">
-				<input type="hidden" name="fileid" value="#htmlEditFormat(request.contentBean.getfileid())#" />		
+				<input type="hidden" name="fileid" value="#htmlEditFormat(request.contentBean.getfileid())#" />
 				<a class="selectImage" href="javascript:##;" onclick="javascript: loadAssocImages('#htmlEditFormat(attributes.siteid)#','#htmlEditFormat(request.contentBean.getFileID())#','#htmlEditFormat(attributes.contentID)#','',1);return false;">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.selectassocimage')#</a>
 				</span>
-				
+
 				<span id="selectAssocImageReInit" style="display:none">
 					<input type="hidden" name="fileidReInit" value="#htmlEditFormat(request.contentBean.getfileid())#" />
 					<a href="javascript:##;" onclick="javascript: loadAssocImages('#htmlEditFormat(attributes.siteid)#','#htmlEditFormat(request.contentBean.getFileID())#','#htmlEditFormat(attributes.contentID)#','',1);return false;">[#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.selectassocimage')#]</a>
@@ -61,9 +61,9 @@
 		<cfif attributes.type eq 'File' and not request.contentBean.getIsNew()>
 		<dd>
 			<a class="mura-file #lcase(request.contentBean.getFileExt())#" href="#application.configBean.getContext()#/tasks/render/file/index.cfm?fileid=#request.contentBean.getFileID()#&method=attachment" onclick="return confirmDialog('#application.rbFactory.getKeyValue(session.rb,'sitemanager.downloadconfirm')#',this.href);">#HTMLEditFormat(request.contentBean.getFilename())#<cfif request.contentBean.getMajorVersion()> (v#request.contentBean.getMajorVersion()#.#request.contentBean.getMinorVersion()#)</cfif></a>
-		
+
 			<a id="mura-file-unlock" class="btn-alt"  href=""<cfif not lockedByYou> style="display:none;"</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.unlockfile')#</a>
-		 	<a id="mura-file-offline-edit" class="btn-alt"<cfif len(stats.getLockID())> style="display:none;"</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.downloadforofflineediting')#</a>	
+		 	<a id="mura-file-offline-edit" class="btn-alt"<cfif len(stats.getLockID())> style="display:none;"</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.downloadforofflineediting')#</a>
 
 		</dd>
 		<cfif request.contentBean.getcontentType() eq 'image'>
@@ -84,8 +84,8 @@
 								hasFileLock=false;
 								jQuery.post("./index.cfm",{fuseaction:"carch.unlockfile",contentid:"#request.contentBean.getContentID()#",siteid:"#request.contentBean.getSiteID()#"})
 							}
-						);	
-						
+						);
+
 					}
 				);
 				jQuery("##mura-file-offline-edit").click(
@@ -101,7 +101,7 @@
 								hasFileLock=true;
 								document.location="./index.cfm?fuseaction=carch.lockfile&contentID=#request.contentBean.getContentID()#&siteID=#request.contentBean.getSiteID()#";
 							}
-						);	
+						);
 					}
 				);
 			</script>
@@ -136,8 +136,8 @@
 									function(){location.reload();}
 								);
 							}
-						);	
-						
+						);
+
 					}
 				);
 	</script>

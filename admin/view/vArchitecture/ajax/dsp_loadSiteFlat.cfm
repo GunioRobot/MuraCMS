@@ -12,17 +12,17 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Mura CMS. If not, see <http://www.gnu.org/licenses/>.
 
-Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on 
+Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on
 Mura CMS. Thus, the terms and conditions of the GNU General Public License version 2 ("GPL") cover the entire combined work.
 
 However, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with programs
 or libraries that are released under the GNU Lesser General Public License version 2.1.
 
-In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with 
-independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without 
-Mura CMS under the license of your choice, provided that you follow these specific guidelines: 
+In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with
+independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without
+Mura CMS under the license of your choice, provided that you follow these specific guidelines:
 
-Your custom code 
+Your custom code
 
 • Must not alter any default objects in the Mura CMS database and
 • May not alter the default display of the Mura CMS logo within Mura CMS and
@@ -36,20 +36,20 @@ Your custom code
  /index.cfm
  /MuraProxy.cfc
 
-You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work 
-under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL 
+You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work
+under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL
 requires distribution of source code.
 
-For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your 
-modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
+For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your
+modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 <cfsilent>
 <cfscript>
 	//data=structNew();
-	
+
 	$=application.serviceFactory.getBean("MuraScope");
-	
+
 	session.flatViewArgs["#rc.siteID#"].moduleid=$.event("moduleid");
 	session.flatViewArgs["#rc.siteID#"].sortBy=$.event("sortby");
 	session.flatViewArgs["#rc.siteID#"].sortDirection=$.event("sortdirection");
@@ -62,44 +62,44 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	session.flatViewArgs["#rc.siteID#"].subtype=$.event("subtype");
 	session.flatViewArgs["#rc.siteID#"].report=$.event("report");
 	session.flatViewArgs["#rc.siteID#"].keywords=$.event("keywords");
-	 
+
 	feed=$.getBean("feed");
 	feed.setMaxItems(500);
 	feed.setNextN(10);
 	feed.setLiveOnly(0);
 	feed.setShowNavOnly(0);
-	
+
 	if(len($.event("tag"))){
 		feed.addParam(field="tcontenttags.tag",criteria=$.event("tag"),condition="in");
 	}
-	
+
 	if(len($.event("type"))){
-		feed.addParam(field="tcontent.type",criteria=$.event("type"),condition="in");	
+		feed.addParam(field="tcontent.type",criteria=$.event("type"),condition="in");
 	}
-	
+
 	if(len($.event("subtype"))){
-		feed.addParam(field="tcontent.subtype",criteria=$.event("subtype"));	
+		feed.addParam(field="tcontent.subtype",criteria=$.event("subtype"));
 	}
-	
+
 	if(len($.event("categoryID"))){
-		feed.setCategoryID($.event("categoryID"));	
+		feed.setCategoryID($.event("categoryID"));
 	}
-	
+
 	if(len($.event("sortBy"))){
-		feed.setSortBy($.event("sortBy"));	
+		feed.setSortBy($.event("sortBy"));
 	}
-	
+
 	if(len($.event("sortDirection"))){
-		feed.setSortDirection($.event("sortDirection"));	
+		feed.setSortDirection($.event("sortDirection"));
 	}
-	
+
 	if($.event('report') eq "lockedfiles"){
-		feed.addParam(field="tcontentstats.lockid",condition=">",criteria="");	
+		feed.addParam(field="tcontentstats.lockid",condition=">",criteria="");
 	} else if($.event('report') eq "mylockedfiles"){
 		feed.addParam(field="tcontentstats.lockid",condition="=",criteria=$.currentUser("userID"));
 	} else if($.event('report') eq "expires"){
 		feed.addParam(field="tcontent.expires",datatype="date",condition="<=",criteria=dateAdd("m",1,now()));
-		feed.addParam(field="tcontent.expires",datatype="date",condition=">",criteria=dateAdd("m",-12,now()));		
+		feed.addParam(field="tcontent.expires",datatype="date",condition=">",criteria=dateAdd("m",-12,now()));
 	} else if($.event('report') eq "myexpires"){
 		subList=$.getBean("contentManager").getExpiringContent($.event("siteID"),$.currentUser("userID"));
 		feed.addParam(field="tcontent.contentID",datatype="varchar",condition="in",criteria=valuelist(subList.contentID));
@@ -107,12 +107,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		subList=$.getBean("contentManager").getDraftList($.event("siteID"));
 		feed.addParam(field="tcontent.contentID",datatype="varchar",condition="in",criteria=valuelist(subList.contentID));
 	}
-	
-	if(len($.event("keywords"))){	
+
+	if(len($.event("keywords"))){
 		subList=$.getBean("contentManager").getPrivateSearch($.event("siteID"),$.event("keywords"));
 		feed.addParam(field="tcontent.contentID",datatype="varchar",condition="in",criteria=valuelist(subList.contentID));
 	}
-	
+
 	iterator=feed.getIterator();
 	iterator.setPage($.event('page'));
 </cfscript>
@@ -123,7 +123,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset args=arrayNew(1)>
 		<cfset args[1]="#iterator.getFirstRecordOnPageIndex()#-#iterator.getLastRecordOnPageIndex()#">
 		<cfset args[2]=iterator.getRecordCount()>
-		
+
 		<div class="mura-results-wrapper">
 		<p class="search-showing">#application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.paginationmeta"),args)#</p>
 		<cfif iterator.pageCount() gt 1>
@@ -132,12 +132,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfloop from="#max($.event('page')-5,1)#" to="#min($.event('page')+5,iterator.pageCount())#" index="p">
 				<li><a href="" data-page="#p#"<cfif $.event('page') eq p> class="active"</cfif>>#p#</a></li>
 				</cfloop>
-				<cfif $.event('page') lt iterator.pageCount()><li class="navNext"><a href="" data-page="#evaluate($.event('page')+1)#">&raquo;</a></li></cfif>	
+				<cfif $.event('page') lt iterator.pageCount()><li class="navNext"><a href="" data-page="#evaluate($.event('page')+1)#">&raquo;</a></li></cfif>
 			</ul>
 		</cfif>
 		</div>
-	</cfif>	
-</cfoutput>	
+	</cfif>
+</cfoutput>
 </cfsavecontent></cfsilent>
 <!---<cfsavecontent variable="data.html">--->
 <cfset hasCustomImage=structKeyExists(getMetaData($.getBean('fileManager').getValue('imageProcessor')),'getCustomImage')>
@@ -146,7 +146,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <div class="navSort">
 	<h3>#application.rbFactory.getKeyValue(session.rb,"sitemanager.sortby")#:</h3>
 	<ul id="navTask">
-		<!---<li><a href="" data-sortby="releasedate">Release Date</a></li>--->	
+		<!---<li><a href="" data-sortby="releasedate">Release Date</a></li>--->
 		<li><a href="" data-sortby="lastupdate"<cfif $.event("sortBy") eq "lastUpdate"> class="active"</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.lastupdated")#</a></li>
 		<li><a href="" data-sortby="created"<cfif $.event("sortBy") eq "created"> class="active"</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.created")#</a></li>
 		<!---<li><a href="" data-sortby="releasedate"<cfif $.event("sortBy") eq "releasedate"> class="active"</cfif>>Release Date</a></li>--->
@@ -161,7 +161,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<th></th>
 	  	<th class="item">#application.rbFactory.getKeyValue(session.rb,"sitemanager.item")#</th>
 		<!---<th nowrap class="administration">&nbsp;</th>--->
-	</tr> 
+	</tr>
  	<cfif iterator.hasNext()>
 	<cfloop condition="iterator.hasNext()">
 	<cfsilent>
@@ -175,11 +175,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 	<cfset deletable=((item.getParentID() neq '00000000000000000000000000000000001' and application.settingsManager.getSite(item.getSiteID()).getLocking() neq 'all') or (item.getParentID() eq '00000000000000000000000000000000001' and application.settingsManager.getSite(item.getSiteID()).getLocking() eq 'none')) and (verdict eq 'editor')  and item.getIsLocked() neq 1>
 	<cfset editLink="index.cfm?fuseaction=cArch.edit&contenthistid=#item.getContentHistID()#&contentid=#item.getContentID()#&type=#item.gettype()#&parentid=#item.getParentID()#&topid=#URLEncodedFormat(item.getParentID())#&siteid=#URLEncodedFormat(item.getSiteid())#&moduleid=#item.getmoduleid()#&startrow=#$.event('startrow')#">
-	</cfsilent>	
+	</cfsilent>
 	<tr data-siteid="#item.getSiteID()#" data-contentid="#item.getContentID()#" data-contenthistid="#item.getContentHistID()#" data-sortby="#item.getSortBy()#" data-sortdirection="#item.getSortDirection()#" data-moduleid="#HTMLEditFormat(item.getModuleID())#" data-type="#item.getType()#">
 		<td class="add"><a class="add" href="javascript:;" onmouseover="showMenu('newContentMenu',#newcontent#,this,'#item.getContentID()#','#item.getContentID()#','#item.getContentID()#','#item.getSiteID()#','#item.getType()#');"></a></td>
 		<td class="varWidth item">
-		
+
 		<div class="admin">
 			<ul class="siteSummary <cfif item.gettype() neq 'File'>five<cfelse>six</cfif>">
 				<cfif verdict neq 'none'>
@@ -226,15 +226,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<li class="deleteOff"><a>Delete</a></li>
 			</cfif>
 			</ul>
-		</div> 
-		
+		</div>
+
 
 		<h3>
 			<cfif verdict neq 'none'>
 				<a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.edit')#" class="draftprompt" href="index.cfm?fuseaction=cArch.edit&contenthistid=#item.getContentHistID()#&contentid=#item.getContentID()#&type=#item.gettype()#&parentid=#item.getParentID()#&topid=#URLEncodedFormat(item.getParentID())#&siteid=#URLEncodedFormat(item.getSiteid())#&moduleid=#item.getmoduleid()#&startrow=#$.event('startrow')#">#HTMLEditFormat(item.getMenuTitle())#</a>
 			<cfelse>
 				#HTMLEditFormat(item.getMenuTitle())#
-			</cfif>	
+			</cfif>
 		</h3>
 		<cfif listFindNoCase("png,jpg,jpeg,gif",item.getFileExt())>
 		<div class="thumbnail"><a title="Edit" class="draftprompt" href="#editLink#"><cfif hasCustomImage><img src="#item.getImageURL(height=80,width=80)#" /><cfelse><img src="#item.getImageURL(size='small')#" /></cfif></a></div>
@@ -243,15 +243,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfset lockedBy=$.getBean("user").loadBy(item.getLockID())>
 				<p class="locked-offline">#application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.filelockedby"),"#HTMLEditFormat(lockedBy.getFName())# #HTMLEditFormat(lockedBy.getLName())#")#</p>
 			</cfif>
-			
+
 			#application.contentRenderer.dspZoom(crumbdata,item.getFileEXT(),true)#
-			
+
 			<ul class="nodeMeta">
 				<cfsilent><cfset args=arrayNew(1)>
 				<cfset args[1]=LSDateformat(item.getLastUpdate(),session.dateKeyFormat)>
 				<cfset args[2]=LSTimeFormat(item.getLastUpdate())>
 				<cfset args[3]=item.getLastUpdateBy()></cfsilent>
-				<li class="updated">#application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.lastupdatedlong"),args)#</li>		
+				<li class="updated">#application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.lastupdatedlong"),args)#</li>
 				<cfif isDate(item.getCreated())>
 				<cfsilent><cfset args=arrayNew(1)>
 				<cfset args[1]=LSDateformat(item.getCreated(),session.dateKeyFormat)>
@@ -278,7 +278,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfelse>
 		<tr>
 			<td colspan="3">#application.rbFactory.getKeyValue(session.rb,"sitemanager.noresults")#</td>
-		</tr>	
+		</tr>
 	</cfif>
 </table>
 
@@ -296,9 +296,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<li><a href="" data-report="mydrafts"<cfif $.event("report") eq "mydrafts"> class="active"</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.reports.mydrafts")#</a></li>
 		<li><a href="" data-report="mylockedfiles"<cfif $.event("report") eq "mylockedfiles"> class="active"</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.reports.mylockedfiles")#</a></li>
 	</ul>
-	
+
 	<h3>#application.rbFactory.getKeyValue(session.rb,"sitemanager.filters")#</h3>
-	
+
 	<div id="filters" class="module">
 	<h4>#application.rbFactory.getKeyValue(session.rb,"sitemanager.keywords")#</h4>
     <input class="text" id="contentKeywords" value="#HTMLEditFormat(session.flatViewArgs["#rc.siteID#"].keywords)#" type="text" size="20" />
@@ -315,7 +315,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</select>
 	</div>
 	</cfif>
-		
+
 	<cfsilent>
 		<cfset tags=$.getBean('contentGateway').getTagCloud($.event('siteID')) />
 		<cfset tagValueArray = ListToArray(ValueList(tags.tagCount))>
@@ -324,8 +324,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset diff = max - min>
 		<cfset distribution = diff>
 		<cfset rbFactory=$.siteConfig().getRBFactory()>
-	</cfsilent>	
-	
+	</cfsilent>
+
 	<cfif tags.recordcount>
 		<div class="module" id="mura-filter-tags">
 			<h4>#application.rbFactory.getKeyValue(session.rb,"sitemanager.tags")#</h4>
@@ -343,7 +343,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfelse>
 						<cfset class="not-very-popular">
 					</cfif>
-				
+
 					<cfset args = ArrayNew(1)>
 				    <cfset args[1] = tags.tagcount>
 				</cfsilent><li class="#class#"><span><cfif tags.tagcount gt 1> #rbFactory.getResourceBundle().messageFormat($.rbKey('tagcloud.itemsare'), args)#<cfelse>#rbFactory.getResourceBundle().messageFormat($.rbKey('tagcloud.itemis'), args)#</cfif> tagged with </span><a class="tag<cfif listFind($.event('tag'),tags.tag)> active</cfif>">#HTMLEditFormat(tags.tag)#</a></li>
@@ -352,7 +352,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</div>
 		</div>
 	</cfif>
-	
+
 	<cfif $.getBean("categoryManager").getCategoryCount($.event("siteID"))>
 		<div class="module"" id="mura-filter-category">
 		<h4>#application.rbFactory.getKeyValue(session.rb,"sitemanager.categories")#</h4>

@@ -1,14 +1,14 @@
 <!---
-	  
+
   Copyright (c) 2005, Chris Scott, David Ross, Kurt Wiersma, Sean Corfield
   All rights reserved.
-	
+
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
   You may obtain a copy of the License at
-  
+
        http://www.apache.org/licenses/LICENSE-2.0
-  
+
   Unless required by applicable law or agreed to in writing, software
   distributed under the License is distributed on an "AS IS" BASIS,
   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -27,19 +27,19 @@
  Initial classes to support throwsAdvice, as well as implementing interceptors to make before and after advice (as well as throws advice) all part of the method invocation chain. This is very much in line with the method invocation used in Spring, seems very necessary for throws advice to be implemented. Also should simplify some issues with not returning null values. These classes are not yet implemented in the AopProxyBean, so nothing works yet!
 
 
----> 
- 
-<cfcomponent name="Exception" 
-			displayname="Exception" 
-			hint="Base Class for FastException" 
+--->
+
+<cfcomponent name="Exception"
+			displayname="Exception"
+			hint="Base Class for FastException"
 			output="false">
-			
+
 	<cffunction name="init" access="public" returntype="coldspring.aop.Exception" output="false">
 		<cfargument name="exception" type="any" required="true" />
 		<cfset variables.exception = arguments.exception />
 		<cfreturn this />
 	</cffunction>
-	
+
 	<cffunction name="getBaseException" access="public" returntype="string" output="false">
 		<cfreturn variables.exception />
 	</cffunction>
@@ -123,7 +123,7 @@
 			<cfreturn "" />
 		</cfif>
 	</cffunction>
-	
+
 	<cffunction name="getLockName" access="public" returntype="string" output="false">
 		<cfif StructKeyExists(variables.exception,'lockName')>
 			<cfreturn variables.exception.lockName />
@@ -131,7 +131,7 @@
 			<cfreturn "" />
 		</cfif>
 	</cffunction>
-	
+
 	<cffunction name="getLockOperation" access="public" returntype="string" output="false">
 		<cfif StructKeyExists(variables.exception,'lockOperation')>
 			<cfreturn variables.exception.lockOperation />

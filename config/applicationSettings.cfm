@@ -12,17 +12,17 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Mura CMS. If not, see <http://www.gnu.org/licenses/>.
 
-Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on 
+Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on
 Mura CMS. Thus, the terms and conditions of the GNU General Public License version 2 ("GPL") cover the entire combined work.
 
 However, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with programs
 or libraries that are released under the GNU Lesser General Public License version 2.1.
 
-In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with 
-independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without 
-Mura CMS under the license of your choice, provided that you follow these specific guidelines: 
+In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with
+independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without
+Mura CMS under the license of your choice, provided that you follow these specific guidelines:
 
-Your custom code 
+Your custom code
 
 • Must not alter any default objects in the Mura CMS database and
 • May not alter the default display of the Mura CMS logo within Mura CMS and
@@ -36,12 +36,12 @@ Your custom code
  /index.cfm
  /MuraProxy.cfc
 
-You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work 
-under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL 
+You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work
+under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL
 requires distribution of source code.
 
-For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your 
-modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
+For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your
+modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 	<cfset this.configPath=getDirectoryFromPath(getCurrentTemplatePath())>
@@ -51,13 +51,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset this.applicationTimeout = createTimeSpan(3,0,0,0)>
 	<!--- Where should cflogin stuff persist --->
 	<cfset this.loginStorage = "cookie">
-	
+
 	<cfset this.sessionManagement = true>
-	
+
 	<!--- Should we set cookies on the browser? --->
 	<cfset this.setClientCookies = true>
-	
-	<!--- should cookies be domain specific, ie, *.foo.com or www.foo.com 
+
+	<!--- should cookies be domain specific, ie, *.foo.com or www.foo.com
 	<cfset this.setDomainCookies = not refind('\b\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\b',listFirst(cgi.http_host,":"))>
 	--->
 	<!--- should we try to block 'bad' input from users --->
@@ -68,7 +68,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset this.secureJSONPrefix = "">
 	<!--- Used to help CF work with missing files and dir indexes --->
 	<cfset this.welcomeFileList = "">
-	
+
 	<cfparam name="request.muraFrontEndRequest" default="false"/>
 	<cfparam name="request.muraChangesetPreview" default="false"/>
 	<cfparam name="request.muraExportHtml" default="false"/>
@@ -80,7 +80,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfparam name="request.muraRequestStart" default="#getTickCount()#"/>
 	<cfparam name="request.muraShowTrace" default="false"/>
 	<cfparam name="request.muraValidateDomain" default="true"/>
-	
+
 	<cfset baseDir= left(this.configPath,len(this.configPath)-8) /><cfif not fileExists(baseDir & "/config/settings.ini.cfm")>
 		<cftry>
 		<cffile action="copy" source="#baseDir#/config/templates/settings.template.cfm" destination="#baseDir#/config/settings.ini.cfm" mode="777">
@@ -89,7 +89,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfcatch>
 		</cftry>
 	</cfif>
-	
+
 	<cfset properties = createObject( 'java', 'java.util.Properties' ).init()>
 	<cfset fileStream = createObject( 'java', 'java.io.FileInputStream').init( getDirectoryFromPath(getCurrentTemplatePath()) & "/settings.ini.cfm")>
 	<cfset properties.load( fileStream )>
@@ -101,13 +101,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfelse>
 		<cfset mapPrefix="" />
 	</cfif>
-	
+
 	<cfset this.mappings = structNew()>
 	<cfset this.mappings["/plugins"] = mapPrefix & baseDir & "/plugins">
 	<cfset this.mappings["/muraWRM"] = mapPrefix & baseDir>
 	<cfset this.mappings["/savaWRM"] = mapPrefix & baseDir>
 	<cfset this.mappings["/config"] = mapPrefix & baseDir & "/config">
-	
+
 	<cftry>
 		<cfinclude template="#properties.getProperty("context","")#/config/mappings.cfm">
 		<cfset hasMainMappings=true>
@@ -122,7 +122,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset hasPluginMappings=false>
 		</cfcatch>
 	</cftry>
-	
+
 	<cfset request.userAgent = LCase( CGI.http_user_agent ) />
 	<!--- Should we even use sessions? --->
 	<cfset request.trackSession = not (NOT Len( request.userAgent ) OR
@@ -140,31 +140,31 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	 Find( "google", request.userAgent ) OR
 	 Find( "zyborg", request.userAgent ) OR
 	 Find( "emonitor", request.userAgent ) OR
-	 Find( "jeeves", request.userAgent ) OR 
-	 Find( "ping", request.userAgent ) OR 
-	 FindNoCase( "java", request.userAgent ) OR 
+	 Find( "jeeves", request.userAgent ) OR
+	 Find( "ping", request.userAgent ) OR
+	 FindNoCase( "java", request.userAgent ) OR
 	 FindNoCase( "cfschedule", request.userAgent ) OR
 	 FindNoCase( "reeder", request.userAgent ) OR
 	 Find( "spider", request.userAgent ))>
-	 
+
 	<!--- How long do session vars persist? --->
 	<cfif request.trackSession>
 		<cfset this.sessionTimeout = (properties.getProperty("sessionTimeout","180") / 24) / 60>
 	<cfelse>
 		<cfset this.sessionTimeout = createTimeSpan(0,0,5,0)>
 	</cfif>
-	
+
 	<!--- define a list of custom tag paths. --->
 	<cfset this.customtagpaths = properties.getProperty("customtagpaths","") />
 	<cfset this.customtagpaths = listAppend(this.customtagpaths,mapPrefix & baseDir  &  "/requirements/custom_tags/")>
-	
+
 	<cfset this.clientManagement = properties.getProperty("clientManagement","false") />
 	<cfset this.clientStorage = properties.getProperty("clientStorage","registry") />
 	<cfset this.ormenabled = properties.getProperty("ormenabled","true") />
 	<cfset this.datasource = properties.getProperty("datasource","") />
 	<cfset this.ormSettings=structNew()>
 	<cfset this.ormSettings.cfclocation=arrayNew(1)>
-	
+
 	<cfif this.ormenabled>
 		<cfswitch expression="#properties.getProperty('dbtype','')#">
 			<cfcase value="mssql">
@@ -205,7 +205,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset request.hasCFApplicationCFM=false>
 		</cfcatch>
 	</cftry>
-	
+
 	<cfif not (isSimpleValue(this.ormSettings.cfclocation) and len(this.ormSettings.cfclocation))
 		and not (isArray(this.ormSettings.cfclocation) and arrayLen(this.ormSettings.cfclocation))>
 		<cfset this.ormenabled=false>

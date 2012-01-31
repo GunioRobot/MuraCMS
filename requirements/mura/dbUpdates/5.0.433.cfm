@@ -8,13 +8,13 @@ select * from tsettings where 0=1
 <cfswitch expression="#getDbType()#">
 <cfcase value="mssql">
 <cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
-ALTER TABLE tsettings ADD useDefaultSMTPServer tinyint 
+ALTER TABLE tsettings ADD useDefaultSMTPServer tinyint
 </cfquery>
 </cfcase>
 <cfcase value="mysql">
 	<cftry>
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
-	ALTER TABLE tsettings ADD COLUMN useDefaultSMTPServer tinyint(3) 
+	ALTER TABLE tsettings ADD COLUMN useDefaultSMTPServer tinyint(3)
 	</cfquery>
 	<cfcatch>
 			<!--- H2 --->

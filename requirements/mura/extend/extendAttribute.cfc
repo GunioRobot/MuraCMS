@@ -12,17 +12,17 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Mura CMS. If not, see <http://www.gnu.org/licenses/>.
 
-Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on 
+Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on
 Mura CMS. Thus, the terms and conditions of the GNU General Public License version 2 ("GPL") cover the entire combined work.
 
 However, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with programs
 or libraries that are released under the GNU Lesser General Public License version 2.1.
 
-In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with 
-independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without 
-Mura CMS under the license of your choice, provided that you follow these specific guidelines: 
+In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with
+independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without
+Mura CMS under the license of your choice, provided that you follow these specific guidelines:
 
-Your custom code 
+Your custom code
 
 • Must not alter any default objects in the Mura CMS database and
 • May not alter the default display of the Mura CMS logo within Mura CMS and
@@ -36,12 +36,12 @@ Your custom code
  /index.cfm
  /MuraProxy.cfc
 
-You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work 
-under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL 
+You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work
+under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL
 requires distribution of source code.
 
-For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your 
-modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
+For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your
+modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 <cfcomponent extends="mura.cfobject" output="false">
@@ -67,7 +67,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="init" returntype="any" output="false" access="public">
 	<cfargument name="configBean">
 	<cfargument name="contentRenderer">
-	
+
 	<cfset variables.configBean=arguments.configBean />
 	<cfset variables.contentRenderer=arguments.contentRenderer />
 	<cfset variables.classExtensionManager=variables.configBean.getClassExtensionManager()>
@@ -78,9 +78,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfargument name="data" type="any" required="true">
 
 		<cfset var prop=""/>
-		
+
 		<cfif isquery(arguments.data)>
-		
+
 			<cfset setAttributeID(arguments.data.attributeID) />
 			<cfset setSiteID(arguments.data.siteID) />
 			<cfset setExtendSetID(arguments.data.ExtendSetID) />
@@ -97,7 +97,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset setDefaultValue(arguments.data.DefaultValue) />
 			<cfset setOptionList(arguments.data.optionList) />
 			<cfset setOptionLabelList(arguments.data.optionLabelList) />
-			
+
 		<cfelseif isStruct(arguments.data)>
 		<!--- <cfdump var="#arguments.data#"><cfabort> --->
 			<cfloop collection="#arguments.data#" item="prop">
@@ -105,17 +105,17 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfset evaluate("set#prop#(arguments.data[prop])") />
 				</cfif>
 			</cfloop>
-			
+
 		<!--- 	<cfif getType eq "radio" or getType() eq "select">
 				<cfset setOptions(arguments.data)/>
 			</cfif> --->
-			
+
 		</cfif>
-		
+
 		<cfset validate() />
 		<cfreturn this>
 </cffunction>
-  
+
 <cffunction name="validate" access="public" output="false">
 	<cfset variables.instance.errors=structnew() />
 	<cfreturn this>
@@ -240,9 +240,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="getMessage" returntype="String" access="public" output="false">
-	
+
 	<cfreturn variables.instance.Message />
-	
+
 </cffunction>
 
 <cffunction name="setMessage" access="public" output="false">
@@ -297,7 +297,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="load"  access="public" output="false">
 <cfset var rs=""/>
 	<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
-	select * from tclassextendattributes where 
+	select * from tclassextendattributes where
 	<cfif getAttributeID()>
 	attributesID=<cfqueryparam cfsqltype="cf_sql_numeric" value="#getAttributeID()#">
 	<cfelse>
@@ -305,7 +305,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	and name=<cfqueryparam cfsqltype="cf_sql_varchar" maxlength="50" value="#getName()#">
 	</cfif>
 	</cfquery>
-	
+
 	<cfif rs.recordcount>
 		<cfset set(rs) />
 	</cfif>
@@ -314,10 +314,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="save"  access="public" output="false">
 <cfset var rs=""/>
-	
-	
+
+
 	<cfif getAttributeID()>
-		
+
 		<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 		update tclassextendattributes set
 		ExtendSetID=<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(getExtendSetID() neq '',de('no'),de('yes'))#" value="#getExtendSetID()#">,
@@ -337,13 +337,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		optionLabelList=<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(getOptionLabelList() neq '',de('no'),de('yes'))#" value="#getOptionLabelList()#">
 		where attributeID=<cfqueryparam cfsqltype="cf_sql_numeric"  value="#getAttributeID()#">
 		</cfquery>
-		
+
 	<cfelse>
-	
+
 		<cflock name="addingAttribute#application.instanceID#" timeout="100">
-			
+
 			<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
-			Insert into tclassextendattributes (ExtendSetID,siteID,name,hint,type,isActive,orderno,required,validation,regex,message,label,defaultValue,optionList,optionLabelList) 
+			Insert into tclassextendattributes (ExtendSetID,siteID,name,hint,type,isActive,orderno,required,validation,regex,message,label,defaultValue,optionList,optionLabelList)
 			values(
 			<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(getExtendSetID() neq '',de('no'),de('yes'))#" value="#getExtendSetID()#">,
 			<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(getSiteID() neq '',de('no'),de('yes'))#" value="#getSiteID()#">,
@@ -362,26 +362,26 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(getOptionLabelList() neq '',de('no'),de('yes'))#" value="#getOptionLabelList()#">
 			)
 			</cfquery>
-			
+
 			<cfquery name="rs"  datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
 			select max(attributeID) as newID  from tclassextendattributes
 			</cfquery>
-			
+
 			<cfset setAttributeID(rs.newID)/>
-		
+
 		</cflock>
 	</cfif>
-	
+
 	<cfset variables.classExtensionManager.purgeDefinitionsQuery()>
-	
+
 	<cfreturn this>
 	<!--- <cfset saveOptions() /> --->
 </cffunction>
 
 <cffunction name="delete" access="public">
-<cfset var fileManager=getBean("fileManager") />	
+<cfset var fileManager=getBean("fileManager") />
 <cfset var rs =""/>
-	
+
 	<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
 	select attributeValue,baseID from tclassextenddata
 	inner join tclassextendattributes on (tclassextenddata.attributeID=tclassextendattributes.attributeID)
@@ -389,16 +389,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	and attributeValue is not null
 	and tclassextendattributes.type='File'
 	</cfquery>
-	
+
 	<cfloop query="rs">
 		<cfset fileManager.deleteIfNotUsed(rs.attributeValue,rs.baseID) />
 	</cfloop>
-	
+
 	<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 	delete from tclassextenddata
 	where attributeID=<cfqueryparam cfsqltype="cf_sql_numeric"  value="#getAttributeID()#">
 	</cfquery>
-	
+
 	<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
 	select attributeValue,baseID from tclassextenddatauseractivity
 	inner join tclassextendattributes on (tclassextenddatauseractivity.attributeID=tclassextendattributes.attributeID)
@@ -406,21 +406,21 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	and attributeValue is not null
 	and tclassextendattributes.type='File'
 	</cfquery>
-	
+
 	<cfloop query="rs">
 		<cfset fileManager.deleteIfNotUsed(rs.attributeValue,rs.baseID) />
 	</cfloop>
-	
+
 	<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 	delete from tclassextenddatauseractivity
 	where attributeID=<cfqueryparam cfsqltype="cf_sql_numeric"  value="#getAttributeID()#">
 	</cfquery>
-	
+
 	<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 	delete from tclassextendattributes
 	where attributeID=<cfqueryparam cfsqltype="cf_sql_numeric"  value="#getAttributeID()#">
 	</cfquery>
-	
+
 	<cfset variables.classExtensionManager.purgeDefinitionsQuery()>
 </cffunction>
 
@@ -471,7 +471,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfreturn str/>
 </cffunction>
 
-<!--- 
+<!---
 <cffunction name="getOptions" access="public" returntype="query">
 	<cfset var rs = "" />
 
@@ -479,9 +479,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfquery name="rs" datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 		select * from TClassExtendAttributeOptions
 		where attributeID=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#getAttributeID()#">
-		order by orderno 
+		order by orderno
 		</cfquery>
-		
+
 		<cfset variables.instance.options=rs />
 	</cfif>
 
@@ -499,10 +499,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset variables.instance.options=queryNew("optionID,attributeID,siteID,optionValue,label,orderno","cf_sql_varchar,cf_sql_varchar,cf_sql_varchar,cf_sql_varchar,cf_sql_varchar,cf_sql_varchar") />
 
 	<cfloop condition="structkeyExist(arguments.options,'options#o#')">
-	
+
 		<cfif len(arguments.options["label#o#"])
 			or len(arguments.options["optionValue#o#"])>
-			
+
 			<cfset querySetCell(variables.instance.options,"optionID",createUUID(),o) />
 			<cfset querySetCell(variables.instance.options,"attributeID",getAttributeID(),o) />
 			<cfset querySetCell(variables.instance.options,"siteID",getSiteID(),o) />
@@ -527,7 +527,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="saveOptions" access="public">
 	<cfif isQuery(variables.instance.options)>
 		<cfset deleteOptions() />
-		
+
 		<cfloop query="variables.instance.options">
 			<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 			insert into TClassExtendAttributeOptions
@@ -544,7 +544,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfloop>
 
 	</cfif>
-	
+
 </cffunction> --->
 
 </cfcomponent>

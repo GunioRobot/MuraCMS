@@ -1,9 +1,9 @@
 function setGallery(){
-	
+
 try
 	{
 		var gArray=document.getElementById("svGallery").getElementsByTagName("LI");
-		
+
 		var h=0;
 		var temph=0;
 		for(var i=0;i<gArray.length;i++){
@@ -15,15 +15,15 @@ try
 			if (temph > h)
 			{h=temph;}
 		}
-		
+
 		for(var i=0;i<gArray.length;i++){
 			if(jslib =='jquery'){
 				temph=setHeightJQuery(gArray[i],h);
 			} else {
 				temph=setHeightPrototype(gArray[i],h);
-			}	
+			}
 		}
-	} 
+	}
 
 catch(err) {}
 }

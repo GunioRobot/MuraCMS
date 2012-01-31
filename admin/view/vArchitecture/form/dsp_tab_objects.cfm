@@ -12,17 +12,17 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Mura CMS. If not, see <http://www.gnu.org/licenses/>.
 
-Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on 
+Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on
 Mura CMS. Thus, the terms and conditions of the GNU General Public License version 2 ("GPL") cover the entire combined work.
 
 However, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with programs
 or libraries that are released under the GNU Lesser General Public License version 2.1.
 
-In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with 
-independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without 
-Mura CMS under the license of your choice, provided that you follow these specific guidelines: 
+In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with
+independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without
+Mura CMS under the license of your choice, provided that you follow these specific guidelines:
 
-Your custom code 
+Your custom code
 
 • Must not alter any default objects in the Mura CMS database and
 • May not alter the default display of the Mura CMS logo within Mura CMS and
@@ -36,12 +36,12 @@ Your custom code
  /index.cfm
  /MuraProxy.cfc
 
-You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work 
-under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL 
+You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work
+under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL
 requires distribution of source code.
 
-For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your 
-modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
+For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your
+modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 
@@ -55,7 +55,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <dl class="oneColumn">
 <dt class="first"><a href="##" class="tooltip">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.inheritancerules')#<span>#application.rbFactory.getKeyValue(session.rb,"tooltip.inheritanceRules")#</span></a></dt>
 <dd><input type="radio" name="inheritObjects" id="ioi" value="Inherit" <cfif request.contentBean.getinheritObjects() eq 'inherit' or request.contentBean.getinheritObjects() eq ''>checked</cfif>> <label for="ioi">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.inheritcascade')#</label>
-	<input type="radio" name="inheritObjects" id="ioc" value="Cascade" <cfif request.contentBean.getinheritObjects() eq 'cascade'>checked</cfif>> <label for="ioc">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.startnewcascade')#</label> 
+	<input type="radio" name="inheritObjects" id="ioc" value="Cascade" <cfif request.contentBean.getinheritObjects() eq 'cascade'>checked</cfif>> <label for="ioc">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.startnewcascade')#</label>
 	<input type="radio" name="inheritObjects" id="ior" value="Reject" <cfif request.contentBean.getinheritObjects() eq 'reject'>checked</cfif>> <label for="ior">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.donotinheritcascade')#</label>
 	</dd>
 	<!---
@@ -65,7 +65,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <dd id="editObjects">
 <!---<a href="javascript:;" onClick="javascript: toggleDisplay('editObjects'); return false">Display Objects</a>
 <div id="editObjects" style="display: none;">--->
-	<table class="displayObjects">		
+	<table class="displayObjects">
 			 <tr>
 				<td  class="nested" rowspan="#application.settingsManager.getSite(attributes.siteid).getcolumnCount()#" valign="top">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.availablecontentobjects')#<br />
 				<select name="classSelector" onchange="loadObjectClass('#attributes.siteid#',this.value,'','#request.contentBean.getContentID()#','#attributes.parentID#','#request.contentBean.getContentHistID()#',0);" class="dropdown" id="dragme">
@@ -90,7 +90,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<option value="slideshow">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.localindexslideshows')#</option>
 				<option value="remoteFeed">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.remotefeeds')#</option>
 				</cfif>
-				<cfif fileExists("#application.configBean.getWebRoot()##application.configBean.getFileDelim()##attributes.siteid##application.configBean.getFileDelim()#includes#application.configBean.getFileDelim()#display_objects#application.configBean.getFileDelim()#custom#application.configBean.getFileDelim()#admin#application.configBean.getFileDelim()#dsp_objectClassLabel.cfm")> 
+				<cfif fileExists("#application.configBean.getWebRoot()##application.configBean.getFileDelim()##attributes.siteid##application.configBean.getFileDelim()#includes#application.configBean.getFileDelim()#display_objects#application.configBean.getFileDelim()#custom#application.configBean.getFileDelim()#admin#application.configBean.getFileDelim()#dsp_objectClassLabel.cfm")>
 				<cfinclude template="/#application.configBean.getWebRootMap()#/#attributes.siteID#/includes/display_objects/custom/admin/dsp_objectClassLabel.cfm" >
 				</cfif>
 				<option value="plugins">#application.rbFactory.getKeyValue(session.rb,'layout.plugins')#</option>
@@ -98,8 +98,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<div id="classList"></div>
 				</td>
 				<td class="nested">
-				<cfloop from="1" to="#application.settingsManager.getSite(attributes.siteid).getcolumnCount()#" index="r"> 
-				
+				<cfloop from="1" to="#application.settingsManager.getSite(attributes.siteid).getcolumnCount()#" index="r">
+
 							<table>
 							<tr>
 							<td class="nested">
@@ -116,21 +116,21 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							</cfloop>
 							</select>
 							<input type="hidden" name="objectList#r#" id="objectList#r#" value="#variables["objectlist#r#"]#">
-				
+
 							</td>
 							<td  class="nested"><input type="button" value="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.up')#" onclick="moveDisplayObjectUp(#r#);" class="objectNav"><br />
 							<input type="button" value="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.down')#" onclick="moveDisplayObjectDown(#r#);" class="objectNav">
-							
+
 							</td>
 							</tr>
 							</table>
 					</cfloop>
 				</td>
 			  </tr>
-			
-			
+
+
 	</table>
-</dd>	  
-</dl></div>				
+</dd>
+</dl></div>
 <cfinclude template="../ajax/dsp_configuratorJS.cfm">
 </cfoutput>

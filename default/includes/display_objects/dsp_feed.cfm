@@ -12,17 +12,17 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Mura CMS. If not, see <http://www.gnu.org/licenses/>.
 
-Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on 
+Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on
 Mura CMS. Thus, the terms and conditions of the GNU General Public License version 2 ("GPL") cover the entire combined work.
 
 However, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with programs
 or libraries that are released under the GNU Lesser General Public License version 2.1.
 
-In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with 
-independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without 
-Mura CMS under the license of your choice, provided that you follow these specific guidelines: 
+In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with
+independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without
+Mura CMS under the license of your choice, provided that you follow these specific guidelines:
 
-Your custom code 
+Your custom code
 
 • Must not alter any default objects in the Mura CMS database and
 • May not alter the default display of the Mura CMS logo within Mura CMS and
@@ -36,21 +36,21 @@ Your custom code
  /index.cfm
  /MuraProxy.cfc
 
-You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work 
-under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL 
+You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work
+under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL
 requires distribution of source code.
 
-For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your 
-modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
+For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your
+modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 <!--- <cftry> --->
 <cfsilent>
 	<cfif isValid("UUID", arguments.objectID)>
-		<cfset variables.feedBean = $.getBean("feed").loadBy(feedID=arguments.objectID, 
+		<cfset variables.feedBean = $.getBean("feed").loadBy(feedID=arguments.objectID,
 		                                                     siteID=arguments.siteID)>
 	<cfelse>
-		<cfset variables.feedBean = $.getBean("feed").loadBy(name=arguments.objectID, 
+		<cfset variables.feedBean = $.getBean("feed").loadBy(name=arguments.objectID,
 		                                                     siteID=arguments.siteID)>
 	</cfif>
 	<cfif not structIsEmpty(objectparams)>
@@ -59,7 +59,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset variables.contentListFields=listDeleteAt(variables.feedBean.getDisplayList(),listFindNoCase(variables.feedBean.getDisplayList(),"Summary"))>
 		<cfset variables.feedBean.setDisplayList(variables.contentListFields)>
 	</cfif>
-	
+
 </cfsilent>
 
 <cfif variables.feedBean.getIsActive()>
@@ -76,11 +76,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfif>
 			<cfset variables.iterator = $.getBean("contentIterator")>
 			<cfset variables.iterator.setQuery(rs, feedBean.getNextN())>
-		
+
 			<cfset variables.checkMeta = feedBean.getDisplayRatings() or feedBean.getDisplayComments()>
 			<cfset variables.doMeta = 0/>
 			<cfset event.setValue("currentNextNID", feedBean.getFeedID())>
-		
+
 			<cfif not len($.event("nextNID")) or $.event("nextNID") eq $.event("currentNextNID")>
 				<cfif event.getContentBean().getNextN() gt 1>
 					<cfset variables.currentNextNIndex = $.event("startRow")>
@@ -93,11 +93,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfset variables.currentNextNIndex = 1>
 				<cfset variables.iterator.setPage(1)>
 			</cfif>
-			<cfset variables.nextN = $.getBean('utility').getNextN(variables.rs, 
+			<cfset variables.nextN = $.getBean('utility').getNextN(variables.rs,
 			                                                      variables.feedBean.getNextN(),
 			                                                      variables.currentNextNIndex)>
 		</cfsilent>
-	
+
 		<cfif variables.iterator.getRecordCount()>
 			<cfoutput>
 				<div class="svSyndLocal svFeed svIndex clearfix" id="#variables.cssID#">
@@ -105,10 +105,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						<#$.getHeaderTag('subHead1')#>#HTMLEditFormat(variables.feedBean.renderName())#</#$.getHeaderTag('subHead1')#>
 					</cfif>
 					#$.dspObject_Include(
-									thefile='dsp_content_list.cfm', 
-									fields=variables.feedBean.getDisplayList(), 
+									thefile='dsp_content_list.cfm',
+									fields=variables.feedBean.getDisplayList(),
 				                    type="Feed",
-									iterator=variables.iterator, 
+									iterator=variables.iterator,
 				                    imageSize=variables.feedBean.getImageSize(),
 				                    imageHeight=variables.feedBean.getImageHeight(),
 				                    imageWidth=variables.feedBean.getImageWidth()
@@ -128,11 +128,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<!---<cftry> --->
 		<cfsilent>
 			<cfset request.cacheItemTimespan = createTimeSpan(0, 0, 5, 0)>
-			<cfset variables.feedData = application.feedManager.getRemoteFeedData(variables.feedBean.getChannelLink(), 
+			<cfset variables.feedData = application.feedManager.getRemoteFeedData(variables.feedBean.getChannelLink(),
 			                                                                      variables.feedBean.getMaxItems())/>
-			                                                                      
+
 			<cfif not structIsEmpty(objectparams)>
-				<cfset arguments.hasSummary=objectparams.displaySummaries>	
+				<cfset arguments.hasSummary=objectparams.displaySummaries>
 			</cfif>
 		</cfsilent>
 		<cfoutput>
@@ -156,7 +156,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 									<cfcatch></cfcatch>
 									</cftry>
 								</cfif>
-								<dt><a href="#variables.feedData.itemArray[i].link.xmlText#" onclick="window.open(this.href); return false;">#variables.feedData.itemArray[i].title.xmlText#</a></dt>						
+								<dt><a href="#variables.feedData.itemArray[i].link.xmlText#" onclick="window.open(this.href); return false;">#variables.feedData.itemArray[i].title.xmlText#</a></dt>
 								<cfif arguments.hasSummary and structKeyExists(variables.feedData.itemArray[i],"description")><dd class="summary">#variables.feedData.itemArray[i].description.xmlText#</dd></cfif>
 							</dl>
 						</cfloop>
@@ -179,7 +179,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</div>
 			<cfelse>
 				#dspObject("component", "[placeholder] #variables.feedBean.getName()#", arguments.siteID)#
-				<!-- Empty Feed 
+				<!-- Empty Feed
 				<cfoutput>'#feedBean.getName()#'</cfoutput>
 				-->
 			</cfif>

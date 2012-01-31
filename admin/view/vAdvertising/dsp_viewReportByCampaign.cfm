@@ -12,17 +12,17 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Mura CMS. If not, see <http://www.gnu.org/licenses/>.
 
-Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on 
+Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on
 Mura CMS. Thus, the terms and conditions of the GNU General Public License version 2 ("GPL") cover the entire combined work.
 
 However, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with programs
 or libraries that are released under the GNU Lesser General Public License version 2.1.
 
-In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with 
-independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without 
-Mura CMS under the license of your choice, provided that you follow these specific guidelines: 
+In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with
+independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without
+Mura CMS under the license of your choice, provided that you follow these specific guidelines:
 
-Your custom code 
+Your custom code
 
 • Must not alter any default objects in the Mura CMS database and
 • May not alter the default display of the Mura CMS logo within Mura CMS and
@@ -36,12 +36,12 @@ Your custom code
  /index.cfm
  /MuraProxy.cfc
 
-You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work 
-under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL 
+You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work
+under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL
 requires distribution of source code.
 
-For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your 
-modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
+For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your
+modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 
@@ -65,7 +65,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <ul id="navTask">
 <li><a href="index.cfm?fuseaction=cAdvertising.viewAdvertiser&&siteid=#URLEncodedFormat(attributes.siteid)#&userid=#URLEncodedFormat(attributes.userid)#">#application.rbFactory.getKeyValue(session.rb,'advertising.backtoadvertiser')#</a></li>
 <li><a href="index.cfm?fuseaction=cAdvertising.editCampaign&&siteid=#URLEncodedFormat(attributes.siteid)#&userid=#URLEncodedFormat(attributes.userid)#&campaignid=#attributes.campaignid#">#application.rbFactory.getKeyValue(session.rb,'advertising.backtocampaign')#</a></li>
-</ul> 
+</ul>
 
 <h3>#application.rbFactory.getKeyValue(session.rb,'advertising.campaigninformation')#</h3>
 <ul class="overview"><li><strong>#application.rbFactory.getKeyValue(session.rb,'advertising.company')#:</strong> #request.userBean.getcompany()#</li>
@@ -76,7 +76,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <h3>#application.rbFactory.getKeyValue(session.rb,'advertising.reportdaterange')#</h3>
 <form novalidate="novalidate" action="index.cfm?fuseaction=cAdvertising.viewReportByCampaign&campaignid=#attributes.campaignid#&userid=#URLEncodedFormat(attributes.userid)#&siteid=#URLEncodedFormat(attributes.siteid)#" method="post" name="download" onsubmit="return validate(this);">
 #application.rbFactory.getKeyValue(session.rb,'advertising.from')# <input type="text" class="dateSelect datepicker" name="date1"  validate="date" message="#application.rbFactory.getKeyValue(session.rb,'advertising.fromvalidate')#" required="true" value="#LSDateFormat(attributes.date1,session.dateKeyFormat)#" > <!---<input class="calendar" type="image" src="images/icons/cal_24.png" width="14" height="14" onclick="window.open('date_picker/index.cfm?form=download&field=date1&format=MDY','refWin','toolbar=no,location=no,directories=no,status=no,menubar=no,resizable=yes,copyhistory=no,scrollbars=no,width=190,height=220,top=250,left=250');return false;">--->
-&nbsp;#application.rbFactory.getKeyValue(session.rb,'advertising.to')# 
+&nbsp;#application.rbFactory.getKeyValue(session.rb,'advertising.to')#
 <input type="text" class="dateSelect datepicker" name="date2" validate="date" message="#application.rbFactory.getKeyValue(session.rb,'advertising.tovalidate')#" required="true" value="#LSDateFormat(attributes.date2,session.dateKeyFormat)#"><!---<input class="calendar" type="image" src="images/icons/cal_24.png" width="14" height="14" onclick="window.open('date_picker/index.cfm?form=download&field=date2&format=MDY','refWin','toolbar=no,location=no,directories=no,status=no,menubar=no,resizable=yes,copyhistory=no,scrollbars=no,width=190,height=220,top=250,left=250');return false;">---> <input type="button" class="submit" onclick="document.download.submit();" value="#application.rbFactory.getKeyValue(session.rb,'advertising.view')#" /></form>
 
 
@@ -91,7 +91,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset fTotalClicks=0 />
 	<cfset fTotalImpsCost=0 />
 	<cfset fTotalClicksCost=0 />
-		
+
 	<h3>#application.rbFactory.getKeyValue(session.rb,'advertising.month')#</h3>
 	</cfoutput>
 <cfloop condition="#theMonth# lt #attributes.date2#">
@@ -105,7 +105,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfif theMonthBegin lt attributes.date1>
 			<cfset theMonthBegin=attributes.date1>
 		</cfif>
-		
+
 		<cfset rsPlacements=application.advertiserManager.getPlacementsByCampaign(attributes.campaignid,theMonthBegin,theMonthEnd) />
 		<cfset cTotalImps=0 />
 		<cfset cTotalClicks=0 />
@@ -113,7 +113,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset cTotalClicksCost=0 />
 		<cfset cTotalBudget=0 />
 	</cfsilent>
-	
+
 	<cfoutput><h4>#month(theMonth)#/#year(theMonth)#</h4>
 	<table class="mura-table-grid stripe">
 	<tr>
@@ -137,14 +137,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfoutput query="rsPlacements">
 		 <cfsilent>
 			  <cfquery name="rsClicks" datasource="#application.configBean.getDatasource()#" username="#application.configBean.getDBUsername()#" password="#application.configBean.getDBPassword()#">
-			   select sum(counter) as total from tadstats where 
+			   select sum(counter) as total from tadstats where
 			   placementid='#rsPlacements.placementID#'
 			   and type='Click'
 			     <cfif LSisDate(theMonthBegin)>and statdate >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#createdatetime(year(theMonthBegin),month(theMonthBegin),day(theMonthBegin),0,0,0)#"></cfif>
 				<cfif LSisDate(theMonthEnd)>and statdate <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#createdatetime(year(theMonthEnd),month(theMonthEnd),day(theMonthEnd),23,59,9)#"></cfif>
 	  		 </cfquery>
 	  		 <cfquery name="rsImps" datasource="#application.configBean.getDatasource()#" username="#application.configBean.getDBUsername()#" password="#application.configBean.getDBPassword()#">
-			   select sum(counter) as total from tadstats where 
+			   select sum(counter) as total from tadstats where
 			   placementid='#rsPlacements.placementID#'
 			   and type='Impression'
 			    <cfif LSisDate(theMonthBegin)>and statdate >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#createdatetime(year(theMonthBegin),month(theMonthBegin),day(theMonthBegin),0,0,0)#"></cfif>
@@ -152,14 +152,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	  		 </cfquery>
 	  		 <cfset clicks=iif(rsClicks.total neq '',de('#rsClicks.total#'),de(0))>
 	  		 <cfset imps=iif(rsImps.total neq '',de('#rsImps.total#'),de(0))>
-			
+
 		 	<cfset cTotalImps=cTotalImps+imps />
 		 	<cfset cTotalClicks=cTotalClicks+clicks />
 		 	<cfset cTotalImpsCost=cTotalImpsCost+(imps*rsPlacements.costPerImp) />
 		 	<cfset cTotalClicksCost=cTotalClicksCost+(clicks*rsPlacements.costPerClick) />
 		 	<cfset cTotalBudget=cTotalBudget+rsPlacements.budget />
 	 	</cfsilent>
-	
+
 	<tr>
 				<td class="varWidth"><a href="index.cfm?fuseaction=cAdvertising.editAdZone&siteid=#URLEncodedFormat(attributes.siteid)#&adzoneid=#rsplacements.adzoneid#">#rsplacements.Adzone#</a></td>
 				<td><a href="index.cfm?fuseaction=cAdvertising.editCreative&userid=#URLEncodedFormat(attributes.userid)#&creativeid=#rsplacements.creativeid#&siteid=#URLEncodedFormat(attributes.siteid)#">#rsplacements.creative#</a></td>
@@ -180,7 +180,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<li class="viewReport"><a title="View Placement Report" href="index.cfm?fuseaction=cAdvertising.viewReportByPlacement&placementid=#rsPlacements.placementid#&campaignid=#attributes.campaignid#&userid=#URLEncodedFormat(attributes.userid)#&siteid=#URLEncodedFormat(attributes.siteid)#&date1=#LSDateFormat(theMonthBegin,session.dateKeyFormat)#&date2=#LSDateFormat(theMonthEnd,session.dateKeyFormat)#">View Report</a></li></ul>
 				</td>
 				</tr>
-		
+
 	</cfoutput>
 	<cfoutput>
 	<tr>
@@ -213,7 +213,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<th>#application.rbFactory.getKeyValue(session.rb,'advertising.totalclicks')#</th>
 		<th>#application.rbFactory.getKeyValue(session.rb,'advertising.cpctotal')#</th>
 		<th>#application.rbFactory.getKeyValue(session.rb,'advertising.total')#</th>
-		
+
 	</tr>
 		<tr>
 				<td>#fTotalImps#</td>

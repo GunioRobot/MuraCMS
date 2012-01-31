@@ -12,17 +12,17 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Mura CMS. If not, see <http://www.gnu.org/licenses/>.
 
-Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on 
+Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on
 Mura CMS. Thus, the terms and conditions of the GNU General Public License version 2 ("GPL") cover the entire combined work.
 
 However, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with programs
 or libraries that are released under the GNU Lesser General Public License version 2.1.
 
-In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with 
-independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without 
-Mura CMS under the license of your choice, provided that you follow these specific guidelines: 
+In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with
+independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without
+Mura CMS under the license of your choice, provided that you follow these specific guidelines:
 
-Your custom code 
+Your custom code
 
 • Must not alter any default objects in the Mura CMS database and
 • May not alter the default display of the Mura CMS logo within Mura CMS and
@@ -36,12 +36,12 @@ Your custom code
  /index.cfm
  /MuraProxy.cfc
 
-You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work 
-under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL 
+You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work
+under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL
 requires distribution of source code.
 
-For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your 
-modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
+For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your
+modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 <cfcomponent extends="mura.cfobject" output="false">
@@ -53,7 +53,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfargument name="settingsManager" type="any" required="yes"/>
 		<cfargument name="fileManager" type="any" required="yes"/>
 		<cfargument name="contentRenderer" type="any" required="yes"/>
-		
+
 		<cfset variables.configBean=arguments.configBean />
 		<cfset variables.contentDAO=arguments.contentDAO />
 		<cfset variables.permUtility=arguments.permUtility />
@@ -61,7 +61,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset variables.fileManager=arguments.fileManager />
 		<cfset variables.contentRenderer=arguments.contentRenderer />
 		<cfset variables.filedelim=variables.configBean.getFileDelim() />
-		
+
 <cfreturn this />
 </cffunction>
 
@@ -82,49 +82,49 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var A=""/>
 	<cfset var E=""/>
 	<cfset var rsAdmin = "" />
-	
+
 	<cfquery name="rsAdmin" datasource="#variables.configBean.getReadOnlyDatasource()#"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
 	SELECT tusers.UserID
 	from tusers
-	WHERE perm=1 and 
-	type=1 and 
+	WHERE perm=1 and
+	type=1 and
 	siteid='#variables.settingsManager.getSite(arguments.crumbdata[1].siteid).getPrivateUserPoolID()#'
 	and groupname='Admin'
 	</cfquery>
-	
+
 	<cfquery name="rsprenotify" datasource="#variables.configBean.getReadOnlyDatasource()#"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
 	SELECT tusers.UserID, tusers.Fname, tusers.Lname, tusers.Email, 'Editor' AS Type
 	FROM tusers INNER JOIN tusersmemb ON tusers.UserID = tusersmemb.UserID
-	WHERE tusers.Email Is Not Null 
-	AND 
+	WHERE tusers.Email Is Not Null
+	AND
 	(tusersmemb.GroupID In (<cfqueryparam cfsqltype="cf_sql_varchar" value="#rsAdmin.userID#"/><cfloop list="#permStruct.editorList#" index="E">,<cfqueryparam cfsqltype="cf_sql_varchar" value="#E#"/></cfloop>)
 	<cfif listFind(session.mura.memberships,'S2')>or tusers.s2=1</cfif>)
-	
+
 	<cfif authorLen>
 	union
-	
+
 	SELECT tusers.UserID, tusers.Fname, tusers.Lname, tusers.Email, 'Author' AS Type
 	FROM tusers INNER JOIN tusersmemb ON tusers.UserID = tusersmemb.UserID
-	WHERE tusers.Email Is Not Null 
+	WHERE tusers.Email Is Not Null
 	and siteid='#variables.settingsManager.getSite(arguments.crumbdata[1].siteid).getPrivateUserPoolID()#'
-	AND 
+	AND
 	tusersmemb.GroupID In (<cfloop list="#permStruct.authorList#" index="A"><cfqueryparam cfsqltype="cf_sql_varchar" value="#A#"/><cfif authorIdx lt authorLen>,<cfset authorIdx=authorIdx+1></cfif></cfloop>)
-	
+
 	and tusers.userID not in (
 								SELECT tusers.UserID
 								FROM tusers INNER JOIN tusersmemb ON tusers.UserID = tusersmemb.UserID
-								WHERE tusers.Email Is Not Null 
-								AND 
+								WHERE tusers.Email Is Not Null
+								AND
 								(tusersmemb.GroupID In (<cfqueryparam cfsqltype="cf_sql_varchar" value="#rsAdmin.userID#"/><cfloop list="#permStruct.editorList#" index="E">,<cfqueryparam cfsqltype="cf_sql_varchar" value="#E#"/></cfloop>)
 								<cfif listFind(session.mura.memberships,'S2')>or tusers.s2=1</cfif>)
 							)
-	
+
 	</cfif>
-	
+
 	</cfquery>
-	
+
 	<cfquery name="rs" dbtype="query">
-	select UserID, Fname, Lname, Email, Type from rsprenotify 
+	select UserID, Fname, Lname, Email, Type from rsprenotify
 	group by UserID, Fname, Lname, Email, Type
 	order by lname, fname
 	</cfquery>
@@ -135,12 +135,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="getMailingLists" returntype="query" access="public" output="false">
 		<cfargument name="siteid" type="string" required="true">
 		<cfset var rs = "">
-		
+
 	<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
-	Select mlid, name from tmailinglist  where 
-	siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/> and isPublic=1 order by name 
+	Select mlid, name from tmailinglist  where
+	siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/> and isPublic=1 order by name
 	</cfquery>
-		
+
 		<cfreturn rs />
 </cffunction>
 
@@ -153,11 +153,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="getRestrictGroups" returntype="query" access="public" output="false">
 	<cfargument name="siteID"  type="string" />
 	<cfset var rs = "">
-	
+
 	<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
-	select groupname, userid,isPublic from tusers where type=1 and 
+	select groupname, userid,isPublic from tusers where type=1 and
 	(
-	(isPublic=1  and siteid='#variables.settingsManager.getSite(arguments.siteid).getPublicUserPoolID()#') 
+	(isPublic=1  and siteid='#variables.settingsManager.getSite(arguments.siteid).getPublicUserPoolID()#')
 	or
 	(isPublic=0  and siteid='#variables.settingsManager.getSite(arguments.siteid).getPrivateUserPoolID()#')
 	)
@@ -171,17 +171,17 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfargument name="siteid" type="string" required="true">
 		<cfargument name="filename" type="string" required="true">
 		<cfset var rs = "">
-		
+
 		<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
-			Select contentid from tcontent  where 
+			Select contentid from tcontent  where
 			siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/> and filename = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.filename#"/> and active=1 and type in ('Portal','Page','Calendar','Gallery')
 		</cfquery>
-		
+
 		<cfif rs.recordcount>
 			<cfreturn true />
 		<cfelse>
 			<cfreturn false />
-		</cfif>	
+		</cfif>
 </cffunction>
 
 <cffunction name="doesLoadKeyExist" returntype="boolean" access="public" output="false">
@@ -189,39 +189,39 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfargument name="field">
 		<cfargument name="fieldValue">
 		<cfset var rs = "">
-		
+
 		<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
-			Select contentid from tcontent  where 
-			siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentBean.getSiteID()#"/> 
+			Select contentid from tcontent  where
+			siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentBean.getSiteID()#"/>
 
 			<cfswitch expression="#arguments.field#">
 			<cfcase value="filename">
-				and filename = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.fieldValue#"/> 
+				and filename = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.fieldValue#"/>
 				and type in ('Portal','Page','Calendar','Gallery')
 			</cfcase>
 			<cfcase value="title">
-				and title = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.fieldValue#"/> 
+				and title = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.fieldValue#"/>
 				and type in ('Portal','Page','Calendar','Gallery','File','Link','Component','Form')
 			</cfcase>
 			<cfcase value="urltitle">
-				and urltitle = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.fieldValue#"/> 
+				and urltitle = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.fieldValue#"/>
 				and type in ('Portal','Page','Calendar','Gallery','File','Link')
 			</cfcase>
 			<cfcase value="remoteID">
-				and remoteID = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.fieldValue#"/> 
+				and remoteID = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.fieldValue#"/>
 				and type in ('Portal','Page','Calendar','Gallery','File','Link','Component','Form')
 			</cfcase>
 			</cfswitch>
-			
-			and active=1 
-			and contentID != <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentBean.getContentID()#"/> 
+
+			and active=1
+			and contentID != <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentBean.getContentID()#"/>
 		</cfquery>
-	
+
 		<cfif rs.recordcount>
 			<cfreturn true />
 		<cfelse>
 			<cfreturn false />
-		</cfif>	
+		</cfif>
 </cffunction>
 
 <cffunction name="deleteFile" returntype="void" access="public" output="false">
@@ -250,19 +250,19 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cftry>
 
 			<cfquery name="rsRelated" datasource="#variables.configBean.getReadOnlyDatasource()#"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
-			select contentid, filename from tcontent where siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentBean.getSiteID()#"> 
+			select contentid, filename from tcontent where siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentBean.getSiteID()#">
 			and filename like <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentBean.getfilename()#/%"/>
 			and active=1 and type in ('Page','Calendar','Portal','Gallery')
 			</cfquery>
-			
-			
+
+
 			<cfquery name="rsParent" datasource="#variables.configBean.getReadOnlyDatasource()#"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
 			select filename from tcontent where siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentBean.getsiteID()#"/>
 			and contentid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentBean.getparentID()#"/>
 			and active=1 and type in ('Page','Calendar','Portal','Gallery')
 			</cfquery>
 
-				
+
 				<cfloop query="rsRelated">
 					<cfdump var="#rsrelated.filename#" label="rsrelated">
 					 <cfif listlen(rsrelated.filename,"/") eq  (listlen(arguments.contentBean.getfilename(),"/")+1)>
@@ -272,30 +272,30 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						<cfelse>
 							<cfset newfile='#rsparent.filename#/#right(rsrelated.filename,trimLen)#'>
 						</cfif>
-						
+
 						<cfset tempfile=newfile>
 
 								<cfset pass=0>
-			       	
+
 								<cfloop condition="#doesFileExist(arguments.contentBean.getsiteid(),tempfile)#">
 									<cfset pass=pass+1>
 									<cfset tempfile="#newfile##pass#">
 								</cfloop>
-								
+
 								<cfif pass>
 								<cfset newfile=tempfile>
 								</cfif>
-			       
-					
-					
+
+
+
 					<cfset move(arguments.contentBean.getsiteid(),newfile,rsrelated.filename)>
-					
+
 					</cfif>
 				</cfloop>
-					
+
 		<cfcatch></cfcatch>
 	</cftry>
-	
+
 	<cfif listlen(arguments.contentBean.getfilename(),"/") gt 1>
 	<cfset oldlen=len(arguments.contentBean.getfilename())>
 	<cfset trimer=len(listlast(arguments.contentBean.getfilename(),"/"))+1>
@@ -304,8 +304,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfelse>
 	<cfset newtrunk="">
 	</cfif>
-	
-					
+
+
 	<cfset movelink(arguments.contentBean.getsiteid(),newtrunk,arguments.contentBean.getfilename())>
 
 </cfif>
@@ -327,14 +327,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	and filename = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.oldfilename#"/>
 	and active=1 and type in ('Page','Calendar','Portal','Gallery','Link')
 	</cfquery>
-	
+
 </cffunction>
 
 <cffunction name="movelink" returntype="void" output="false" access="public">
 	<cfargument name="siteid" type="string" />
 	<cfargument name="filename" type="string" />
 	<cfargument name="oldfilename" type="string" />
-	
+
 	<cfset var newFile=""/>
 	<cfset var rslist=""/>
 	<cfset var newbody=""/>
@@ -353,7 +353,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		 and body like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#variables.configBean.getContext()##variables.contentRenderer.getURLStem(arguments.siteID,arguments.oldfilename)#%"/>
 		 and siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
 		</cfquery>
-	
+
 		<cfif rslist.recordcount>
 			<cfloop query="rslist">
 				<cfset newbody=rereplace(rslist.body,"#variables.configBean.getContext()##variables.contentRenderer.getURLStem(arguments.siteID,arguments.oldfilename)#","#newfile#",'All')>
@@ -362,13 +362,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</cfquery>
 			</cfloop>
 		</cfif>
-			
+
 		<cfquery name="rslist" datasource="#variables.configBean.getReadOnlyDatasource()#"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
 		 select contenthistid, summary from tcontent where type in ('Page','Calendar','Portal','Component','Form','Gallery')
 		 and summary like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#variables.configBean.getContext()##variables.contentRenderer.getURLStem(arguments.siteID,arguments.oldfilename)#%"/>
 		 and siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
 		</cfquery>
-		
+
 		<cfif rslist.recordcount>
 				<cfloop query="rslist">
 				<cfset newSummary=rereplace(rslist.summary,"#variables.configBean.getContext()##variables.contentRenderer.getURLStem(arguments.siteID,arguments.oldfilename)#","#newfile#",'All')>
@@ -384,7 +384,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="sendNotices" returntype="void" output="false" access="public">
 	<cfargument name="data" type="struct" />
 	<cfargument name="contentBean" type="any" />
-	
+
 	<cfset var rsUser = '' />
 	<cfset var rsList = '' />
 	<cfset var i = '' />
@@ -396,11 +396,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var mailText="" >
 	<cfset var crumbStr="" >
 	<cfset var crumbData="" >
-	<cfset var c = "" />	
+	<cfset var c = "" />
 	<cfset var sendVersionLink= variables.configBean.getNotifyWithVersionLink()>
 	<cfset var versionLink="">
 	<cfset var historyLink="">
-	
+
 	<cfif listFind("Portal,Page,Calendar,Gallery,Link,File",arguments.contentBean.getType()) and arguments.contentBean.getContentID() neq '00000000000000000000000000000000001'>
 		<cfset crumbData=getBean('contentGateway').getCrumblist(arguments.contentBean.getParentID(),arguments.contentBean.getSiteID())>
 		<cfset crumbStr=crumbData[arrayLen(crumbData)].menutitle />
@@ -413,7 +413,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfelseif arguments.contentBean.getContentID() eq '00000000000000000000000000000000001'>
 		<cfset crumbStr=arguments.contentBean.getMenuTitle()>
 	</cfif>
-	
+
 	<cfquery name="rsList" datasource="#variables.configBean.getReadOnlyDatasource()#"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
 	select userID, email, fname, lname from tusers where userid
 	in (<cfqueryparam cfsqltype="cf_sql_varchar" value="#listFirst(arguments.data.notify)#">
@@ -435,7 +435,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfelse>
 		<cfset versionLink='http://#listFirst(cgi.http_host,":")##variables.configBean.getServerPort()##variables.configBean.getContext()#/admin/index.cfm?fuseaction=cArch.edit&parentid=#arguments.data.parentid#&&topid=#arguments.data.topid#&siteid=#arguments.data.siteid#&contentid=#arguments.contentBean.getcontentid()#&contenthistid=#arguments.contentBean.getcontenthistid()#&moduleid=#arguments.data.moduleid#&type=#arguments.data.type#&ptype=#arguments.data.ptype#'>
 	</cfif>
-	
+
 	<cfquery datasource="#variables.configBean.getDatasource()#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 		insert into tredirects (redirectID,URL,created) values(
 		<cfqueryparam cfsqltype="cf_sql_varchar" value="#versionID#" >,
@@ -445,7 +445,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfquery>
 	</cfif>
 	<cfset historyLink='http://#listFirst(cgi.http_host,":")##variables.configBean.getServerPort()##variables.configBean.getContext()#/admin/index.cfm?fuseaction=cArch.hist&parentid=#arguments.data.parentid#&&topid=#arguments.data.topid#&siteid=#arguments.data.siteid#&contentid=#arguments.contentBean.getcontentid()#&moduleid=#arguments.data.moduleid#&type=#arguments.data.type#'>
-	
+
 	<cfquery datasource="#variables.configBean.getDatasource()#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 		insert into tredirects (redirectID,URL,created) values(
 		<cfqueryparam cfsqltype="cf_sql_varchar" value="#historyID#" >,
@@ -453,16 +453,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#">
 		)
 	</cfquery>
-		
+
 <cfif session.mura.isLoggedIn>
 <cfquery name="rsemail" datasource="#variables.configBean.getReadOnlyDatasource()#"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
 	select email, fname, lname from tusers where userid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#session.mura.userID#">
 </cfquery>
-	
+
 <cfloop query="rslist">
-		
+
 <cfset variables.contentDAO.createContentAssignment(arguments.contentBean,rsList.userID,'draft') />
-		
+
 <cfif rsList.email neq ''>
 
 <cfsavecontent variable="mailText"><cfoutput>
@@ -474,12 +474,12 @@ LOCATION: #crumbStr#</cfif>
 AUTHOR: #arguments.contentBean.getLastUpdateBy()#
 
 VIEW VERSION HISTORY:
-http://#listFirst(cgi.http_host,":")##variables.configBean.getServerPort()##variables.configBean.getContext()##variables.settingsManager.getSite(arguments.contentBean.getSiteID()).getContentRenderer().getURLStem(arguments.contentBean.getSiteID(),historyID)#						
+http://#listFirst(cgi.http_host,":")##variables.configBean.getServerPort()##variables.configBean.getContext()##variables.settingsManager.getSite(arguments.contentBean.getSiteID()).getContentRenderer().getURLStem(arguments.contentBean.getSiteID(),historyID)#
 <cfif sendVersionLink>
 VIEW EDITED VERSION:
 http://#listFirst(cgi.http_host,":")##variables.configBean.getServerPort()##variables.configBean.getContext()##variables.settingsManager.getSite(arguments.contentBean.getSiteID()).getContentRenderer().getURLStem(arguments.contentBean.getSiteID(),versionID)#
 </cfif></cfoutput></cfsavecontent>
-	
+
 <cfset variables.mailer.sendText(mailText,
 		rsList.email,
 		"#rsemail.fname# #rsemail.lname#",
@@ -490,13 +490,13 @@ http://#listFirst(cgi.http_host,":")##variables.configBean.getServerPort()##vari
 </cfif>
 
 </cfloop>
-		
+
 <cfelse>
-		
+
 <cfloop query="rsList">
-	
+
 <cfset variables.contentDAO.createContentAssignment(arguments.contentBean,rsList.userID) />
-		
+
 <cfif rsList.email neq ''>
 
 <cfsavecontent variable="mailText"><cfoutput>
@@ -505,10 +505,10 @@ http://#listFirst(cgi.http_host,":")##variables.configBean.getServerPort()##vari
 TITLE: #arguments.contentBean.getTitle()#
 TYPE: #arguments.contentBean.getType()# / #arguments.contentBean.getSubType()#<cfif len(crumbStr)>
 LOCATION: #crumbStr#</cfif>
-AUTHOR: #arguments.contentBean.getLastUpdateBy()#							
+AUTHOR: #arguments.contentBean.getLastUpdateBy()#
 
 HISTORY LINK:
-http://#listFirst(cgi.http_host,":")##variables.configBean.getServerPort()##variables.configBean.getContext()##variables.settingsManager.getSite(arguments.contentBean.getSiteID()).getContentRenderer().getURLStem(arguments.contentBean.getSiteID(),historyID)#						
+http://#listFirst(cgi.http_host,":")##variables.configBean.getServerPort()##variables.configBean.getContext()##variables.settingsManager.getSite(arguments.contentBean.getSiteID()).getContentRenderer().getURLStem(arguments.contentBean.getSiteID(),historyID)#
 <cfif sendVersionLink>
 VERSION LINK:
 http://#listFirst(cgi.http_host,":")##variables.configBean.getServerPort()##variables.configBean.getContext()##variables.settingsManager.getSite(arguments.contentBean.getSiteID()).getContentRenderer().getURLStem(arguments.contentBean.getSiteID(),versionID)#
@@ -522,39 +522,39 @@ http://#listFirst(cgi.http_host,":")##variables.configBean.getServerPort()##vari
 </cfif>
 
 </cfloop>
-	
+
 </cfif>
-	
+
 </cffunction>
 
 <cffunction name="formatFilename" returntype="any" output="false" access="public">
 	<cfargument name="filename" type="any" />
-	
+
 	<!--- replace some latin based unicode chars with allowable chars --->
 	<cfset arguments.filename=removeUnicode(arguments.filename) />
-	
+
 	<!--- temporarily escape " " used for word separation --->
 	<cfset arguments.filename=rereplace(arguments.filename," ","svphsv","ALL") />
-	
+
 	<!--- temporarily escape "-" used for word separation --->
 	<cfset arguments.filename=rereplace(arguments.filename,"-","svphsv","ALL") />
-	
+
 	<!--- remove all punctuation --->
 	<cfset arguments.filename=rereplace(arguments.filename,"[[:punct:]]","","ALL") />
-	
+
 	<!--- escape any remaining unicode chars --->
 	<cfset arguments.filename=urlEncodedFormat(arguments.filename) />
-	
+
 	<!---  put word separators " "  and "-" back in --->
 	<cfset arguments.filename=rereplace(arguments.filename,"svphsv","-","ALL") />
-	
+
 	<!--- remove an non alphanumeric chars (most likely %) --->
 	<cfset arguments.filename=lcase(rereplace(arguments.filename,"[^a-zA-Z0-9\-]","","ALL")) />
 	<cfset arguments.filename=lcase(rereplace(arguments.filename,"\-+","-","ALL")) />
 
 	<cfreturn arguments.filename>
 
-</cffunction>	
+</cffunction>
 
 <cffunction name="setUniqueFilename" returntype="void" output="false" access="public">
 	<cfargument name="contentBean" type="any" />
@@ -563,24 +563,24 @@ http://#listFirst(cgi.http_host,":")##variables.configBean.getServerPort()##vari
 	<cfset var tempfile = "">
 	<cfset var parentFilename="">
 	<cfset arguments.contentBean.setFilename(formatFilename(arguments.contentBean.getURLTitle()))>
-	
+
 	<cfif not len(arguments.contentBean.getfilename()) and arguments.contentBean.getContentID() neq  '00000000000000000000000000000000001'>
 		<cfset arguments.contentBean.setfilename("-")/>
 	</cfif>
-	
+
 	<cfset arguments.contentBean.setURLTitle(arguments.contentBean.getFilename())>
-	
+
 	<cfif arguments.contentBean.getparentid() neq '00000000000000000000000000000000001'>
 		<cfset parentFilename=left(parentBean.getfilename(),253)>
 		<cfif right(parentFilename,1) eq "/">
 			<cfset parentFilename=left(parentBean.getfilename(),252)>
 		</cfif>
-		
+
 		<cfset arguments.contentBean.setFilename(parentFilename & "/" & arguments.contentBean.getfilename()) />
 	</cfif>
-	
+
 	<cfset tempfile=arguments.contentBean.getFilename() />
-	
+
 	<cfloop condition="#doesFileExist(arguments.contentBean.getsiteid(),tempfile)#" >
 		<cfset pass=pass+1>
 		<cfset tempfile=arguments.contentBean.getFilename() />
@@ -592,7 +592,7 @@ http://#listFirst(cgi.http_host,":")##variables.configBean.getServerPort()##vari
 		</cfif>
 		<cfset tempfile=tempfile & pass>
 	</cfloop>
-								
+
 	<cfif pass>
 		<cfset arguments.contentBean.setFilename(tempfile) />
 		<cfset arguments.contentBean.setURLTitle(listLast(tempfile,"/"))>
@@ -603,14 +603,14 @@ http://#listFirst(cgi.http_host,":")##variables.configBean.getServerPort()##vari
 	<cfargument name="contentBean" type="any" />
 	<cfset var pass =0 />
 	<cfset var tempValue = "">
-	
+
 	<cfset tempValue=arguments.contentBean.getURLTitle() />
-	
+
 	<cfloop condition="#doesLoadKeyExist(arguments.contentBean,'urlTitle',tempValue)#" >
 		<cfset pass=pass+1>
 		<cfset tempValue="#arguments.contentBean.getURLTitle()##pass#" />
 	</cfloop>
-								
+
 	<cfif pass>
 		<cfset arguments.contentBean.setURLTitle(tempValue)>
 	</cfif>
@@ -620,14 +620,14 @@ http://#listFirst(cgi.http_host,":")##variables.configBean.getServerPort()##vari
 	<cfargument name="contentBean" type="any" />
 	<cfset var pass =0 />
 	<cfset var tempValue = "">
-	
+
 	<cfset tempValue=arguments.contentBean.getTitle() />
-	
+
 	<cfloop condition="#doesLoadKeyExist(arguments.contentBean,'title',tempValue)#" >
 		<cfset pass=pass+1>
 		<cfset tempValue="#arguments.contentBean.getTitle()##pass#" />
 	</cfloop>
-								
+
 	<cfif pass>
 		<cfset arguments.contentBean.setTitle(tempValue)>
 	</cfif>
@@ -640,18 +640,18 @@ http://#listFirst(cgi.http_host,":")##variables.configBean.getServerPort()##vari
 			<cfargument name="siteid"  type="string">
 			<cfargument name="parentid"  type="string">
 			<cfargument name="parentType"  type="string" required="yes" default="Page">
-		
+
 			<cfset var nowAdjusted="">
 			<cfset var isOn=1>
-		
+
 			<cfif request.muraChangesetPreview>
 				<cfset nowAdjusted=getCurrentUser().getValue("ChangesetPreviewData").publishDate>
 			</cfif>
-			
+
 			<cfif not isdate(nowAdjusted)>
 				<cfset nowAdjusted=now()>
 			</cfif>
-		
+
 			<cfswitch expression="#arguments.display#">
 					<cfcase value="1">
 						<cfset isOn=1>
@@ -667,7 +667,7 @@ http://#listFirst(cgi.http_host,":")##variables.configBean.getServerPort()##vari
 						</cfif>
 					</cfcase>
 			</cfswitch>
-			
+
 			<cfreturn isOn>
 </cffunction>
 
@@ -677,12 +677,12 @@ http://#listFirst(cgi.http_host,":")##variables.configBean.getServerPort()##vari
 
 
 				<cfquery datasource="#variables.configBean.getDatasource()#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
-				insert into 
+				insert into
 				<cfif variables.configBean.getDBType() eq "Oracle">
 				TCONTENTPUBLICSUBMISSIONAPPROV
 				<cfelse>
 				tcontentpublicsubmissionapprovals
-				</cfif> 
+				</cfif>
 				(contentid,isApproved,email,siteid)
 				values(
 				<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentBean.getContentID()#"/>,
@@ -706,25 +706,25 @@ http://#listFirst(cgi.http_host,":")##variables.configBean.getServerPort()##vari
 	<cfset var contentName=""/>
 	<cfset var parentName=""/>
 	<cfset var contentType=""/>
-	
+
 
 	<cfquery datasource="#variables.configBean.getReadOnlyDatasource()#" name="rsApproval"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
-	select * from 
+	select * from
 	<cfif variables.configBean.getDBType() eq "Oracle">
 		TCONTENTPUBLICSUBMISSIONAPPROV
 	<cfelse>
 		tcontentpublicsubmissionapprovals
-	</cfif> 				
-	where contentid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentBean.getContentHistID()#"/> and isApproved=0 
+	</cfif>
+	where contentid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentBean.getContentHistID()#"/> and isApproved=0
 	</cfquery>
-				
+
 <cfif rsApproval.recordcount>
-				
+
 				<cfset returnURL=variables.contentRenderer.createHREF(arguments.contentBean.getType(),arguments.contentBean.getFilename(),arguments.contentBean.getSiteID(),arguments.contentBean.getcontentID(),arguments.contentBean.getTarget(),arguments.contentBean.getTargetParams(),'',variables.configBean.getContext(),variables.configBean.getStub(),variables.configBean.getIndexFile(),true) />
 				<cfset contentName=arguments.contentBean.getTitle()/>
 				<cfset parentName=arguments.parentBean.getTitle()/>
 				<cfset contentType=arguments.contentBean.getType()/>
-				
+
 <cfset publicSubmissionApprovalScript=variables.settingsManager.getSite(arguments.contentBean.getsiteid()).getpublicSubmissionApprovalScript() />
 
 <cfif publicSubmissionApprovalScript neq ''>
@@ -741,7 +741,7 @@ http://#listFirst(cgi.http_host,":")##variables.configBean.getServerPort()##vari
 		<cfset finder=refind('##.+?##',theString,1,"true")>
 	</cfloop>
 	<cfset publicSubmissionApprovalScript = theString/>
-	
+
 
 	<cfsavecontent variable="mailText">
 #publicSubmissionApprovalScript#
@@ -751,9 +751,9 @@ http://#listFirst(cgi.http_host,":")##variables.configBean.getServerPort()##vari
 	<cfsavecontent variable="mailText">
 Your content item has been posted on #variables.settingsManager.getSite(arguments.contentBean.getSiteID()).getSite()# website. You can view the posting at:
 #returnURL#
-				
+
 If you have any questions or comments about the news on #variables.settingsManager.getSite(arguments.contentBean.getSiteID()).getSite()#, please contact us at #variables.settingsManager.getSite(arguments.contentBean.getSiteID()).getContactPhone()# or email us at #variables.settingsManager.getSite(arguments.contentBean.getSiteID()).getContactEmail()#
-				
+
 Sincerely,
 #variables.settingsManager.getSite(arguments.contentBean.getSiteID()).getSite()#
 	</cfsavecontent>
@@ -765,19 +765,19 @@ Sincerely,
 			"Your #variables.settingsManager.getSite(arguments.contentBean.getSiteID()).getSite()# Content Submission",
 			arguments.contentBean.getSiteID(),
 			rsemail.email) />
-				
+
 				<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
-				update 
+				update
 				<cfif variables.configBean.getDBType() eq "Oracle">
 				TCONTENTPUBLICSUBMISSIONAPPROV
 				<cfelse>
 				tcontentpublicsubmissionapprovals
-				</cfif> 
+				</cfif>
 				set isApproved=1
-				where contentid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentBean.getcontentID()#"/> and isApproved=0 
+				where contentid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentBean.getcontentID()#"/> and isApproved=0
 				</cfquery>
 </cfif>
-			
+
 </cffunction>
 
 <cffunction name="copy" returntype="any" output="true" access="public">
@@ -801,18 +801,18 @@ Sincerely,
 	<cfset var pluginEvent = createObject("component","mura.event").init(arguments) />
 	<cfset var rsKids="">
 	<cfset contentBean = variables.contentDAO.readActive(arguments.contentID, arguments.siteID)>
-	
+
 	<!--- This makes sure that all extended data is loaded --->
 	<cfset contentBean.getAllValues()>
-	
+
 	<!--- <cfset contentBeanParent = variables.contentDAO.readActive(arguments.parentID, arguments.siteID)>--->
 	<cfset contentHistID = contentBean.getcontentHistID()>
-	
+
 	<!--- tcontent --->
 	<!--- <cfif contentBeanParent.getFilename() neq "">
 		<cfset contentBean.setUniqueFilename(contentBean)>
 	</cfif> --->
-	
+
 	<cfset contentBean.setIsNew(1)>
 	<cfset contentBean.setContentID("")>
 	<cfset contentBean.setContentHistID("")>
@@ -822,49 +822,49 @@ Sincerely,
 	<cfelse>
 		<cfset contentBean.setMenuTitle(contentBean.getMenuTitle())>
 	</cfif>
-	
+
 	<cfif arguments.setNotOnDisplay>
 		<cfset contentBean.setDisplay(0)>
 	</cfif>
-	
+
 	<cfif listFindNoCase("Page,Portal,Gallery,Calendar",contentBean.getType())>
 		<cfset setUniqueFilename(contentBean)>
 	</cfif>
-	
+
 	<cfif not structKeyExists(arguments,"path")>
 		<cfset getBean("contentManager").setMaterializedPath(contentBean)>
 	<cfelse>
 		<cfset contentBean.setPath(listAppend(arguments.path,contentBean.getContentID()))>
 	</cfif>
-	
+
 	<cfset contentBean.setCreated(now())>
 	<cfset contentBean.save()>
 	<cfset newContentHistID=contentBean.getContentHistID()>
 	<cfset newContentID=contentBean.getContentID()>
-	
+
 	<!--- tcontentcategoryassign --->
 	<cfquery datasource="#variables.configBean.getReadOnlyDatasource()#"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
 		insert into tcontentcategoryassign (contentHistID, categoryID, contentID, isFeature, orderno, siteID, featurestart,featurestop)
 		select '#newContentHistID#',categoryID,'#newContentID#',isFeature,orderno,siteid,featurestart,featurestop from tcontentcategoryassign
-		where siteid='#arguments.siteid#' 
+		where siteid='#arguments.siteid#'
 		and contentID='#arguments.contentID#'
 		and contentHistID='#contentHistID#'
 	</cfquery>
-	
+
 	<!--- tcontentrelated --->
 	<cfquery datasource="#variables.configBean.getReadOnlyDatasource()#"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
 		insert into tcontentrelated (contentHistID,relatedID, contentID, siteID)
-		select '#newContentHistID#',relatedID,'#newContentID#',siteID from tcontentrelated 
-		where siteid='#arguments.siteid#' 
+		select '#newContentHistID#',relatedID,'#newContentID#',siteID from tcontentrelated
+		where siteid='#arguments.siteid#'
 		and contentID='#arguments.contentID#'
 		and contentHistID='#contentHistID#'
 	</cfquery>
-	
+
 	<!--- tcontentobjects --->
 	<cfquery datasource="#variables.configBean.getReadOnlyDatasource()#"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
 		insert into tcontentobjects (contentHistID, objectID, object, contentID, name, orderno, siteid, columnid, params)
 		select '#newContentHistID#',objectid, object, '#newContentID#',name,orderno,siteid,columnid, params from tcontentobjects
-		where siteid='#arguments.siteid#' 
+		where siteid='#arguments.siteid#'
 		and contentID='#arguments.contentID#'
 		and contentHistID='#contentHistID#'
 	</cfquery>
@@ -873,20 +873,20 @@ Sincerely,
 	<cfquery datasource="#variables.configBean.getReadOnlyDatasource()#"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
 		insert into tpermissions (contentID, groupID, siteID, type)
 		select '#newContentID#', groupID, siteid,type from tpermissions
-		where siteid='#arguments.siteid#' 
+		where siteid='#arguments.siteid#'
 		and contentID='#arguments.contentID#'
 	</cfquery>
-	
+
 	<!--- tclassextenddata --->
 	<cfquery datasource="#variables.configBean.getReadOnlyDatasource()#"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
 		insert into tclassextenddata (baseID,attributeID,siteID,attributeValue)
 		select '#newContentHistID#',attributeID,siteID,attributeValue from tclassextenddata
-		where baseid='#contentHistID#' 
+		where baseid='#contentHistID#'
 	</cfquery>
-	
+
 	<cfset pluginEvent.setValue("contentBean",contentBean)>
 	<cfset getPluginManager().announceEvent("onContentCopy",pluginEvent)>
-	
+
 	<cfif arguments.recurse>
 		<cfif contentBean.getSortBy() eq "orderno">
 			<cfif contentBean.getSortDirection() eq "asc">
@@ -897,9 +897,9 @@ Sincerely,
 		<cfelse>
 			<cfset sortDirection="asc">
 		</cfif>
-		
+
 		<cfset rsKids=getBean("contentGateway").getNest(parentID=arguments.contentID, siteID=arguments.siteID, sortBy=contentBean.getSortBy(), sortDirection=sortDirection)>
-			
+
 		<cfloop query="rsKids">
 			<cfset copy(arguments.siteID, rsKids.contentID, newContentID, rsKids.hasKids, true, contentBean.getPath(), arguments.setNotOnDisplay)>
 		</cfloop>
@@ -926,7 +926,7 @@ Sincerely,
 </cfif>
 
 <cfquery name="rs" datasource="#updateDSN#" username="#updateUSER#" password="#updatePWD#">
-select contentID from tcontent 
+select contentID from tcontent
 where siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#" />
 and parentID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.parentID#" />
 and active=1
@@ -992,43 +992,43 @@ and parentID is null
 	<cfset var rs ="" />
 	<cfset var newSummary ="" />
 	<cfset var newBody ="" />
-	
+
 	<cfif arguments.find neq "/">
 		<cfquery datasource="#variables.configBean.getDatasource()#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 		update tcontent set filename=replace(filename,<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.find#"/>,<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.replace#"/>) where siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
 		and filename like <cfqueryparam value="%#arguments.find#%" cfsqltype="cf_sql_varchar">
 		and active=1 and type in ('Page','Calendar','Portal','Gallery','Link','Component','Form')
 		</cfquery>
-		
+
 		<cfquery datasource="#variables.configBean.getReadOnlyDatasource()#" name="rs"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
 			select contenthistid, body from tcontent where body like <cfqueryparam value="%#arguments.find#%" cfsqltype="cf_sql_varchar"> and siteID = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
 			and type in ('Page','Calendar','Portal','Gallery','Link','Component','Form')
 		</cfquery>
-		
+
 		<cfloop query="rs">
 			<cfset newbody = replaceNoCase(BODY,"#arguments.find#","#arguments.replace#","ALL")>
 			<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 			update tcontent set body = <cfqueryparam value="#newBody#" cfsqltype="cf_sql_longvarchar"> where contenthistid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#rs.contenthistID#"/>
 			</cfquery>
 		</cfloop>
-	
+
 		<cfquery datasource="#variables.configBean.getReadOnlyDatasource()#" name="rs"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
 			select contenthistid, summary from tcontent where summary like <cfqueryparam value="%#arguments.find#%" cfsqltype="cf_sql_varchar"> and siteID = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
 			and type in ('Page','Calendar','Portal','Gallery','Link','Component','Form')
 		</cfquery>
-		
+
 		<cfloop query="rs">
 			<cfset newSummary = replaceNoCase(summary,"#arguments.find#","#arguments.replace#","ALL")>
 			<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 			update tcontent set summary = <cfqueryparam value="#newSummary#" cfsqltype="cf_sql_longvarchar"> where contenthistid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#rs.contenthistID#"/>
 			</cfquery>
-		</cfloop> 
+		</cfloop>
 	</cfif>
 </cffunction>
 
 <cffunction name="removeUnicode" returntype="string" output="false">
 	<cfargument name="str">
-		
+
 		<cfset var unicodeArray=arrayNew(2) />
 		<cfset var i=0 />
 		<cfset var returnStr=arguments.str />
@@ -1046,10 +1046,10 @@ and parentID is null
 			'#239':'ï','#241':'ñ','#242':'ò','#243':'ó','#244':'ô','#245':'õ',
 			'#246':'ö','#247':'÷','#248':'ø','#249':'ù','#250':'ú','#251':'û',
 			'#252':'ü','#255':'ÿ','#34':'','#38':'&','#60':'<','#62':'>',
-			'#8211':'–','#8212':'—','#8364':'€','#96':'`'	
-		--->	
+			'#8211':'–','#8212':'—','#8364':'€','#96':'`'
+		--->
 
-	
+
 		<cfset unicodeArray[1][1]=192 />
 		<cfset unicodeArray[1][2]="À" />
 		<cfset unicodeArray[1][3]="A" />
@@ -1257,13 +1257,13 @@ and parentID is null
 		<cfset unicodeArray[52][1]=255 />
 		<cfset unicodeArray[52][2]="ÿ" />
 		<cfset unicodeArray[52][3]="y" />
-	
+
 		<cfloop from="1" to="#arrayLen(unicodeArray)#" index="i">
 			<cfset returnStr=rereplace(returnStr,chr(unicodeArray[i][1]),unicodeArray[i][3],"ALL")>
 		</cfloop>
-		
+
 		<cfreturn returnStr />
-	
+
 </cffunction>
 
 
@@ -1274,24 +1274,24 @@ and parentID is null
 	<cfset var stats="">
 	<cfset var major=0>
 	<cfset var minor=0>
-	
+
 	<cfset stats=arguments.contentBean.getStats()>
-	
+
 	<cfif arguments.contentBean.getIsNew()>
 		<cfset major=1>
 		<cfset minor=0>
 	<cfelse>
 
-		<cfif not stats.getMajorVersion()>		
-			<cfquery name="rs" datasource="#variables.configBean.getDatasource()#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">	
+		<cfif not stats.getMajorVersion()>
+			<cfquery name="rs" datasource="#variables.configBean.getDatasource()#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 				select contentID, siteID, max(majorVersion) majorVersion, max(minorVersion) minorVersion
 				from tcontent
 				where contentID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentBean.getContentID()#">
 				and siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentBean.getSiteID()#">
 				group by contentID, siteID
 			</cfquery>
-			
-			<cfif rs.recordcount and rs.majorVersion>		
+
+			<cfif rs.recordcount and rs.majorVersion>
 				<cfif arguments.versionType eq "major">
 					<cfset major=rs.majorVersion + 1>
 					<cfset minor=0>
@@ -1303,10 +1303,10 @@ and parentID is null
 				<cfset major=1>
 				<cfset minor=0>
 			</cfif>
-			
+
 		<cfelse>
-	
-			<cfif stats.getMajorVersion()>		
+
+			<cfif stats.getMajorVersion()>
 				<cfif arguments.versionType eq "major">
 					<cfset major=stats.getMajorVersion() + 1>
 					<cfset minor=0>
@@ -1318,17 +1318,17 @@ and parentID is null
 				<cfset major=1>
 				<cfset minor=0>
 			</cfif>
-		
+
 		</cfif>
 	</cfif>
-	
+
 	<cfset arguments.contentBean.setMajorVersion(major)>
 	<cfset arguments.contentBean.setMinorVersion(minor)>
 
 	<cfset stats.setMajorVersion(major)>
 	<cfset stats.setMinorVersion(minor)>
 	<cfset stats.save()>
-	
+
 </cffunction>
 
 </cfcomponent>

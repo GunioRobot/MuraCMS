@@ -21,5 +21,5 @@ select count(*) counter from tcontent where path like <cfqueryparam cfsqltype="c
 			</cfquery>
 		</cfdefaultcase>
 	</cfswitch>
-	
+
 </cfif>

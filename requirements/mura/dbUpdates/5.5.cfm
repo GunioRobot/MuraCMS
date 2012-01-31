@@ -83,14 +83,14 @@
 </cfquery>
 
 <cfif not rsCheck.recordcount>
-	
+
 <cfswitch expression="#getDbType()#">
 <cfcase value="mssql">
-	
+
 <cfquery name="MSSQLversion" datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 	EXEC sp_MSgetversion
 </cfquery>
-	
+
 <cfset MSSQLversion=left(MSSQLversion.CHARACTER_VALUE,1)>
 
 <cfif MSSQLversion neq 8>
@@ -100,12 +100,12 @@
 </cfif>
 
 <cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
-ALTER TABLE tcontentfeeds ADD displayList #MSSQLlob# 
+ALTER TABLE tcontentfeeds ADD displayList #MSSQLlob#
 </cfquery>
 </cfcase>
 <cfcase value="mysql">
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
-	ALTER TABLE tcontentfeeds ADD COLUMN displayList longtext 
+	ALTER TABLE tcontentfeeds ADD COLUMN displayList longtext
 	</cfquery>
 </cfcase>
 <cfcase value="oracle">
@@ -231,7 +231,7 @@ ALTER TABLE tcontentfeeds ADD displayList clob
 <cfcase value="mssql">
 	<cftry>
 		<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
-		ALTER TABLE tcontent ALTER COLUMN urltitle nvarchar(255) 
+		ALTER TABLE tcontent ALTER COLUMN urltitle nvarchar(255)
 		</cfquery>
 		<cfcatch></cfcatch>
 	</cftry>
@@ -255,7 +255,7 @@ ALTER TABLE tcontentfeeds ADD displayList clob
 	ALTER TABLE tcontent drop column urltitle2
 	</cfquery>
 </cfcase>
-</cfswitch>	
+</cfswitch>
 </cfif>
 
 
@@ -266,7 +266,7 @@ ALTER TABLE tcontentfeeds ADD displayList clob
 		<cfquery name="rsSubCheck" dbtype="query">
 			select * from rsCheck where lower(rsCheck.column_name) like '#i#'
 		</cfquery>
-		
+
 		<cfif rsSubCheck.type_name neq "text">
 			<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 			ALTER TABLE tcontent MODIFY column #i# text
@@ -303,7 +303,7 @@ ALTER TABLE tcontentfeeds ADD displayList clob
 <cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 	update tcontentfeeds set showNavOnly=1
 </cfquery>
-	
+
 </cfif>
 
 <cfset rsCheck=dbTableColumns("tcontentfeeds")>
@@ -334,7 +334,7 @@ ALTER TABLE tcontentfeeds ADD displayList clob
 <cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 	update tcontentfeeds set showExcludeSearch=0
 </cfquery>
-	
+
 </cfif>
 
 <cfset rsCheck=dbTableColumns("tplugindisplayobjects")>
@@ -399,7 +399,7 @@ ALTER TABLE tcontentfeeds ADD displayList clob
 <cfswitch expression="#getDbType()#">
 <cfcase value="mssql">
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
-	ALTER TABLE tsettings ALTER COLUMN [domain] nvarchar(255) 
+	ALTER TABLE tsettings ALTER COLUMN [domain] nvarchar(255)
 	</cfquery>
 </cfcase>
 <cfcase value="mysql">
@@ -421,7 +421,7 @@ ALTER TABLE tcontentfeeds ADD displayList clob
 	ALTER TABLE tsettings drop column domain2
 	</cfquery>
 </cfcase>
-</cfswitch>	
+</cfswitch>
 </cfif>
 
 <cfset rsCheck=dbTableColumns("tsettings")>
@@ -435,7 +435,7 @@ ALTER TABLE tcontentfeeds ADD displayList clob
 <cfcase value="mssql">
 	<cftry>
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
-	ALTER TABLE tsettings ALTER COLUMN [columnNames] nvarchar(max) 
+	ALTER TABLE tsettings ALTER COLUMN [columnNames] nvarchar(max)
 	</cfquery>
 	<cfcatch></cfcatch>
 	</cftry>
@@ -459,7 +459,7 @@ ALTER TABLE tcontentfeeds ADD displayList clob
 	ALTER TABLE tsettings drop column columnNames2
 	</cfquery>
 </cfcase>
-</cfswitch>	
+</cfswitch>
 </cfif>
 
 <cfset dbCreateIndex(table="tcontent",column="urltitle")>

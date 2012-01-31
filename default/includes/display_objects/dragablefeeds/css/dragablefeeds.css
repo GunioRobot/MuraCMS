@@ -142,7 +142,7 @@
 	-webkit-border-radius: 3px;
 }
 
-/*#content .dragableBox * {  Reset all values to avoid conflicts 
+/*#content .dragableBox * {  Reset all values to avoid conflicts
 	margin: 0;
 	padding: 0;
 }*/
@@ -168,7 +168,7 @@
 }
 
 .dragableBoxHeader span.rssNumberOfItems { /* Text inside header of RSS box */
-	
+
 }
 
 .dragableBoxHeader img { /* Image inside RSS box */
@@ -263,7 +263,7 @@
 }
 
 /* @end */
-	
+
 
 /* RSS Edit Form */
 .RSSeditForm table, .RSSeditForm tr, .RSSeditForm td { border: none !important; }

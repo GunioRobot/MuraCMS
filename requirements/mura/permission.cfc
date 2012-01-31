@@ -12,17 +12,17 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Mura CMS. If not, see <http://www.gnu.org/licenses/>.
 
-Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on 
+Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on
 Mura CMS. Thus, the terms and conditions of the GNU General Public License version 2 ("GPL") cover the entire combined work.
 
 However, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with programs
 or libraries that are released under the GNU Lesser General Public License version 2.1.
 
-In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with 
-independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without 
-Mura CMS under the license of your choice, provided that you follow these specific guidelines: 
+In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with
+independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without
+Mura CMS under the license of your choice, provided that you follow these specific guidelines:
 
-Your custom code 
+Your custom code
 
 • Must not alter any default objects in the Mura CMS database and
 • May not alter the default display of the Mura CMS logo within Mura CMS and
@@ -36,12 +36,12 @@ Your custom code
  /index.cfm
  /MuraProxy.cfc
 
-You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work 
-under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL 
+You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work
+under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL
 requires distribution of source code.
 
-For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your 
-modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
+For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your
+modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 <cfcomponent extends="mura.cfobject" output="false">
@@ -59,15 +59,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfargument name="GroupID" type="string" required="true">
 		<cfargument name="Type" type="string" required="false" default="Editor">
 		<cfargument name="siteid" type="string" required="true">
-		
+
 		<cfset var key=arguments.type & arguments.groupID & arguments.ContentID & arguments.siteid />
 		<cfset var site=variables.settingsManager.getSite(arguments.siteid)/>
 		<cfset var cacheFactory=site.getCacheFactory(name="output")>
-			
+
 		<cfif site.getCache()>
 			<!--- check to see if it is cached. if not then pass in the context --->
 			<!--- otherwise grab it from the cache --->
-			
+
 			<cfif NOT cacheFactory.has( key )>
 				<cfreturn cacheFactory.get( key, buildGroupPermVerdict(arguments.contentID,arguments.groupID,arguments.type,arguments.siteid)  ) />
 			<cfelse>
@@ -86,15 +86,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfargument name="siteid" type="string" required="true">
 		<cfset var perm=0>
 		<cfset var rsPermited="">
-		
+
 		<cfquery name="rsPermited" datasource="#variables.configBean.getReadOnlyDatasource()#"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
 		Select GroupID from tpermissions where ContentID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentID#"/> and type=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.type#"/> and siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/> and groupid='#arguments.groupid#'
 		</cfquery>
-		
+
 		<cfif rsPermited.recordcount>
 		<cfset perm=1>
 		</cfif>
-		
+
 		 <cfreturn perm>
 </cffunction>
 
@@ -103,7 +103,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfargument name="ContentID" type="string" required="true">
 		<cfargument name="siteid" type="string" required="true">
 		<cfset var verdict="">
-		
+
 		<cfif getgrouppermverdict(arguments.contentid,arguments.groupid,'editor',arguments.siteid)>
 				<cfset verdict='editor'>
 			<cfelse>
@@ -130,24 +130,24 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset var key=arguments.type & arguments.ContentID & arguments.siteid />
 		<cfset var site=variables.settingsManager.getSite(arguments.siteid)/>
 		<cfset var cacheFactory=site.getCacheFactory(name="output")>
-		
+
 		<cfif site.getCache()>
 			<!--- check to see if it is cached. if not then pass in the context --->
-			<!--- otherwise grab it from the cache --->		
+			<!--- otherwise grab it from the cache --->
 			<cfif NOT cacheFactory.has( key )>
 				<cfset rsPermited=getPermVerdictQuery(arguments.contentID,arguments.type,arguments.siteid) />
 				<cfset cacheFactory.get( key, rsPermited.recordcount  ) />
-			<cfelse>		
+			<cfelse>
 				<cfif cacheFactory.get( key ) >
 					<cfset rsPermited=getPermVerdictQuery(arguments.contentID,arguments.type,arguments.siteid) />
 				<cfelse>
-					<cfreturn perm />	
+					<cfreturn perm />
 				</cfif>
 			</cfif>
 		<cfelse>
 			<cfset rsPermited=getPermVerdictQuery(arguments.contentID,arguments.type,arguments.siteid) />
 		</cfif>
-		
+
 		<cfloop query="rsPermited">
 		<cfif rsPermited.isPublic>
 		<cfif listFind(session.mura.memberships,"#rsPermited.groupname#;#application.settingsManager.getSite(arguments.siteid).getPublicUserPoolID()#;1")><cfset perm=1><cfbreak></cfif>
@@ -155,7 +155,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfif listFind(session.mura.memberships,"#rsPermited.groupname#;#application.settingsManager.getSite(arguments.siteid).getPrivateUserPoolID()#;0")><cfset perm=1><cfbreak></cfif>
 		</cfif>
 		</cfloop>
-		
+
 		<cfreturn perm>
 </cffunction>
 
@@ -164,15 +164,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfargument name="Type" type="string" required="false" default="Editor">
 		<cfargument name="siteid" type="string" required="true">
 		<cfset var rs="">
-		
-		<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">	
-		Select tusers.GroupName, tusers.isPublic 
+
+		<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
+		Select tusers.GroupName, tusers.isPublic
 		from tpermissions inner join tusers on tusers.userid in (tpermissions.groupid)
 		where tpermissions.ContentID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentID#"/>
 		and tpermissions.type=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.type#"/>
-		and tpermissions.siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>	
+		and tpermissions.siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
 		</cfquery>
-		
+
 		<cfreturn rs>
 </cffunction>
 
@@ -223,16 +223,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset var verdictlist="" />
 		<cfset var verdict="" />
 		<cfset var I = "" />
-		
+
 		<cfloop from="1" to="#arrayLen(arguments.crumbdata)#" index="I">
 		<cfset verdict=getPerm(arguments.crumbdata[I].contentid,arguments.crumbdata[I].siteid)/>
 		<cfif verdict neq 'none'><cfbreak></cfif>
 		</cfloop>
-		
+
 		<cfif verdict eq 'deny' or verdict eq 'read' or verdict eq ''>
 		<cfset verdict='none'>
 		</cfif>
-		
+
 		<cfreturn verdict>
 </cffunction>
 
@@ -241,16 +241,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset var verdictlist="" />
 		<cfset var verdict="" />
 		<cfset var I = "" />
-	
+
 		<cfloop from="1" to="#arrayLen(arguments.crumbdata)#" index="I">
 			<cfset verdict=getPermPublic(arguments.crumbdata[I].contentid,arguments.crumbdata[I].siteid)/>
 			<cfif verdict neq 'none'><cfbreak></cfif>
 		</cfloop>
-		
+
 		<cfif verdict eq 'deny'>
 			<cfset verdict='none'>
 		</cfif>
-		
+
 		<cfreturn verdict/>
 </cffunction>
 
@@ -268,23 +268,23 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfelse>
 				<cfif site.getCache()>
 					<!--- check to see if it is cached. if not then pass in the context --->
-					<!--- otherwise grab it from the cache --->		
+					<!--- otherwise grab it from the cache --->
 					<cfif NOT cacheFactory.has( key )>
-						
+
 						<cfset rsgroups=getModulePermQuery(arguments.moduleID,arguments.siteid) />
 						<cfset cacheFactory.get( key, rsgroups.recordcount  ) />
 					<cfelse>
-							
+
 						<cfif cacheFactory.get( key ) >
 							<cfset rsgroups=getModulePermQuery(arguments.moduleID,arguments.siteid) />
 						<cfelse>
-							<cfreturn Verdict />	
+							<cfreturn Verdict />
 						</cfif>
 					</cfif>
 				<cfelse><
 					<cfset rsgroups=getModulePermQuery(arguments.moduleID,arguments.siteid) />
 				</cfif>
-			
+
 				<cfloop query="rsgroups">
 				<cfif rsGroups.isPublic>
 				<cfif listFind(session.mura.memberships,"#rsgroups.groupname#;#variables.settingsManager.getSite(arguments.siteid).getPublicUserPoolID()#;1")><cfset verdict=1></cfif>
@@ -293,7 +293,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</cfif>
 				</cfloop>
 			</cfif>
-	
+
 			<cfreturn verdict>
 
 </cffunction>
@@ -302,19 +302,19 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfargument name="moduleID" type="string" required="true">
 		<cfargument name="siteid" type="string" required="true">
 		<cfset var rs="">
-		
+
 		<cfquery datasource="#variables.configBean.getReadOnlyDatasource()#" name="rs" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
-			select tusers.groupname,isPublic from tusers INNER JOIN tpermissions ON (tusers.userid = tpermissions.groupid) where tpermissions.contentid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.moduleID#"/> and tpermissions.siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/> 
+			select tusers.groupname,isPublic from tusers INNER JOIN tpermissions ON (tusers.userid = tpermissions.groupid) where tpermissions.contentid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.moduleID#"/> and tpermissions.siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
 		</cfquery>
 
-		
+
 		<cfreturn rs>
 </cffunction>
 
 <cffunction name="setRestriction" returntype="struct" access="public" output="false">
 			<cfargument name="crumbdata" required="yes" type="array">
 			<cfargument name="hasModuleAccess" required="yes" default="">
-	
+
 			<cfset var r=structnew() />
 			<cfset var I = "">
 			<cfset var G=0/>
@@ -324,20 +324,20 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset r.perm="read" />
 			<cfset r.restrictGroups="" />
 			<cfset r.hasModuleAccess=0 />
-			
+
 			<cfif not session.mura.isLoggedIn >
 				<cfif cgi.HTTP_USER_AGENT eq 'vspider' and listFirst(cgi.http_host,":") eq 'LOCALHOST' >
 					<cfreturn r>
 				</cfif>
 				<cfset r.loggedIn=0>
 			</cfif>
-			
+
 			<cfif not isBoolean(arguments.hasModuleAccess)>
 				<cfset r.hasModuleAccess=getModulePerm('00000000000000000000000000000000000','#arguments.crumbdata[1].siteid#')>
 			<cfelse>
 				<cfset r.hasModuleAccess=arguments.hasModuleAccess>
 			</cfif>
-			
+
 			<!--- Check to see if this node is restricted--->
 			<cfloop from="1" to="#arrayLen(arguments.crumbdata)#" index="I" step="1">
 				<cfif arguments.crumbdata[I].restricted eq 1>
@@ -348,15 +348,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfset r.siteid=arguments.crumbdata[I].siteid />
 					<cfbreak>
 				</cfif>
-			</cfloop> 
-			
+			</cfloop>
+
 			<!--- Super users can do anything --->
 			<cfif session.mura.isLoggedIn>
 				<cfif listFind(session.mura.memberships,'S2')>
 					<cfset r.allow=1>
 					<cfset r.perm="editor" />
 					<cfreturn r>
-				
+
 				<!--- If use had module access Check for user assignments--->
 				<cfelseif r.hasModuleAccess>
 					<cfset r.perm=getNodePermPublic(arguments.crumbdata)>
@@ -365,10 +365,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						<cfreturn r>
 					</cfif>
 				</cfif>
-			</cfif>	
-			
+			</cfif>
+
 			<!--- Check for member group restrictions set on the content node advanced tab--->
-			<cfif r.restrict and r.loggedIn>			
+			<cfif r.restrict and r.loggedIn>
 					<cfif r.restrictGroups eq ''>
 						<cfset r.allow=1>
 						<cfset r.perm="read">
@@ -379,40 +379,40 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 								<cfset r.allow=1>
 								<cfset r.perm="read">
 							</cfif>
-						</cfloop>				
-					</cfif>		
+						</cfloop>
+					</cfif>
 			</cfif>
-	
+
 			<cfreturn r>
 </cffunction>
 
 <cffunction name="getCategoryPerm" returntype="boolean" access="public" output="false">
 			<cfargument name="groupList" required="yes" type="string">
 			<cfargument name="siteid" required="yes" type="string">
-			
+
 			<cfset var groupArray = "" />
 			<cfset var I = "" />
-			
-			
+
+
 			<cfif arguments.groupList neq ''>
-			
+
 				<cfif listFind(session.mura.memberships,'Admin;#variables.settingsManager.getSite(arguments.siteid).getPrivateUserPoolID()#;0')
 					or listFind(session.mura.memberships,'S2')>
 					<cfreturn true />
 				</cfif>
-				
+
 				<cfset groupArray = listtoarray(arguments.grouplist) />
 				<cfloop from="1" to="#arrayLen(groupArray)#" index="I" step="1">
 					<cfif listFind(session.mura.memberships,'#groupArray[I]#;#variables.settingsManager.getSite(arguments.siteid).getPrivateUserPoolID()#;0')
 							or listFind(session.mura.memberships,'#groupArray[I]#;#variables.settingsManager.getSite(arguments.siteid).getPublicUserPoolID()#;1')>
 						<cfreturn true />
-					</cfif>				
+					</cfif>
 				</cfloop>
-				
+
 				<cfreturn false />
 			</cfif>
-		
-			
+
+
 			<cfreturn true />
 </cffunction>
 
@@ -427,32 +427,32 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset var editor=false />
 		<cfset var Verdictlist=""/>
 		<cfset var I = "" />
-		
+
 		<cfquery name="rsGroups" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
 		select groupid from tpermissions where contentid='00000000000000000000000000000000000' and siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.crumbdata[1].siteid#"/>
 		</cfquery>
-		
+
 		<cfloop query="rsGroups">
 		<cfset Verdictlist="">
 			<cfloop from="#arrayLen(arguments.crumbdata)#" to="1" index="I" step="-1">
 			<cfset verdictlist=listappend(verdictlist,getGroupPerm(rsgroups.groupid,arguments.crumbdata[I].contentid,arguments.crumbdata[I].siteid))>
 			</cfloop>
-			
+
 			<cfset deny=listfind(verdictlist,'deny')>
 			<cfset author=listfind(verdictlist,'author')>
 			<cfset editor=listfind(verdictlist,'editor')>
-			
+
 			<cfif editor gt deny and editor gt author>
 				<cfset editorList=listappend(editorList,rsgroups.groupid)>
 			<cfelseif author gt deny and author gt editor>
 				<cfset authorList=listappend(authorList,rsgroups.groupid)>
 			</cfif>
-			
+
 		</cfloop>
-		
+
 		<cfset permStruct.authorList=authorList>
 		<cfset permStruct.editorList=editorList>
-		
+
 		<cfreturn permStruct>
 </cffunction>
 
@@ -461,17 +461,17 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset var rsGroups=""/>
 
 	<cfquery name="rsgroups" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
-	select UserID from tusers where type =1 
-	</cfquery> 
-	
+	select UserID from tusers where type =1
+	</cfquery>
+
 	<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 	Delete From tpermissions where contentid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.data.contentID#"/> and siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.data.siteid#"/>
 	</cfquery>
-	
+
 	<cfloop query="rsGroups">
 <cfif isdefined('arguments.data.p#replacelist(rsGroups.userid,"-","")#') and (evaluate("form.p#replacelist(rsGroups.userid,"-","")#") eq 'Editor'
  or evaluate("arguments.data.p#replacelist(rsGroups.userid,"-","")#") eq 'Author'
- or evaluate("arguments.data.p#replacelist(rsGroups.userid,"-","")#") eq 'Read'  
+ or evaluate("arguments.data.p#replacelist(rsGroups.userid,"-","")#") eq 'Read'
  or evaluate("arguments.data.p#replacelist(rsGroups.userid,"-","")#") eq 'Deny')>
 	<cfquery datasource="#variables.configBean.getDatasource()#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 	Insert Into tpermissions  (ContentID,GroupID,Type,siteid)
@@ -481,7 +481,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfqueryparam cfsqltype="cf_sql_varchar" value="#evaluate("arguments.data.p#replacelist(rsGroups.userid,"-","")#")#"/>,
 	<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.data.siteid#"/>
 	)</cfquery>
-	
+
 	</cfif>
 
 </cfloop>
@@ -495,19 +495,19 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<cfquery name="rsContentlist" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
 	select contentID from tcontent where siteid='#arguments.data.siteid#' group by contentid
-	</cfquery> 
-	
+	</cfquery>
+
 	<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 	Delete From tpermissions where groupid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.data.groupID#"/> and siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.data.siteid#"/>
 	</cfquery>
-	
+
 	<cfloop query="rsContentlist">
 	<cfif isdefined('arguments.data.p#replacelist(rsContentlist.contentid,"-","")#')
-	 and 
-	 (evaluate("arguments.data.p#replacelist(rsContentlist.contentid,"-","")#") eq 'Editor' 
-	 	or evaluate("arguments.data.p#replacelist(rsContentlist.contentid,"-","")#") eq 'Author'  
+	 and
+	 (evaluate("arguments.data.p#replacelist(rsContentlist.contentid,"-","")#") eq 'Editor'
+	 	or evaluate("arguments.data.p#replacelist(rsContentlist.contentid,"-","")#") eq 'Author'
 		or evaluate("arguments.data.p#replacelist(rsContentlist.contentid,"-","")#") eq 'Module')>
-	
+
 	<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 	Insert Into tpermissions  (ContentID,GroupID,Type,siteid)
 	values(
@@ -516,42 +516,42 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfqueryparam cfsqltype="cf_sql_varchar" value="#evaluate("form.p#replacelist(rsContentlist.contentid,"-","")#")#"/>,
 	<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.data.siteid#"/>
 	)</cfquery>
-	
+
 	</cfif>
 
-	
+
 </cfloop>
 
 
 	<cfset variables.settingsManager.getSite(arguments.data.siteid).purgeCache()>
-	
+
 </cffunction>
 
 <cffunction name="getModule" access="public" returntype="query" output="false">
 <cfargument name="data" type="struct" />
 <cfset var rs = "" />
 <cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
-SELECT * FROM tcontent WHERE 
+SELECT * FROM tcontent WHERE
  ContentID= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.data.contentID#"/> and  siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.data.siteid#"/> and active=1
 </cfquery>
 <cfreturn rs />
 </cffunction>
-	
+
 <cffunction name="getGroupList" access="public" returntype="struct" output="false">
 <cfargument name="data" type="struct" />
 <cfset var rs = "" />
 <cfset var returnStruct=structNew() />
 <cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
-select userid, groupname from tusers where type=1 and groupname <>'Admin' and isPublic=0 
-and siteid='#application.settingsManager.getSite(arguments.data.siteid).getPrivateUserPoolID()#' 
+select userid, groupname from tusers where type=1 and groupname <>'Admin' and isPublic=0
+and siteid='#application.settingsManager.getSite(arguments.data.siteid).getPrivateUserPoolID()#'
 order by groupname
 </cfquery>
 
 <cfset returnStruct.privateGroups=rs />
 
 <cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
-select userid, groupname from tusers where type=1  and isPublic=1 
-and siteid='#application.settingsManager.getSite(arguments.data.siteid).getPublicUserPoolID()#' 
+select userid, groupname from tusers where type=1  and isPublic=1
+and siteid='#application.settingsManager.getSite(arguments.data.siteid).getPublicUserPoolID()#'
 order by groupname
 </cfquery>
 
@@ -575,7 +575,7 @@ select * from tpermissions where contentid= <cfqueryparam cfsqltype="cf_sql_varc
 <cfset var rs = "" />
 <cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#"
 username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
-SELECT tcontent.*, tfiles.fileEXT FROM tcontent 
+SELECT tcontent.*, tfiles.fileEXT FROM tcontent
 LEFT Join tfiles ON (tcontent.fileID=tfiles.fileID)
 WHERE tcontent.ContentID= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.data.contentID#"/> and tcontent.active=1 and tcontent.siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.data.siteid#"/>
 </cfquery>
@@ -591,8 +591,8 @@ WHERE tcontent.ContentID= <cfqueryparam cfsqltype="cf_sql_varchar" value="#argum
 username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 	Delete From tpermissions where contentid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.data.contentID#"/> and siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.data.siteid#"/>
 	</cfquery>
-	
-	
+
+
 	<cfloop list="#arguments.data.groupid#" index="I">
 
 	<cfquery datasource="#variables.configBean.getDatasource()#"
@@ -604,7 +604,7 @@ username="#variables.configBean.getDBUsername()#" password="#variables.configBea
 	'module',
 	<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.data.siteid#"/>
 	)</cfquery>
-	
+
 	<cfset variables.settingsManager.getSite(arguments.data.siteid).purgeCache()>
 
 </cfloop>
@@ -612,29 +612,29 @@ username="#variables.configBean.getDBUsername()#" password="#variables.configBea
 </cffunction>
 
 <cffunction name="isPrivateUser" access="public" returntype="boolean" output="false">
-<cfargument name="siteID" required="true" default="" />		
-	
+<cfargument name="siteID" required="true" default="" />
+
 	<cfif arguments.siteID neq ''>
 		<cfreturn listFindNoCase(session.mura.memberships,'S2IsPrivate;#arguments.siteid#') />
 	<cfelse>
 		<cfreturn listFindNoCase(session.mura.memberships,'S2IsPrivate') />
 	</cfif>
-	
+
 </cffunction>
 
-<cffunction name="isUserInGroup" access="public" returntype="boolean" output="false">	
-<cfargument name="group" required="true" default="" />		
+<cffunction name="isUserInGroup" access="public" returntype="boolean" output="false">
+<cfargument name="group" required="true" default="" />
 <cfargument name="siteID" required="true" default="" />
 <cfargument name="isPublic" required="true" default="1" />
-	
+
 	<cfreturn listFindNoCase(session.mura.memberships,'#arguments.group#;#arguments.siteid#;#arguments.isPublic#') />
-		
+
 </cffunction>
 
 <cffunction name="isS2" access="public" returntype="boolean" output="false">
-	
+
 	<cfreturn listFindNoCase(session.mura.memberships,'S2') />
-	
+
 </cffunction>
 
 <cffunction name="queryPermFilter" returntype="query" access="public" output="false">
@@ -642,7 +642,7 @@ username="#variables.configBean.getDBUsername()#" password="#variables.configBea
 	<cfargument name="resultQuery" type="query">
 	<cfargument name="siteID" type="string">
 	<cfargument name="hasModuleAccess" required="true" default="">
-	
+
 	<cfset var rows=0/>
 	<cfset var r=""/>
 	<cfset var rs=arguments.resultQuery />
@@ -650,7 +650,7 @@ username="#variables.configBean.getDBUsername()#" password="#variables.configBea
 	<cfif not isBoolean(arguments.hasModuleAccess)>
 		<cfset arguments.hasModuleAccess=getModulePerm('00000000000000000000000000000000000',arguments.siteID)>
 	</cfif>
-	
+
 	<cfloop query="arguments.rawQuery">
 	<cfif hasPath>
 		<cfset r=setRestriction(application.contentGateway.getCrumblist('#arguments.rawQuery.contentid#','#arguments.siteid#',false,arguments.rawQuery.path),arguments.hasModuleAccess)/>
@@ -711,10 +711,10 @@ username="#variables.configBean.getDBUsername()#" password="#variables.configBea
 		</cfif>
 	</cfif>
 	</cfloop>
-	
+
 	<cfreturn rs/>
 </cffunction>
-	
+
 <cffunction name="newResultQuery" returntype="query" access="public" output="false">
 <cfset var rs = "" />
 		<cfswitch expression="#variables.configBean.getCompiler()#">
@@ -743,8 +743,8 @@ username="#variables.configBean.getDBUsername()#" password="#variables.configBea
 			<cfelse>
 				<cfset objectVerdict = 'none'>
 			</cfif>
-			
-		<cfelseif arguments.object eq "component">	
+
+		<cfelseif arguments.object eq "component">
 				<cfset objectPerm = getPerm('00000000000000000000000000000000003',arguments.siteid)>
 				<cfif objectPerm neq 'editor'>
 					<cfset objectVerdict = getPerm(arguments.objectID, arguments.siteID)>
@@ -772,7 +772,7 @@ username="#variables.configBean.getDBUsername()#" password="#variables.configBea
 			<cfelse>
 				<cfset objectVerdict = 'editor'>
 			</cfif>
-		</cfif>	
+		</cfif>
 	<cfreturn objectVerdict>
 </cffunction>
 
@@ -781,16 +781,16 @@ username="#variables.configBean.getDBUsername()#" password="#variables.configBea
 	<cfargument name="groupID">
 	<cfargument name="siteID">
 	<cfargument name="type">
-	
+
 	<cfset removePermission(argumentcollection=arguments)>
-	
+
 	<cfquery datasource="#variables.configBean.getDatasource()#"
 		username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 		Insert Into tpermissions (contentID,groupID,siteID,type) Value (
 		<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentID#"/> ,
 		<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.groupID#"/>,
 		<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>,
-		<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.type#"/> 
+		<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.type#"/>
 		)
 	</cfquery>
 
@@ -800,11 +800,11 @@ username="#variables.configBean.getDBUsername()#" password="#variables.configBea
 	<cfargument name="contentID">
 	<cfargument name="groupID">
 	<cfargument name="siteID">
-	
+
 	<cfquery datasource="#variables.configBean.getDatasource()#"
 		username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
-		Delete From tpermissions 
-		where contentid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentID#"/> 
+		Delete From tpermissions
+		where contentid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentID#"/>
 		and siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteid#"/>
 		and groupID= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.groupID#"/>
 	</cfquery>
@@ -815,19 +815,19 @@ username="#variables.configBean.getDBUsername()#" password="#variables.configBea
 	<cfargument name="moduleID">
 	<cfargument name="groupID">
 	<cfargument name="siteID">
-	
+
 	<cfset addPermission(arguments.moduleID,arguments.groupID,arguments.siteID,"module")>
-	
+
 </cffunction>
 
 <cffunction name="removeModuleAccess" output="false">
 	<cfargument name="moduleID">
 	<cfargument name="groupID">
 	<cfargument name="siteID">
-	
+
 	<cfset removePermission(arguments.moduleID,arguments.groupID,arguments.siteID)>
-	
+
 </cffunction>
-	
+
 
 </cfcomponent>

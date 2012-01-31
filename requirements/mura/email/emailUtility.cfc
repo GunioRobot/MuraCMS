@@ -12,17 +12,17 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Mura CMS. If not, see <http://www.gnu.org/licenses/>.
 
-Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on 
+Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on
 Mura CMS. Thus, the terms and conditions of the GNU General Public License version 2 ("GPL") cover the entire combined work.
 
 However, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with programs
 or libraries that are released under the GNU Lesser General Public License version 2.1.
 
-In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with 
-independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without 
-Mura CMS under the license of your choice, provided that you follow these specific guidelines: 
+In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with
+independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without
+Mura CMS under the license of your choice, provided that you follow these specific guidelines:
 
-Your custom code 
+Your custom code
 
 • Must not alter any default objects in the Mura CMS database and
 • May not alter the default display of the Mura CMS logo within Mura CMS and
@@ -36,12 +36,12 @@ Your custom code
  /index.cfm
  /MuraProxy.cfc
 
-You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work 
-under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL 
+You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work
+under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL
 requires distribution of source code.
 
-For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your 
-modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
+For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your
+modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 <cfcomponent extends="mura.cfobject" output="false">
@@ -57,7 +57,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset variables.mailinglistManager=arguments.mailinglistManager />
 		<cfset variables.settingsManager=arguments.settingsManager />
 		<cfset variables.contentRenderer=arguments.contentRenderer />
-		
+
 <cfreturn this />
 </cffunction>
 
@@ -98,38 +98,38 @@ Select EmailID from temails where deliverydate <=<cfqueryparam cfsqltype="cf_sql
 </cfquery>
 
 	<cfloop list="#valuelist(rsemaillist.emailid)#" index="email">
-	
+
 	<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 		update temails set status = 99 where emailid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#email#" />
 	</cfquery>
-	
+
 	<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 		update temails set status = 99 where emailid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#email#" />
 	</cfquery>
-	
+
 	<cfquery name="rsEmail" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
 	select temails.*, tsettings.* from temails inner join tsettings on (temails.siteid=tsettings.siteid) where emailid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#email#" />
 	</cfquery>
-	
+
 	<cfquery name="rsReturnForm" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
-	select filename from tcontent where siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#rsEmail.siteID#" /> and active =1 and ((display=1) or (display=2  and tcontent.DisplayStart <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#"> AND tcontent.DisplayStop >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#">)) 
-	and contenthistid in (select contenthistid from tcontentobjects where object='mailing_list_master')	
+	select filename from tcontent where siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#rsEmail.siteID#" /> and active =1 and ((display=1) or (display=2  and tcontent.DisplayStart <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#"> AND tcontent.DisplayStop >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#">))
+	and contenthistid in (select contenthistid from tcontentobjects where object='mailing_list_master')
 	</cfquery>
-	
+
 	<cfquery name="rsForwardForm" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
-	select filename from tcontent where siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#rsEmail.siteID#" /> and active =1 and ((display=1) or (display=2  and tcontent.DisplayStart <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#"> AND tcontent.DisplayStop >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#">)) 
-	and contenthistid in (select contenthistid from tcontentobjects where object='forward_email')	
-	</cfquery>		
-		
+	select filename from tcontent where siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#rsEmail.siteID#" /> and active =1 and ((display=1) or (display=2  and tcontent.DisplayStart <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#"> AND tcontent.DisplayStop >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#">))
+	and contenthistid in (select contenthistid from tcontentobjects where object='forward_email')
+	</cfquery>
+
 		<cfif rsemail.grouplist neq '' and (rsemail.bodyhtml neq '' or rsemail.bodytext neq '')>
 			<cfset prevEmail=""/>
 			<cfset counter=0/>
 			<cfset request.servletEvent = createObject("component","mura.servletEvent").init() />
 			<cfset request.servletEvent.setValue("siteID",rsemail.siteID)/>
-				
+
 				<!---<cftry>--->
 			<cfset rsAddresses=getAddresses(rsEmail.groupList,rsEmail.siteid) />
-				
+
 				<!---
 				<cfcatch type="database"></cfcatch>
 				</cftry>--->
@@ -144,7 +144,7 @@ Select EmailID from temails where deliverydate <=<cfqueryparam cfsqltype="cf_sql
 					<cfset HTMLfieldList=listAppend(HTMLfieldList,"company","^") />
 					</cfif>
 				</cfif>
-				
+
 
 				<cfif rsEmail.format neq "HTML">
 					<cfif findNoCase("##fname##",rsEmail.bodyText)>
@@ -157,35 +157,35 @@ Select EmailID from temails where deliverydate <=<cfqueryparam cfsqltype="cf_sql
 					<cfset TextfieldList=listAppend(TextfieldList,"company","^") />
 					</cfif>
 				</cfif>
-				
+
 				<cfset preBodyHTML = variables.contentRenderer.setDynamicContent(rsemail.bodyhtml)>
 				<cfset preBodyText = variables.contentRenderer.setDynamicContent(rsemail.bodytext)>
-				
+
 				<cfloop query="rsAddresses">
-				
-				<cfif REFindNoCase("^[^@%*<>' ]+@[^@%*<>' ]{1,255}\.[^@%*<>' ]{2,5}", trim(rsAddresses.email)) neq 0 
+
+				<cfif REFindNoCase("^[^@%*<>' ]+@[^@%*<>' ]{1,255}\.[^@%*<>' ]{2,5}", trim(rsAddresses.email)) neq 0
 				and prevEmail neq rsAddresses.email>
 				<cfset unsubscribe="http://#rsemail.domain##variables.configBean.getServerPort()##variables.configBean.getContext()##variables.contentRenderer.getURLStem(rsemail.siteid,rsreturnform.filename)#?email=#rsaddresses.email#&nocache=1">
 				<cfset trackOpen='<img src="http://#variables.settingsManager.getSite(rsEmail.siteid).getDomain("production")##variables.configBean.getServerPort()##variables.configBean.getContext()#/tasks/email/trackOpen.cfm?email=#rsaddresses.email#&emailid=#rsemail.emailid#" style="display:none;">'/>
 				<cfset forward="http://#rsemail.domain##variables.configBean.getServerPort()##variables.configBean.getContext()##variables.contentRenderer.getURLStem(rsemail.siteid,rsforwardform.filename)#?emailid=#rsemail.emailid#&from=#rsaddresses.email#&origin=#rsaddresses.email#&nocache=1">
-				
+
 				<cfset returnParams = "?doaction=return&emailid=#rsemail.emailid#&email=#rsAddresses.email#&nocache=1">
 				<cfset bodyHTML = appendReturnParams(preBodyHTML, returnParams, rsEmail.domain)>
 				<cfset bodyText = preBodyText>
-				
+
 				<cfif rsEmail.format neq "Text">
-					<cfloop list="#HTMLfieldList#" index="f" delimiters="^">	
+					<cfloop list="#HTMLfieldList#" index="f" delimiters="^">
 						<cfset bodyHTML=replace(bodyHTML,"###f###",evaluate("rsAddresses.#f#"),"ALL")>
 					</cfloop>
 				</cfif>
-				
+
 				<cfif rsEmail.format neq "HTML">
-					<cfloop list="#TextfieldList#" index="f" delimiters="^">	
+					<cfloop list="#TextfieldList#" index="f" delimiters="^">
 						<cfset bodyText=replace(bodyText,"###f###",evaluate("rsAddresses.#f#"),"ALL")>
 					</cfloop>
 				</cfif>
-				
-			
+
+
 				<cftry>
 						 <cfswitch expression="#rsemail.format#">
 								<cfcase value="HTML">
@@ -225,8 +225,8 @@ Select EmailID from temails where deliverydate <=<cfqueryparam cfsqltype="cf_sql
 															"mura_BROADCASTER_START#rsemail.EmailID#mura_BROADCASTER_END"
 															) />
 								</cfcase>
-							</cfswitch> 
-							
+							</cfswitch>
+
 						    <cfset track(rsemail.emailID, rsAddresses.email, "sent") />
 						    <cfset prevEmail=rsAddresses.email />
 						    <cfset counter=counter+1 />
@@ -234,10 +234,10 @@ Select EmailID from temails where deliverydate <=<cfqueryparam cfsqltype="cf_sql
 						 <cfset variables.utility.logEvent("EmailID:#rsemail.emailid# Subject:#rsemail.subject# Email#rsAddresses.email# was not sent","mura-mail","Error",true) />
 						 <cfset track(rsEmail.emailid, rsAddresses.email, "bounce") />
 					 </cfcatch>
-				  </cftry> 
+				  </cftry>
 				</cfif>
-				</cfloop>	
-					
+				</cfloop>
+
 				<cfif isnumeric(rsemail.numbersent)>
 				<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 				update temails set status=1, NumberSent=#counter#+numbersent where emailid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#rsEmail.emailID#" />
@@ -247,11 +247,11 @@ Select EmailID from temails where deliverydate <=<cfqueryparam cfsqltype="cf_sql
 				update temails set status=1, NumberSent=#counter# where emailid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#rsEmail.emailID#" />
 				</cfquery>
 				</cfif>
-				
+
 				<cfset variables.utility.logEvent("EmailID:#rsemail.emailid# Subject:#rsemail.subject# was sent","mura-email","Information",true) />
-				
+
 			</cfif>
-		
+
 		</cfloop>
 
 <!--- </cftransaction> --->
@@ -295,18 +295,18 @@ Select EmailID from temails where deliverydate <=<cfqueryparam cfsqltype="cf_sql
 	</cfquery>
 
 	<cfquery name="rsReturnForm" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
-	select filename from tcontent where siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#rsEmail.siteID#" /> and active =1 and ((display=1) or (display=2  and tcontent.DisplayStart <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#"> AND tcontent.DisplayStop >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#">)) 
-	and contenthistid in (select contenthistid from tcontentobjects where object='mailing_list_master')	
+	select filename from tcontent where siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#rsEmail.siteID#" /> and active =1 and ((display=1) or (display=2  and tcontent.DisplayStart <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#"> AND tcontent.DisplayStop >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#">))
+	and contenthistid in (select contenthistid from tcontentobjects where object='mailing_list_master')
 	</cfquery>
-	
+
 	<cfquery name="rsForwardForm" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
-	select filename from tcontent where siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#rsEmail.siteID#" /> and active =1 and ((display=1) or (display=2  and tcontent.DisplayStart <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#"> AND tcontent.DisplayStop >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#">)) 
-	and contenthistid in (select contenthistid from tcontentobjects where object='forward_email')	
+	select filename from tcontent where siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#rsEmail.siteID#" /> and active =1 and ((display=1) or (display=2  and tcontent.DisplayStart <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#"> AND tcontent.DisplayStop >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#">))
+	and contenthistid in (select contenthistid from tcontentobjects where object='forward_email')
 	</cfquery>
-	
+
 				<cfset request.servletEvent = createObject("component","mura.servletEvent").init() />
 				<cfset request.servletEvent.setValue("siteID",rsemail.siteID)/>
-				
+
 				<cfif rsEmail.format neq "Text">
 					<cfif findNoCase("##fname##",rsEmail.bodyhtml)>
 					<cfset HTMLfieldList=listAppend(HTMLfieldList,"fname","^") />
@@ -318,7 +318,7 @@ Select EmailID from temails where deliverydate <=<cfqueryparam cfsqltype="cf_sql
 					<cfset HTMLfieldList=listAppend(HTMLfieldList,"company","^") />
 					</cfif>
 				</cfif>
-				
+
 
 				<cfif rsEmail.format neq "HTML">
 					<cfif findNoCase("##fname##",rsEmail.bodyText)>
@@ -334,24 +334,24 @@ Select EmailID from temails where deliverydate <=<cfqueryparam cfsqltype="cf_sql
 
 				<cfset preBodyHTML = variables.contentRenderer.setDynamicContent(rsemail.bodyhtml)>
 				<cfset preBodyText = variables.contentRenderer.setDynamicContent(rsemail.bodyText)>
-				
+
 				<cfloop list="#arguments.data.to#" index="t">
-				
+
 				<cfif REFindNoCase("^[^@%*<>' ]+@[^@%*<>' ]{1,255}\.[^@%*<>' ]{2,5}", trim(t)) neq 0>
 				<cfset unsubscribe="http://#rsemail.domain##variables.configBean.getServerPort()##variables.configBean.getContext()##variables.contentRenderer.getURLStem(rsemail.siteid,rsreturnform.filename)#?email=#t#&nocache=1">
 				<cfset forward="http://#rsemail.domain##variables.configBean.getServerPort()##variables.configBean.getContext()##variables.contentRenderer.getURLStem(rsemail.siteid,rsforwardform.filename)#?emailid=#rsemail.emailid#&from=#t#&origin=#arguments.data.origin#&nocache=1">
 				<cfset trackOpen='<img src="http://#variables.settingsManager.getSite(rsEmail.siteid).getDomain("production")##variables.configBean.getServerPort()##variables.configBean.getContext()#/tasks/email/trackOpen.cfm?email=#t#&emailid=#rsemail.emailid#" style="display:none;">'/>
 
 				<cfset returnParams = "?doaction=return&emailid=#rsemail.emailid#&email=#t#&nocache=1">
-				<cfset bodyHTML = appendReturnParams(preBodyHTML, returnParams, rsEmail.domain)>		
+				<cfset bodyHTML = appendReturnParams(preBodyHTML, returnParams, rsEmail.domain)>
 				<cfset bodyText = preBodyText>
-				
+
 				<cfif rsEmail.format neq "Text">
-					<cfloop list="#HTMLfieldList#" index="f" delimiters="^">	
+					<cfloop list="#HTMLfieldList#" index="f" delimiters="^">
 						<cfset bodyHTML=replace(bodyHTML,"###f###",evaluate("memberBean.get#f#()"),"ALL")>
 					</cfloop>
 				</cfif>
-				
+
 					<cftry>
 						 <cfswitch expression="#rsemail.format#">
 								<cfcase value="HTML">
@@ -388,14 +388,14 @@ Select EmailID from temails where deliverydate <=<cfqueryparam cfsqltype="cf_sql
 															arguments.data.from
 															) />
 								</cfcase>
-							</cfswitch> 
+							</cfswitch>
 						<cfcatch>
 							<cfset variables.utility.logEvent("#rsemail.subject#^#t#","mura-mail","Error",true) />
 						</cfcatch>
 					</cftry>
 				</cfif>
 		</cfloop>
-					
+
 				<cfif isnumeric(rsemail.numbersent) and listlen(arguments.data.to) gt 0>
 				<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 				update temails set status=1, NumberSent=#listlen(arguments.data.to)#+numbersent where emailid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#rsEmail.emailID#" />
@@ -405,7 +405,7 @@ Select EmailID from temails where deliverydate <=<cfqueryparam cfsqltype="cf_sql
 				update temails set status=1, NumberSent=#listlen(arguments.data.to)# where emailid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#rsEmail.emailID#" />
 				</cfquery>
 				</cfif>
-				
+
 
 </cffunction>
 
@@ -415,11 +415,11 @@ Select EmailID from temails where deliverydate <=<cfqueryparam cfsqltype="cf_sql
 	<cfargument name="type" type="string" required="yes">
 	<cfset var rs=""/>
 	<cfset var returnURL=""/>
-		
+
 	<!--- add a flag for the corresponding action: return, bounce, open --->
 	<cfif arguments.type eq "returnClick" or arguments.type eq "bounce" or arguments.type eq "emailOpen">
 		<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
-			update temailstats 
+			update temailstats
 			set #arguments.type# = 1
 			where emailid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.emailID#" />
 			and email = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.email#" />
@@ -434,20 +434,20 @@ Select EmailID from temails where deliverydate <=<cfqueryparam cfsqltype="cf_sql
 		</cfif>
 		<!--- track what link was clicked --->
 		<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
-			insert into temailreturnstats 
-			(emailid, email, url, created) 
+			insert into temailreturnstats
+			(emailid, email, url, created)
 			VALUES
 			(<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.emailID#" />, <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.email#" />, <cfqueryparam cfsqltype="cf_sql_varchar" value="#returnURL#" />, <cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#">)
 		</cfquery>
 	</cfif>
-	
+
 	<cfif arguments.type eq "sent">
 		<!--- track a sent email --->
 		<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 			Insert Into temailstats (emailid,email,created,#arguments.type#)
 			values(<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.emailID#" />,<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.email#" />,<cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#">,1)
 		</cfquery>
-	</cfif>		
+	</cfif>
 </cffunction>
 
 <cffunction name="trackBounces" output="false" returntype="void">
@@ -467,11 +467,11 @@ Select EmailID from temails where deliverydate <=<cfqueryparam cfsqltype="cf_sql
 	<cfset var ssl=variables.settingsManager.getSite(arguments.siteid).getMailServerSSL() />
 	<cfset var javaSystem="" />
 	<cfset var javaSystemProps="" />
-	
+
 	<cfif listFirst(mailserverip,".") eq "smtp">
 		<cfset mailserverip="pop." & listRest(mailserverip,".") />
 	</cfif>
-	
+
 	<cfif len(mailserverip) and len(mailserverusername) and len(mailserverpassword)>
 	<cftry>
 	<cfif ssl>
@@ -480,18 +480,18 @@ Select EmailID from temails where deliverydate <=<cfqueryparam cfsqltype="cf_sql
 		<cfset javaSystemProps.setProperty("mail.pop3.socketFactory.class", "javax.net.ssl.SSLSocketFactory") />
 	</cfif>
 	<cfpop
-	server="#mailserverip#" 
-	username="#mailserverusername#" 
+	server="#mailserverip#"
+	username="#mailserverusername#"
 	password="#mailserverpassword#"
 	action="getAll"
 	port="#mailserverpopport#"
 	name="getEmail">
 	<cfif ssl>
-		<cfset javaSystemProps.setProperty("mail.pop3.socketFactory.class", "javax.net.SocketFactory") />  
+		<cfset javaSystemProps.setProperty("mail.pop3.socketFactory.class", "javax.net.SocketFactory") />
 	</cfif>
 	<cfset newLine = Chr(13) & Chr(10)>
-	
-	<cfloop query = "getEmail">	
+
+	<cfloop query = "getEmail">
 		<cfset startPos = findNoCase("mura_broadcaster_start", body)>
 		<cfset endPos = findNoCase("mura_broadcaster_end", body)>
 		<cfif startPos gt 0 and endPos gt 0>
@@ -500,45 +500,45 @@ Select EmailID from temails where deliverydate <=<cfqueryparam cfsqltype="cf_sql
 			<cfset emailID = mid(body, startPos, endPos - startPos)>
 			<cfset emailID = trim(emailID)>
 
-			<!--- now get the "to" email" --->			
+			<!--- now get the "to" email" --->
 			<cfset startPos = findNoCase("failed recipient:", body)>
 			<cfset endPos = findNoCase(newLine, body, startPos)>
 			<cfif startPos gt 0 and endPos gt 0>
 				<cfset startPos = startPos + 17>
 				<cfset email = mid(body, startPos, endPos - startPos)>
 				<cfset email = trim(email)>
-				
+
 				<!--- now track the bounce --->
-				<cfset track(emailID, email, "bounce") />				
+				<cfset track(emailID, email, "bounce") />
 			</cfif>
 		</cfif>
 	</cfloop>
-	
-	<!--- get all message UIDs 
+
+	<!--- get all message UIDs
 	<cfset messageList = ValueList(getEmail.uid, ",")>
 	--->
-	
+
 	<!--- delete all the messages that have been processed --->
 	<cfif ssl>
 		<cfset javaSystemProps.setProperty("mail.pop3.socketFactory.class", "javax.net.ssl.SSLSocketFactory") />
 	</cfif>
 	<cfpop
-	server="#mailserverip#" 
-	username="#mailserverusername#" 
+	server="#mailserverip#"
+	username="#mailserverusername#"
 	password="#mailserverpassword#"
 	action="delete"
 	uid="#messageList#">
 	<cfif ssl>
-		<cfset javaSystemProps.setProperty("mail.pop3.socketFactory.class", "javax.net.SocketFactory") />  
+		<cfset javaSystemProps.setProperty("mail.pop3.socketFactory.class", "javax.net.SocketFactory") />
 	</cfif>
 	<cfcatch>
 		<cfif ssl>
-			<cfset javaSystemProps.setProperty("mail.pop3.socketFactory.class", "javax.net.SocketFactory") />  
+			<cfset javaSystemProps.setProperty("mail.pop3.socketFactory.class", "javax.net.SocketFactory") />
 		</cfif>
 	</cfcatch>
 	</cftry>
 	</cfif>
-	
+
 </cffunction>
 
 <cffunction name="getAddresses" returntype="query" access="public">
@@ -553,80 +553,80 @@ Select EmailID from temails where deliverydate <=<cfqueryparam cfsqltype="cf_sql
 
 
 <cfquery name="rsAddressesPre" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
-				
+
 				SELECT DISTINCT tusers.Email, tusers.fname, tusers.lname, tusers.company
 				FROM         tusersmemb INNER JOIN
 							 tusers ON tusersmemb.UserID = tusers.UserID
-				WHERE     
-				<cfif Len(arguments.grouplist)>  
+				WHERE
+				<cfif Len(arguments.grouplist)>
 					tusersmemb.GroupID IN (
 					<cfloop from="1" to="#listlen(arguments.GroupList)#" index="G"><cfqueryparam cfsqltype="cf_sql_varchar" value="#listgetat(arguments.GroupList,G)#" /> <cfif G lt listlen(arguments.GroupList)>,</cfif></cfloop>
 					)
 				<cfelse>
-					0=1  
+					0=1
 				</cfif>
-				
-				AND tusers.InActive = 0 AND tusers.subscribe = 1 
-				
-				
+
+				AND tusers.InActive = 0 AND tusers.subscribe = 1
+
+
 				<cfif len(arguments.grouplist)>
 				Union
-				
+
 				SELECT DISTINCT tusers.Email, tusers.fname, tusers.lname, tusers.company
 				FROM         tusersinterests INNER JOIN
 							 tusers ON tusersinterests.UserID = tusers.UserID
 							 INNER JOIN tcontentcategories ON (tusersinterests.categoryID=tcontentcategories.categoryID)
 				WHERE
-				<cfif Len(arguments.grouplist)>       
+				<cfif Len(arguments.grouplist)>
 					(
 					<cfloop from=1 to="#listLen(arguments.grouplist)#" index="f">
 							tcontentcategories.Path like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#listGetAt(arguments.grouplist,f)#%" />
 							<cfif f lt listLen(arguments.grouplist) > or </cfif>
 					</cfloop>
-					) 
+					)
 				<cfelse>
-					0=1  
+					0=1
 				</cfif>
 				AND tusers.InActive = 0 AND tusers.subscribe = 1
-				</cfif> 
-					
-				Union
-				
-				SELECT DISTINCT tmailinglistmembers.Email, tmailinglistmembers.fname, tmailinglistmembers.lname, tmailinglistmembers.company
-				FROM         tmailinglistmembers   INNER JOIN tmailinglist ON(tmailinglistmembers.mlid=tmailinglist.mlid)               
-				WHERE     
-				<cfif Len(arguments.grouplist)>     
-					tmailinglistmembers.mlid IN (
-					<cfloop from="1" to="#listlen(arguments.GroupList)#" index="G"><cfqueryparam cfsqltype="cf_sql_varchar" value="#listgetat(arguments.GroupList,G)#" /> <cfif G lt listlen(arguments.GroupList)>,</cfif></cfloop>) 
-				<cfelse>
-					0=1  
 				</cfif>
-				AND tmailinglist.siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#" /> 
+
+				Union
+
+				SELECT DISTINCT tmailinglistmembers.Email, tmailinglistmembers.fname, tmailinglistmembers.lname, tmailinglistmembers.company
+				FROM         tmailinglistmembers   INNER JOIN tmailinglist ON(tmailinglistmembers.mlid=tmailinglist.mlid)
+				WHERE
+				<cfif Len(arguments.grouplist)>
+					tmailinglistmembers.mlid IN (
+					<cfloop from="1" to="#listlen(arguments.GroupList)#" index="G"><cfqueryparam cfsqltype="cf_sql_varchar" value="#listgetat(arguments.GroupList,G)#" /> <cfif G lt listlen(arguments.GroupList)>,</cfif></cfloop>)
+				<cfelse>
+					0=1
+				</cfif>
+				AND tmailinglist.siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#" />
 				and tmailinglistmembers.isVerified = 1
 				</cfquery>
-				
+
 				<cfquery name="rsUnsubscribe" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
 				select tmailinglistmembers.email from tmailinglistmembers INNER JOIN tmailinglist ON (tmailinglistmembers.mlid=tmailinglist.mlid)
 				WHERE tmailinglist.ispurge=1 and  tmailinglist.siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#" />
-				
-				union 
-				
-				select email from tusers where 
+
+				union
+
+				select email from tusers where
 					(
 					siteid='#variables.settingsManager.getSite(arguments.siteID).getPublicUserPoolID()#'
 					or siteid='#variables.settingsManager.getSite(arguments.siteID).getPrivateUserPoolID()#'
 					)
 				and subscribe=0
 				</cfquery>
-				
-				
+
+
 				<cfquery name="rsAddresses" dbtype="query">
-				select distinct email, fname, lname, company from rsAddressesPre 
+				select distinct email, fname, lname, company from rsAddressesPre
 				<cfif rsUnsubscribe.recordcount>
 				where email not in (''<cfloop query="rsUnsubscribe">,<cfqueryparam cfsqltype="cf_sql_varchar" value="#rsUnsubscribe.email#" /></cfloop>)
 				</cfif>
 				</cfquery>
-				
+
 				<cfreturn rsAddresses>
 </cffunction>
 
@@ -634,7 +634,7 @@ Select EmailID from temails where deliverydate <=<cfqueryparam cfsqltype="cf_sql
 		<cfargument name="_text" default="" required="yes">
 		<cfargument name="_returnParams" default="" required="yes">
 		<cfargument name="_domain" default="" required="yes">
-		
+
 		<cfset var reg = "<a [^>]*href=""([^""]+)""[^>]*>">
 		<cfset var res = "">
 		<cfset var startPos = 1>
@@ -643,15 +643,15 @@ Select EmailID from temails where deliverydate <=<cfqueryparam cfsqltype="cf_sql
 		<cfset var link = "">
 		<cfset var text=""/>
 		<cfset var domain = "">
-		
+
 		<cfset text = arguments._text>
 		<cfset returnParams = arguments._returnParams>
 		<cfset domain = arguments._domain>
-		
+
 		<cfloop condition="#loop#">
 			<cfset res = REFindNoCase(reg,text,startPos,true)>
 			<cfif res.pos[1] is 0>
-				<!--- no link ---> 
+				<!--- no link --->
 				<cfset loop = false>
 			<cfelse>
 				<!--- search link and saves match on temp variables --->
@@ -672,7 +672,7 @@ Select EmailID from temails where deliverydate <=<cfqueryparam cfsqltype="cf_sql
 				</cfif>
 			</cfif>
 		</cfloop>
-		
+
 		<cfreturn text>
 	</cffunction>
 

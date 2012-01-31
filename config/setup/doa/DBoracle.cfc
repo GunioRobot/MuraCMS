@@ -5,16 +5,16 @@
 		<cfargument name="DatasourceName" required="true" type="string" hint="name of the datasource through which we will need to connect.">
 		<cfargument name="DatabaseName" default="#Application.ApplicationName#" required="false" type="string" hint="name of the database to be created">
 		<cfargument name="sOptions" type="string" default="" hint="additional optons to be passed into data base creation">
-	
+
 		<cfscript>
-			var sErr = "automatic database creation for Oracle is not supported at this time.";		
-			
-			
+			var sErr = "automatic database creation for Oracle is not supported at this time.";
+
+
 			return sErr;
-		</cfscript>		
+		</cfscript>
 	</cffunction>
-	
-	
+
+
 	<cffunction name="fDSCreate" access="package" returntype="String"  hint="creates datasource connection, returns empty string or error">
 		<cfargument name="GWPassword" required="true"  type="string" hint="password for coldfusion or Railo">
 		<cfargument name="DatasourceName" default="#Application.ApplicationName#" type="string" hint="name of the desired datasource. will default to application name.">
@@ -24,14 +24,14 @@
 		<cfargument name="UserName" required="false"  type="string" hint="username is needed for mysql,oracle,mssql">
 		<cfargument name="Password" required="false"  type="string" hint="password is needed for mysql,oracle,mssql">
 		<cfargument name="Description" required="false"  type="string" hint="any descriptive text">
-		
+
 		<cfscript>
 			var sErr = "automatic data source creation for Oracle is not supported at this time.";
-			
-			
-			
+
+
+
 			return sErr;
 		</cfscript>
-		
-	</cffunction>	
+
+	</cffunction>
 </cfcomponent>

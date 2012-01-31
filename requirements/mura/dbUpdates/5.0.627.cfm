@@ -34,27 +34,27 @@ select type from rsCheck where Field='referer'
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 	ALTER TABLE tsessiontracking ADD COLUMN referer2 varchar(255) character set utf8 default NULL
 	</cfquery>
-	
+
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 	UPDATE tsessiontracking SET referer2=left(referer,255)
 	</cfquery>
-	
+
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 	ALTER TABLE tsessiontracking DROP Column referer
 	</cfquery>
-	
+
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 	ALTER TABLE tsessiontracking ADD COLUMN referer varchar(255) character set utf8 default NULL
 	</cfquery>
-	
+
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 	UPDATE tsessiontracking SET referer=referer2
 	</cfquery>
-	
+
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 	ALTER TABLE tsessiontracking DROP Column referer2
 	</cfquery>
-	
+
 </cfif>
 
 </cftransaction>

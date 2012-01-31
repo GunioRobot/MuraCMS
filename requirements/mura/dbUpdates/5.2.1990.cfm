@@ -15,7 +15,7 @@ select parentid from tcontentcomments  where 0=1
 	<cfquery name="MSSQLversion" datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 		EXEC sp_MSgetversion
 	</cfquery>
-	
+
 	<cfset MSSQLversion=left(MSSQLversion.CHARACTER_VALUE,1)>
 
 	<cfif MSSQLversion neq 8>
@@ -52,7 +52,7 @@ select parentid from tcontentcomments  where 0=1
 	ALTER TABLE "TCONTENTCOMMENTS" ADD ("PATH" clob)
 	</cfquery>
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
-	CREATE INDEX "IDX_TCONTENTCOMMENTS_PARENTID" ON "TCONTENTCOMMENTS" ("PARENTID") 
+	CREATE INDEX "IDX_TCONTENTCOMMENTS_PARENTID" ON "TCONTENTCOMMENTS" ("PARENTID")
 	</cfquery>
 </cfcase>
 </cfswitch>
@@ -111,7 +111,7 @@ select params from tcontentobjects  where 0=1
 	<cfquery name="MSSQLversion" datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 		EXEC sp_MSgetversion
 	</cfquery>
-	
+
 	<cfset MSSQLversion=left(MSSQLversion.CHARACTER_VALUE,1)>
 
 	<cfif MSSQLversion gt 8>
@@ -129,8 +129,8 @@ select params from tcontentobjects  where 0=1
 	ALTER TABLE tcontentobjects ALTER COLUMN OrderNo [int] NOT NULL
 	</cfquery>
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
-	ALTER TABLE [dbo].[tcontentobjects] WITH NOCHECK ADD 
-	CONSTRAINT [PK_tcontentobjects] PRIMARY KEY  CLUSTERED 
+	ALTER TABLE [dbo].[tcontentobjects] WITH NOCHECK ADD
+	CONSTRAINT [PK_tcontentobjects] PRIMARY KEY  CLUSTERED
 	(
 		[ContentHistID],
 		[ObjectID],
@@ -194,7 +194,7 @@ select remotePubDate from tcontentcategories  where 0=1
 <cfcase value="oracle">
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 	ALTER TABLE "TCONTENTCATEGORIES" add "REMOTEPUBDATE" DATE
-	</cfquery>	
+	</cfquery>
 </cfcase>
 </cfswitch>
 </cfif>
@@ -225,7 +225,7 @@ select remotePubDate from tcontentfeeds  where 0=1
 <cfcase value="oracle">
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 	ALTER TABLE "TCONTENTFEEDS" add "REMOTEPUBDATE" DATE
-	</cfquery>	
+	</cfquery>
 </cfcase>
 </cfswitch>
 </cfif>

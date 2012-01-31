@@ -26,7 +26,7 @@
 <cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 	update tcontent set majorVersion=0
 </cfquery>
-	
+
 </cfif>
 
 <cfset rsCheck=dbTableColumns("tcontent")>
@@ -57,7 +57,7 @@
 <cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 	update tcontent set minorVersion=0
 </cfquery>
-	
+
 </cfif>
 
 <cfset rsCheck=dbTableColumns("tcontentstats")>
@@ -88,7 +88,7 @@
 <cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 	update tcontentstats set majorVersion=0
 </cfquery>
-	
+
 </cfif>
 
 <cfset rsCheck=dbTableColumns("tcontentstats")>
@@ -119,7 +119,7 @@
 <cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 	update tcontentstats set minorVersion=0
 </cfquery>
-	
+
 </cfif>
 
 <cfset rsCheck=dbTableColumns("tcontentstats")>
@@ -234,7 +234,7 @@
 <cfset dbCreateIndex(table="tcontentcomments",column="remoteid")>
 
 <cfset rsCheck=dbTableColumns("tcontentcomments")>
-	
+
 <cfquery name="rsCheck" dbtype="query">
 	select * from rsCheck where lower(rsCheck.column_name) like 'url'
 </cfquery>
@@ -244,7 +244,7 @@
 <cfcase value="mssql">
 	<cftry>
 		<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
-		ALTER TABLE tcontentcomments ALTER COLUMN url nvarchar(255) 
+		ALTER TABLE tcontentcomments ALTER COLUMN url nvarchar(255)
 		</cfquery>
 		<cfcatch></cfcatch>
 	</cftry>
@@ -268,5 +268,5 @@
 	ALTER TABLE tcontentcomments drop column url2
 	</cfquery>
 </cfcase>
-</cfswitch>	
+</cfswitch>
 </cfif>

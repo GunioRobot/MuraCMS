@@ -1,38 +1,38 @@
 <!---
- 
+
   Copyright (c) 2005, David Ross, Chris Scott, Kurt Wiersma, Sean Corfield
-  
+
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
   You may obtain a copy of the License at
-  
+
        http://www.apache.org/licenses/LICENSE-2.0
-  
+
   Unless required by applicable law or agreed to in writing, software
   distributed under the License is distributed on an "AS IS" BASIS,
   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
   See the License for the specific language governing permissions and
   limitations under the License.
-		
-			
+
+
  $Id: flashUtilityService.cfc,v 1.8 2006/04/04 04:23:02 simb Exp $
 
 --->
 
 <cfcomponent>
-		
+
 	<cffunction name="setFlashMappings" access="public" returntype="void" output="false">
 		<cfargument name="flashMappings" type="coldspring.remoting.flash.flashMappings" required="true">
 		<cfset variables.mappings = arguments.flashMappings/>
 	</cffunction>
-	
+
 	<cffunction name="addMapping" access="public" returntype="void" output="false">
 		<cfargument name="cfcType" type="string" required="true">
-		<cfargument name="flashType" type="string" required="true">	
-		<cfargument name="instanceDataMethod" type="string" required="false" default="getTO">	
+		<cfargument name="flashType" type="string" required="true">
+		<cfargument name="instanceDataMethod" type="string" required="false" default="getTO">
 		<cfset variables.mappings.addMapping(arguments.cfcType,arguments.flashType,arguments.instanceDataMethod)>
 	</cffunction>
-	
+
 	<cffunction name="processServiceMethodResult" returntype="any" access="public" output="false" hint="">
 		<cfargument name="result" type="any" required="true" />
 		<cfset var aresult = 0>
@@ -43,7 +43,7 @@
 		</cfif>
 		<cfreturn aresult />
 	</cffunction>
-	
+
 	<cffunction name="mapToASObject" returntype="struct" access="private" output="false">
 		<cfargument name="result" type="any" required="true" />
 		<cfset var asObject = CreateObject("java", "flashgateway.io.ASObject").init()>
@@ -128,10 +128,10 @@
 			</cfif>
 		</cfloop>
 		<cftrace text="data.getType() = #data.getType()#">
-		<cfset result = createObject("component", mappings.getCFCType(data.getType())).init(argumentCollection=resultData)>		
+		<cfset result = createObject("component", mappings.getCFCType(data.getType())).init(argumentCollection=resultData)>
 		<cfreturn result>
 	</cffunction>
-	
+
 	<cffunction name="processServiceMethodParams" returntype="struct" access="private" output="false">
 		<cfargument name="params" type="struct" required="true" hint=""/>
 		<cfset var args = StructNew()>
@@ -149,5 +149,5 @@
 		</cfloop>
 		<cfreturn args/>
 	</cffunction>
-	
+
 </cfcomponent>

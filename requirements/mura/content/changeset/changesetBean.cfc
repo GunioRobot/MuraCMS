@@ -15,7 +15,7 @@
 <cfproperty name="isNew" type="numeric" default="1" required="true" />
 
 <cffunction name="init" output="false">
-	
+
 	<cfset super.init(argumentCollection=arguments)>
 
 	<cfset variables.instance.changesetID="">
@@ -32,7 +32,7 @@
 	<cfset variables.instance.lastUpdateBy=""/>
 	<cfset variables.instance.isNew=1 />
 	<cfset variables.instance.errors=structNew()>
-	
+
 	<cfif isDefined("session.mura") and session.mura.isLoggedIn>
 		<cfset variables.instance.LastUpdateBy = left(session.mura.fname & " " & session.mura.lname,50) />
 		<cfset variables.instance.LastUpdateByID = session.mura.userID />
@@ -40,7 +40,7 @@
 		<cfset variables.instance.LastUpdateBy = "" />
 		<cfset variables.instance.LastUpdateByID = "" />
 	</cfif>
-	
+
 	<cfreturn this>
 </cffunction>
 
@@ -55,45 +55,45 @@
 
 		<cfset var prop="" />
 		<cfset var publishhour="">
-		
+
 		<cfif isquery(arguments.data)>
 			<cfloop list="#arguments.data.columnlist#" index="prop">
 				<cfset setValue(prop,arguments.data[prop][1]) />
 			</cfloop>
-			
+
 		<cfelseif isStruct(arguments.data)>
-		
+
 			<cfloop collection="#arguments.data#" item="prop">
 				<cfset setValue(prop,arguments.data[prop]) />
 			</cfloop>
-			
+
 			<cfif isDate(variables.instance.publishDate)>
-				
+
 				<cfif isdefined("arguments.data.publishhour")
 				and isdefined("arguments.data.publishMinute")
 				and isdefined("arguments.data.publishDayPart")>
-				
+
 					<cfif arguments.data.publishdaypart eq "PM">
 						<cfset publishhour = arguments.data.publishhour + 12>
-						
+
 						<cfif publishhour eq 24>
 							<cfset publishhour = 12>
 						</cfif>
 					<cfelse>
 						<cfset publishhour = arguments.data.publishhour>
-						
+
 						<cfif publishhour eq 12>
 							<cfset publishhour = 0>
 						</cfif>
 					</cfif>
-					
+
 					<cfset setpublishDate(createDateTime(year(variables.instance.publishDate), month(variables.instance.publishDate), day(variables.instance.publishDate), publishhour, arguments.data.publishMinute, "0"))>
-			
+
 				</cfif>
 			</cfif>
-			
+
 		</cfif>
-		
+
 		<cfreturn this />
   </cffunction>
 
@@ -150,9 +150,9 @@
 	<cfif not structKeyExists(arguments,"siteID")>
 		<cfset arguments.siteID=variables.instance.siteID>
 	</cfif>
-	
+
 	<cfset arguments.changesetBean=this>
-	
+
 	<cfreturn variables.changesetManager.read(argumentCollection=arguments)>
 </cffunction>
 

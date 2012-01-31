@@ -20,7 +20,7 @@ function effectFunction()
 {
 	Effect.toggle($("favoriteListMore"), 'blind', {duration: '.1'});
 	return false;
-	
+
 }
 
 function saveFavorite(userID, siteID, favoriteName, favoriteLocation, favoriteType)
@@ -38,7 +38,7 @@ function saveFavorite(userID, siteID, favoriteName, favoriteLocation, favoriteTy
 
 function showSaveFavoriteResponse(originalRequest)
 {
-	
+
 	var r = eval( '(' + originalRequest.responseText + ')' );
 	var iid = r.lid;
 	var mover=document.createElement("DIV");
@@ -51,8 +51,8 @@ function showSaveFavoriteResponse(originalRequest)
 	new Insertion.Before($("favoriteList").childNodes[0], mover.innerHTML);
 	new Effect.Fade($("favoriteTip"));
 	new Effect.Appear($("favorite" + iid));
-	
-		
+
+
 }
 
 function showDeleteFavoriteResponse(originalRequest)
@@ -76,10 +76,10 @@ function deleteFavorite(favoriteID, id)
 	new Effect.Fade($(id));
 	new Element.remove($(id));
 	if (favoriteID == currentPageFavoriteID)
-	{	
+	{
 		currentPageFavoriteID='';
 		new Effect.Appear($("addFavorite"));
 	}
-		
+
 	return false;
 }

@@ -11,7 +11,7 @@ CKEDITOR.plugins.add( 'Selectlink',
 			});
 		var selectLinkCommand = editor.addCommand( 'Selectlink', new CKEDITOR.dialogCommand( 'Selectlink' ) );
 		selectLinkCommand.canUndo = false;
-		
+
 		//CKEDITOR.dialog.addIframe( 'Selectlink', 'Select Link', this.path + 'fck_selectlink.cfm', 400, 400, function() {});
 		var me = this;
 		CKEDITOR.dialog.add( 'Selectlink', function () {
@@ -48,14 +48,14 @@ CKEDITOR.plugins.add( 'Selectlink',
 
 					var theChoice = -1,
 						theLink;
-					
+
 					if(iframeWindow.document.frmLinks.theLinks.length == undefined) {
-						theChoice = 0; 
+						theChoice = 0;
 						theLink = iframeWindow.document.forms.frmLinks.theLinks.value.split("^");
 					} else {
 						for (counter = 0; counter < iframeWindow.document.frmLinks.theLinks.length; counter++) {
 							if (iframeWindow.document.frmLinks.theLinks[counter].checked) {
-								theChoice = counter; 
+								theChoice = counter;
 								theLink = iframeWindow.document.forms.frmLinks.theLinks[theChoice].value.split("^");
 							}
 						}
@@ -66,7 +66,7 @@ CKEDITOR.plugins.add( 'Selectlink',
 						var editor = this._.editor,
 							selection = editor.getSelection(),
 							ranges = selection.getRanges( true );
-						
+
 						if ( ranges.length == 1 && ranges[0].collapsed )
 						{
 							var text = new CKEDITOR.dom.text( theLink[1], editor.document );
@@ -74,7 +74,7 @@ CKEDITOR.plugins.add( 'Selectlink',
 							ranges[0].selectNodeContents( text );
 							selection.selectRanges( ranges );
 						}
-						
+
 						var style = new CKEDITOR.style( {
 							element : 'a',
 							attributes : {

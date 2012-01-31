@@ -21,14 +21,14 @@
 			var sDSNPara ="";
 			var sDSN=""; //empty to start
 			//example
-			//jdbc:mysql://myServer:3306/myDatabase?useUnicode=true&autoReconnect=true&useOldAliasMetadataBehavior=false&zeroDateTimeBehavior=exception&characterEncoding=UTF-8&allowMultiQueries=true&jdbcCompliantTruncation=true 
-				
+			//jdbc:mysql://myServer:3306/myDatabase?useUnicode=true&autoReconnect=true&useOldAliasMetadataBehavior=false&zeroDateTimeBehavior=exception&characterEncoding=UTF-8&allowMultiQueries=true&jdbcCompliantTruncation=true
+
 			//set DSN rest string
 			sDSNPara="?useUnicode=true&autoReconnect=true&useOldAliasMetadataBehavior=true&zeroDateTimeBehavior=exception&characterEncoding=UTF-8&allowMultiQueries=true&jdbcCompliantTruncation=true";
-				
+
 		</cfscript>
-		
-	
+
+
 		<cftry>
 			<cfif Arguments.bCreateDB>
 				<!--- create datasource connection to information_schema first, create DB, then change datasource to point newly recreated database (bsoylu 12/13/2010) --->
@@ -40,16 +40,16 @@
 				    classname="#sClass#"
 				    dsn="#sDSN#"
 				    name="MuraIntermediate"
-				    newName="MuraIntermediateDatasource"    
+				    newName="MuraIntermediateDatasource"
 				    dbusername="#Arguments.UserName#"
-				    dbpassword="#Arguments.Password#"        
-				    >	
-				<!--- create database now (bsoylu 12/13/2010) --->	
+				    dbpassword="#Arguments.Password#"
+				    >
+				<!--- create database now (bsoylu 12/13/2010) --->
 				<cfscript>
 					stcA2.DatasourceName = "MuraIntermediateDatasource";
 					stcA2.DataBaseName = Arguments.DatabaseName;
 					sErr=super.fDBCreate(argumentCollection=stcA2);
-				</cfscript>	
+				</cfscript>
 				<!--- delete intermediate datasource connection (bsoylu 12/18/2010) --->
 				<cfadmin
 				    action="removeDatasource"
@@ -57,7 +57,7 @@
 				    password="#Arguments.GWPassword#"
 				    name="MuraIntermediateDatasource"
 				    >
-				
+
 				<!--- repoint datasource to new database (bsoylu 12/13/2010) --->
 				<cfif sErr IS "">
 					<cfset sDSN= sDSNServer & "#Arguments.DatabaseName#" & sDSNPara>
@@ -68,13 +68,13 @@
 					    classname="#sClass#"
 					    dsn="#sDSN#"
 					    name="#Arguments.DatasourceName#"
-					    newName="#Arguments.DatasourceName#"    
+					    newName="#Arguments.DatasourceName#"
 					    dbusername="#Arguments.UserName#"
-					    dbpassword="#Arguments.Password#"        
-					    >					
-				
-				</cfif>		
-			
+					    dbpassword="#Arguments.Password#"
+					    >
+
+				</cfif>
+
 			<cfelse>
 				<!--- no creation of database just the datasource (bsoylu 12/13/2010) --->
 				<cfadmin
@@ -84,22 +84,22 @@
 				    classname="#sClass#"
 				    dsn="#sDSN#"
 				    name="#Arguments.DatabaseName#"
-				    newName="#Arguments.DatabaseName#"    
+				    newName="#Arguments.DatabaseName#"
 				    dbusername="#Arguments.UserName#"
-				    dbpassword="#Arguments.Password#"        
-				    >					
+				    dbpassword="#Arguments.Password#"
+				    >
 			</cfif>
 
-		
+
 			<cfcatch type="any">
 				<cfset sErr="Error during creation of MySQL datbase: #cfcatch.message# - #cfcatch.detail#">
-			
+
 			</cfcatch>
-		
+
 		</cftry>
-		
+
 		<cfreturn sErr>
-		
-	</cffunction>	
-	
+
+	</cffunction>
+
 </cfcomponent>

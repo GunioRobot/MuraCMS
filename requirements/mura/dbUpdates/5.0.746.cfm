@@ -38,13 +38,13 @@ select * from tcontentcomments testSubscribe where 0=1
 <cfswitch expression="#getDbType()#">
 <cfcase value="mssql">
 <cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
-ALTER TABLE tcontentcomments ADD subscribe tinyint 
+ALTER TABLE tcontentcomments ADD subscribe tinyint
 </cfquery>
 </cfcase>
 <cfcase value="mysql">
 	<cftry>
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
-	ALTER TABLE tcontentcomments ADD COLUMN subscribe tinyint(3) 
+	ALTER TABLE tcontentcomments ADD COLUMN subscribe tinyint(3)
 	</cfquery>
 	<cfcatch>
 			<!--- H2 --->
@@ -97,13 +97,13 @@ select * from tcontent testDoCache where 0=1
 <cfswitch expression="#getDbType()#">
 <cfcase value="mssql">
 <cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
-ALTER TABLE tcontent ADD doCache tinyint 
+ALTER TABLE tcontent ADD doCache tinyint
 </cfquery>
 </cfcase>
 <cfcase value="mysql">
 	<cftry>
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
-	ALTER TABLE tcontent ADD COLUMN doCache tinyint(3) 
+	ALTER TABLE tcontent ADD COLUMN doCache tinyint(3)
 	</cfquery>
 	<cfcatch>
 			<!--- H2 --->

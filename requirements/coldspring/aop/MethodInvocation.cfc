@@ -1,14 +1,14 @@
 <!---
-	  
+
   Copyright (c) 2005, Chris Scott, David Ross, Kurt Wiersma, Sean Corfield
   All rights reserved.
-	
+
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
   You may obtain a copy of the License at
-  
+
        http://www.apache.org/licenses/LICENSE-2.0
-  
+
   Unless required by applicable law or agreed to in writing, software
   distributed under the License is distributed on an "AS IS" BASIS,
   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -29,29 +29,29 @@
  Revision 1.3  2005/10/09 22:45:24  scottc
  Forgot to add Dave to AOP license
 
-	
----> 
- 
-<cfcomponent name="MethodInvocation" 
-			displayname="MethodInvocation" 
-			hint="Base Class for Method Invokation, joinpoint for Method Interceptors" 
+
+--->
+
+<cfcomponent name="MethodInvocation"
+			displayname="MethodInvocation"
+			hint="Base Class for Method Invokation, joinpoint for Method Interceptors"
 			output="false">
-			
+
 	<cffunction name="init" access="public" returntype="coldspring.aop.MethodInvocation" output="false">
 		<cfargument name="method" type="coldspring.aop.Method" required="true" />
 		<cfargument name="args" type="struct" required="true" />
 		<cfargument name="target" type="any" required="true" />
 		<cfargument name="interceptors" type="struct" required="true" />
-		
+
 		<cfset variables.method = arguments.method />
 		<cfset variables.args = arguments.args />
 		<cfset variables.target = arguments.target />
 		<cfset variables.interceptors = arguments.interceptors />
 		<cfset variables.currentInterceptor = 0 />
-		
+
 		<cfreturn this />
 	</cffunction>
-	
+
 	<cffunction name="proceed" access="public" returntype="any">
 		<cfset var nextInterceptorIndex = 0 />
 		<cfset var nextInterceptor = 0 />
@@ -67,7 +67,7 @@
 			<cfreturn variables.method.proceed() />
 		</cfif>
 		<!--- <cfset var rtn = 0 />
-		
+
 		continue with interceptor chain or call method to proceed
 		<cfif StructKeyExists(variables,"methodInterceptor")>
 			<cfset rtn = variables.methodInterceptor.invokeMethod(variables.nextInvocation) />
@@ -79,17 +79,17 @@
 			<cfreturn rtn />
 		</cfif> --->
 	</cffunction>
-	
+
 	<cffunction name="getMethod" access="public" returntype="coldspring.aop.Method" output="false">
 		<cfreturn variables.method />
 	</cffunction>
-	
+
 	<cffunction name="getArguments" access="public" returntype="struct" output="false">
 		<cfreturn variables.args />
 	</cffunction>
-	
+
 	<cffunction name="getTarget" access="public" returntype="struct" output="false">
 		<cfreturn variables.target />
 	</cffunction>
-	
+
 </cfcomponent>

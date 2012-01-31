@@ -14,7 +14,7 @@
     	<cfscript>
     		_setBaseCssUrl( arguments.baseCssUrl );
     		_setBaseCssPath( arguments.baseCssPath );
-			
+
     		return this;
     	</cfscript>
     </cffunction>
@@ -34,26 +34,26 @@
 			var fullUrl = "";
 			var base64Encoded = "";
 			var imageMimeType = "";
-						
+
 			if(StructKeyExists(imageReferences, '$1') and ArrayLen(imageReferences.$1)){
 				imageReferences = imageReferences.$1;
 
 				for(i=1; i LTE ArrayLen(imageReferences); i++){
 					// remove quotes around url() image paths (there's probably a neater regex way to do it but hey)
 					img = Replace(Replace(imageReferences[i], '"', '', 'all'), "'", "", "all");
-					
+
 					if( arguments.embedImagesRegex EQ 'all' or (arguments.embedImagesRegex NEQ 'none' and ReFindNoCase( embedImagesRegex, img ) )){
 						base64Encoded = _calculateBase64String(img, arguments.filePath);
 						imageMimeType = _calculateMimeType(img);
 						finalCss = Replace(finalCss, 'url(#imageReferences[i]#)', 'url(data:#imageMimeType#;base64,#base64Encoded#)', 'all');
-						
+
 					} else {
 						fullUrl = _calculateFullUrl(img, arguments.filePath);
 						finalCss = Replace(finalCss, 'url(#imageReferences[i]#)', 'url(#fullUrl#)', 'all');
 					}
 				}
 			}
-	
+
 			return finalCss;
 		</cfscript>
     </cffunction>
@@ -62,7 +62,7 @@
 	<cffunction name="_calculateFullUrl" access="public" returntype="string" output="false" hint="I calculate the full path from a relative image path, appending a cachebuster based on the last modified date of the image file">
 		<cfargument name="relativeUrl" type="string" required="true" />
 		<cfargument name="cssFilePath" type="string" required="true" />
-		
+
 		<cfscript>
 			var fullUrl = arguments.relativeUrl;
 			var lastModified = "";
@@ -73,7 +73,7 @@
 			var imageLastModified = "";
 			var cacheBuster = "";
 			var i = 0;
-			
+
 			// ignore non relative paths
 			if( Left(arguments.relativeUrl, 1) NEQ '/' AND NOT ReFindNoCase('^(http|https)://', arguments.relativeUrl) ){
 				cssFileUrl = _getBaseCssUrl() & Replace(GetDirectoryFromPath(cssFilePath), _getBaseCssPath(), '');
@@ -89,14 +89,14 @@
 				for(i=1; i LTE nTraversals; i++){
 					cssFileUrl = ListDeleteAt(cssFileUrl, ListLen(cssFileUrl, '/'), '/');
 				}
-				
+
 				// build the full url without relative paths
 				if( nTraversals ){
 					fullUrl = $listAppend(cssFileUrl, Replace(arguments.relativeUrl, RepeatString('../', nTraversals), ''), '/');
 				} else {
 					fullUrl = $listAppend(cssFileUrl, arguments.relativeUrl, '/' );
 				}
-				
+
 				// calculate a cache buster if we can
 				imagePath = $listAppend(getDirectoryFromPath(arguments.cssFilePath), arguments.relativeUrl, '/');
 				if(FileExists(imagePath)){
@@ -105,7 +105,7 @@
 					fullUrl = fullUrl & '?' & cacheBuster;
 				}
 			}
-			
+
 			return fullUrl;
 		</cfscript>
     </cffunction>
@@ -138,7 +138,7 @@
     		}
     	</cfscript>
     </cffunction>
-    	
+
 <!--- accessors --->
 	<cffunction name="_getBaseCssPath" access="private" returntype="string" output="false">
     	<cfreturn _baseCssPath />
@@ -147,7 +147,7 @@
     	<cfargument name="baseCssPath" type="string" required="true" />
     	<cfset _baseCssPath = arguments.baseCssPath />
     </cffunction>
-	
+
 	<cffunction name="_getBaseCssUrl" access="private" returntype="string" output="false">
     	<cfreturn _baseCssUrl />
     </cffunction>
@@ -155,5 +155,5 @@
     	<cfargument name="baseCssUrl" type="string" required="true" />
     	<cfset _baseCssUrl = arguments.baseCssUrl />
     </cffunction>
-    
+
 </cfcomponent>

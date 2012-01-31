@@ -12,17 +12,17 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Mura CMS. If not, see <http://www.gnu.org/licenses/>.
 
-Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on 
+Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on
 Mura CMS. Thus, the terms and conditions of the GNU General Public License version 2 ("GPL") cover the entire combined work.
 
 However, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with programs
 or libraries that are released under the GNU Lesser General Public License version 2.1.
 
-In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with 
-independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without 
-Mura CMS under the license of your choice, provided that you follow these specific guidelines: 
+In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with
+independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without
+Mura CMS under the license of your choice, provided that you follow these specific guidelines:
 
-Your custom code 
+Your custom code
 
 • Must not alter any default objects in the Mura CMS database and
 • May not alter the default display of the Mura CMS logo within Mura CMS and
@@ -36,12 +36,12 @@ Your custom code
  /index.cfm
  /MuraProxy.cfc
 
-You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work 
-under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL 
+You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work
+under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL
 requires distribution of source code.
 
-For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your 
-modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
+For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your
+modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 <cfcomponent extends="mura.bean.bean" output="false">
@@ -110,12 +110,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfproperty name="siteLocale" type="string" default="" required="true" />
 <cfproperty name="hasChangesets" type="numeric" default="0" required="true" />
 <cfproperty name="theme" type="string" default="" required="true" />
-<cfproperty name="javaLocale" type="string" default="" required="true" /> 
+<cfproperty name="javaLocale" type="string" default="" required="true" />
 
 <cffunction name="init" returntype="any" output="false" access="public">
-	
+
 	<cfset super.init(argumentCollection=arguments)>
-	
+
 	<cfset variables.instance.SiteID=""/>
 	<cfset variables.instance.Site=""/>
 	<cfset variables.instance.TagLine=""/>
@@ -176,34 +176,34 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset variables.instance.exportLocation=""/>
 	<cfset variables.instance.loginURL=""/>
 	<cfset variables.instance.editProfileURL=""/>
-	<cfset variables.instance.commentApprovalDefault=1/>  
-	<cfset variables.instance.deploy=1/>  
+	<cfset variables.instance.commentApprovalDefault=1/>
+	<cfset variables.instance.deploy=1/>
 	<cfset variables.instance.lastDeployment=""/>
 	<cfset variables.instance.accountActivationScript=""/>
 	<cfset variables.instance.googleAPIKey=""/>
 	<cfset variables.instance.siteLocale=""/>
-	<cfset variables.instance.rbFactory=""/>    
+	<cfset variables.instance.rbFactory=""/>
 	<cfset variables.instance.javaLocale=""/>
-	<cfset variables.instance.jsDateKey=""/>  
-	<cfset variables.instance.theme=""/> 
+	<cfset variables.instance.jsDateKey=""/>
+	<cfset variables.instance.theme=""/>
 	<cfset variables.instance.contentRenderer=""/>
 	<cfset variables.instance.themeRenderer=""/>
 	<cfset variables.instance.hasChangesets=0/>
-	
+
 	<cfreturn this />
 </cffunction>
 
 <cffunction name="validate" access="public" output="false">
 	<cfset variables.instance.errors=structnew() />
-	
+
 	<cfif variables.instance.siteID eq "">
 		<cfset variables.instance.errors.siteid="The 'SiteID' variable is required." />
 	</cfif>
-	
+
 	<cfif variables.instance.siteID eq "admin" or variables.instance.siteID eq "tasks">
 		<cfset variables.instance.errors.siteid="The 'SiteID' variable is invalid." />
 	</cfif>
-	
+
 	<!---
 	<cfif not getBean('utility').isValidCFVariableName(variables.instance.siteID)>
 		<cfset variables.instance.errors.siteid="The 'SiteID' variable is invalid." />
@@ -219,26 +219,26 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfloop list="#arguments.data.columnlist#" index="prop">
 			<cfset setValue(prop,arguments.data[prop][1]) />
 		</cfloop>
-			
+
 	<cfelseif isStruct(arguments.data)>
 		<cfloop collection="#arguments.data#" item="prop">
 			<cfset setValue(prop,arguments.data[prop]) />
 		</cfloop>
-				
+
 	</cfif>
-		
+
 	<cfif variables.instance.privateUserPoolID eq ''>
 		<cfset variables.instance.privateUserPoolID=variables.instance.siteID />
 	</cfif>
-			
+
 	<cfif variables.instance.publicUserPoolID eq ''>
 		<cfset variables.instance.publicUserPoolID=variables.instance.siteID />
 	</cfif>
-			
+
 	<cfif variables.instance.advertiserUserPoolID eq ''>
 		<cfset variables.instance.advertiserUserPoolID=variables.instance.siteID />
 	</cfif>
-			
+
 	<cfif variables.instance.displayPoolID eq ''>
 		<cfset variables.instance.displayPoolID=variables.instance.siteID />
 	</cfif>
@@ -255,7 +255,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="getDomain" returntype="String" access="public" output="false">
 	<cfargument name="mode" type="String" required="true" default="#application.configBean.getMode()#" />
-	
+
 	<cfif arguments.mode eq 'Staging'>
 		<cfif len(application.configBean.getAdminDomain())>
 			<cfreturn application.configBean.getAdminDomain() />
@@ -288,9 +288,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="setMailServerUsernameEmail" access="public" output="false">
 	<cfargument name="MailServerUsernameEmail" type="String" />
 
-	<cfif find("@",arguments.MailServerUsernameEmail)>	
-		<cfset variables.instance.MailServerUsernameEmail=arguments.MailServerUsernameEmail />	
-	<cfelseif find("+",arguments.MailServerUsernameEmail)>		
+	<cfif find("@",arguments.MailServerUsernameEmail)>
+		<cfset variables.instance.MailServerUsernameEmail=arguments.MailServerUsernameEmail />
+	<cfelseif find("+",arguments.MailServerUsernameEmail)>
 			<cfset variables.instance.MailServerUsernameEmail=replace(arguments.MailServerUsernameEmail,"+","@") />
 	<cfelseif len(arguments.MailServerUsernameEmail)>
 		<cfset variables.instance.MailServerUsernameEmail=arguments.MailServerUsernameEmail & "@" & listRest(variables.instance.MailServerIP,".") />
@@ -358,9 +358,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="getLoginURL" returntype="String" access="public" output="false">
 	<cfargument name="parseMuraTag" default="true">
-	
+
 	<cfif variables.instance.loginURL neq ''>
-		<cfif arguments.parseMuraTag>	
+		<cfif arguments.parseMuraTag>
 			<cfreturn getContentRenderer().setDynamicContent(variables.instance.LoginURL) />
 		<cfelse>
 			<cfreturn variables.instance.LoginURL />
@@ -373,7 +373,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="getEditProfileURL" returntype="String" access="public" output="false">
 	<cfargument name="parseMuraTag" default="true">
 	<cfif variables.instance.EditProfileURL neq ''>
-		<cfif arguments.parseMuraTag>	
+		<cfif arguments.parseMuraTag>
 			<cfreturn getContentRenderer().setDynamicContent(variables.instance.EditProfileURL) />
 		<cfelse>
 			<cfreturn variables.instance.EditProfileURL />
@@ -431,15 +431,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="getCacheFactory" returntype="any" access="public" output="false">
 	<cfargument name="name"default="output" hint="data or output">
-		
+
 	<cfif not isDefined("arguments.name")>
 		<cfset arguments.name="output">
 	</cfif>
-	
+
 	<cfif not isDefined("variables.instance.cacheFactories")>
 		<cfset variables.instance.cacheFactories=structNew()>
 	</cfif>
-	
+
 	<cfif structKeyExists(variables.instance.cacheFactories,arguments.name)>
 		<cfreturn variables.instance.cacheFactories["#arguments.name#"] />
 	<cfelse>
@@ -450,7 +450,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfif>
 		<cfreturn variables.instance.cacheFactories["#arguments.name#"] />
 	</cfif>
-	
+
 </cffunction>
 
 <cffunction name="purgeCache" access="public" output="false">
@@ -520,7 +520,7 @@ s
 
 <cffunction name="getThemeAssetPath" returntype="any" access="public" output="false">
 	<cfargument name="theme" default="#request.altTheme#">
-	
+
 	<cfif len(arguments.theme) and directoryExists(getTemplateIncludeDir(arguments.theme))>
 		<cfreturn "#getAssetPath()#/includes/themes/#arguments.theme#" />
 	<cfelseif len(variables.instance.theme)>
@@ -532,7 +532,7 @@ s
 
 <cffunction name="getThemeIncludePath" returntype="any" access="public" output="false">
 	<cfargument name="theme" default="#request.altTheme#">
-	
+
 	<cfif len(arguments.theme) and directoryExists(getTemplateIncludeDir(arguments.theme))>
 		<cfreturn "#getIncludePath()#/includes/themes/#theme#" />
 	<cfelseif len(variables.instance.theme)>
@@ -544,7 +544,7 @@ s
 
 <cffunction name="getThemeAssetMap" returntype="any" access="public" output="false">
 	<cfargument name="theme" default="#request.altTheme#">
-	
+
 	<cfif len(arguments.theme) and directoryExists(getTemplateIncludeDir(arguments.theme))>
 		<cfreturn "#getAssetMap()#.includes.themes.#arguments.theme#" />
 	<cfelseif len(variables.instance.theme)>
@@ -556,7 +556,7 @@ s
 
 <cffunction name="getTemplateIncludePath" returntype="any" access="public" output="false">
 	<cfargument name="theme" default="#request.altTheme#">
-	
+
 	<cfif len(arguments.theme) and directoryExists(getTemplateIncludeDir(arguments.theme))>
 		<cfreturn "#getIncludePath()#/includes/themes/#arguments.theme#/templates" />
 	<cfelseif len(variables.instance.theme)>
@@ -572,7 +572,7 @@ s
 
 <cffunction name="getTemplateIncludeDir" returntype="any" access="public" output="false">
 	<cfargument name="theme" default="#request.altTheme#">
-	
+
 	<cfif len(arguments.theme)>
 		<cfreturn "#expandPath('/#getBean("configBean").getWebRootMap()#')#/#variables.instance.displayPoolID#/includes/themes/#arguments.theme#/templates">
 	<cfelseif len(variables.instance.theme)>
@@ -585,19 +585,19 @@ s
 <cffunction name="getThemes" returntype="query" access="public" output="false">
 	<cfset var rs = "">
 	<cfset var themeDir="">
-	
+
 	<cfif len(variables.instance.displayPoolID)>
 		<cfset themeDir="#expandPath('/#getBean("configBean").getWebRootMap()#')#/#variables.instance.displayPoolID#/includes/themes">
 	<cfelse>
 		<cfset themeDir="#expandPath('/#getBean("configBean").getWebRootMap()#')#/default/includes/themes">
 	</cfif>
-	
+
 	<cfdirectory action="list" directory="#themeDir#" name="rs">
-	
+
 	<cfquery name="rs" dbtype="query">
 	select * from rs where type='Dir' and name not like '%.svn'
 	</cfquery>
-	
+
 	<cfreturn rs />
 </cffunction>
 
@@ -605,12 +605,12 @@ s
 	<cfargument name="type" required="true" default="">
 	<cfset var rs = "">
 	<cfset var dir="">
-	
+
 	<cfswitch expression="#arguments.type#">
 	<cfcase value="Component">
-		
+
 		<cfset dir="#getTemplateIncludeDir()#/#lcase(arguments.type)#s">
-		
+
 		<cfif directoryExists(dir)>
 			<cfdirectory action="list" directory="#dir#" name="rs" filter="*.cfm">
 			<cfquery name="rs" dbType="query">
@@ -621,14 +621,14 @@ s
 		</cfif>
 	</cfcase>
 	<cfdefaultcase>
-		
+
 		<cfdirectory action="list" directory="#getTemplateIncludeDir()#" name="rs" filter="*.cfm">
 		<cfquery name="rs" dbType="query">
 			select * from rs order by name
 		</cfquery>
 	</cfdefaultcase>
 	</cfswitch>
-	
+
 	<cfreturn rs />
 </cffunction>
 
@@ -637,7 +637,7 @@ s
 	<cfargument name="mode" required="true" default="either">
 	<cfset var i="">
 	<cfset var lineBreak=chr(13)&chr(10)>
-	
+
 	<cfif arguments.mode neq "partial">
 		<cfif arguments.domain eq getDomain()>
 			<cfreturn true>
@@ -649,7 +649,7 @@ s
 			</cfloop>
 		</cfif>
 	</cfif>
-	
+
 	<cfif arguments.mode neq "complete">
 		<cfif find(arguments.domain,getDomain())>
 			<cfreturn true>
@@ -708,9 +708,9 @@ s
 	<cfif not structKeyExists(arguments,"siteID")>
 		<cfset arguments.siteID=variables.instance.siteID>
 	</cfif>
-	
+
 	<cfset arguments.settingsBean=this>
-	
+
 	<cfreturn getBean("settingsManager").read(argumentCollection=arguments)>
 </cffunction>
 

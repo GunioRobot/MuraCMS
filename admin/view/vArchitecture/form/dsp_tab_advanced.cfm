@@ -12,17 +12,17 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Mura CMS. If not, see <http://www.gnu.org/licenses/>.
 
-Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on 
+Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on
 Mura CMS. Thus, the terms and conditions of the GNU General Public License version 2 ("GPL") cover the entire combined work.
 
 However, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with programs
 or libraries that are released under the GNU Lesser General Public License version 2.1.
 
-In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with 
-independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without 
-Mura CMS under the license of your choice, provided that you follow these specific guidelines: 
+In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with
+independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without
+Mura CMS under the license of your choice, provided that you follow these specific guidelines:
 
-Your custom code 
+Your custom code
 
 • Must not alter any default objects in the Mura CMS database and
 • May not alter the default display of the Mura CMS logo within Mura CMS and
@@ -36,12 +36,12 @@ Your custom code
  /index.cfm
  /MuraProxy.cfc
 
-You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work 
-under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL 
+You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work
+under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL
 requires distribution of source code.
 
-For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your 
-modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
+For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your
+modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 
@@ -101,15 +101,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<option value="1"<cfif request.contentBean.getMobileExclude() eq 1> selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.mobileexclude.standard')#</option>
 			<option value="1"<cfif request.contentBean.getMobileExclude() eq 2> selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.mobileexclude.mobile')#</option>
 		</select>--->
-		
-		
+
+
 			<label><input type="radio" name="mobileExclude" value="0" checked<!---<cfif request.contentBean.getMobileExclude() eq 0> selected</cfif>--->>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.mobileexclude.always')#</option></label>
 			<label><input type="radio" name="mobileExclude" value="2"<cfif request.contentBean.getMobileExclude() eq 2> checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.mobileexclude.mobile')#</label>
 			<label><input type="radio" name="mobileExclude" value="1"<cfif request.contentBean.getMobileExclude() eq 1> checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.mobileexclude.standard')#</label>
-		
+
 		<!---<input name="mobileExclude" id="mobileExclude" type="CHECKBOX" value="1" <cfif request.contentBean.getMobileExclude() eq "">checked <cfelseif request.contentBean.getMobileExclude() eq 1>checked</cfif> class="checkbox"> <label for="mobileExclude">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.mobileexclude')#</label>--->
 	</dd>
-	
+
 	<cfif application.settingsManager.getSite(attributes.siteid).getextranet()>
 		<dt><input name="restricted" id="Restricted" type="CHECKBOX" value="1"  onclick="javascript: this.checked?toggleDisplay2('rg',true):toggleDisplay2('rg',false);" <cfif request.contentBean.getrestricted() eq 1>checked </cfif> class="checkbox">
 		<label for="Restricted">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.restrictaccess')#</label></dt>
@@ -120,7 +120,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<option value="" <cfif request.contentBean.getrestrictgroups() eq ''>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.allowall')#</option>
 		<option value="RestrictAll" <cfif request.contentBean.getrestrictgroups() eq 'RestrictAll'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.restrictall')#</option>
 		</optgroup>
-		<cfquery dbtype="query" name="rsGroups">select * from request.rsrestrictgroups where isPublic=1</cfquery>	
+		<cfquery dbtype="query" name="rsGroups">select * from request.rsrestrictgroups where isPublic=1</cfquery>
 		<cfif rsGroups.recordcount>
 			<optgroup label="#htmlEditFormat(application.rbFactory.getKeyValue(session.rb,'user.membergroups'))#">
 			<cfloop query="rsGroups">
@@ -128,7 +128,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfloop>
 			</optgroup>
 		</cfif>
-		<cfquery dbtype="query" name="rsGroups">select * from request.rsrestrictgroups where isPublic=0</cfquery>	
+		<cfquery dbtype="query" name="rsGroups">select * from request.rsrestrictgroups where isPublic=0</cfquery>
 		<cfif rsGroups.recordcount>
 			<optgroup label="#htmlEditFormat(application.rbFactory.getKeyValue(session.rb,'user.adminusergroups'))#">
 			<cfloop query="rsGroups">
@@ -139,7 +139,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</select>
 		</dd>
 	</cfif>
-	
+
 </cfif>
 
 <cfif attributes.type eq 'Component' and request.rsTemplates.recordcount>
@@ -164,7 +164,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfif application.settingsManager.getSite(attributes.siteid).getCache() and attributes.type eq 'Component' or attributes.type eq 'Form'>
 	<dt><input name="doCache" id="doCache" type="CHECKBOX" value="0"<cfif request.contentBean.getDoCache() eq 0> checked</cfif> class="checkbox"> <label for="cacheItem">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.docache')#</label></dt>
 </cfif>
- 
+
 <cfif  attributes.contentid neq '00000000000000000000000000000000001' and listFind(session.mura.memberships,'S2')>
 	<dt><input name="isLocked" id="islocked" type="CHECKBOX" value="1" <cfif request.contentBean.getIsLocked() eq "">checked <cfelseif request.contentBean.getIsLocked() eq 1>checked</cfif> class="checkbox"> <label for="islocked">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.locknode')#</label></dt>
 </cfif>
@@ -185,12 +185,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<dt>#application.rbFactory.getKeyValue(session.rb,'collections.imageheight')#</dt>
 			<dd><input name="imageHeight" class="text" value="#request.contentBean.getImageHeight()#" /></dd>
 		</dl>
-	</dd>	
+	</dd>
 	<dt id="availableFields"><span>Available Fields</span> <span>Selected Fields</span></dt>
 	<dd>
 		<div class="sortableFields">
 		<p class="dragMsg"><span class="dragFrom">Drag Fields from Here&hellip;</span><span>&hellip;and Drop Them Here.</span></p>
-		
+
 			<cfset displayList=request.contentBean.getDisplayList()>
 			<cfset availableList=request.contentBean.getAvailableDisplayList()>
 			<cfif attributes.type eq "Gallery">
@@ -198,26 +198,26 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfif finder>
 					<cfset availableList=listDeleteAt(availableList,finder)>
 				</cfif>
-			</cfif>			
+			</cfif>
 			<ul id="contentAvailableListSort" class="contentDisplayListSortOptions">
 				<cfloop list="#availableList#" index="i">
 					<li class="ui-state-default">#i#</li>
 				</cfloop>
 			</ul>
-						
+
 			<ul id="contentDisplayListSort" class="contentDisplayListSortOptions">
 				<cfloop list="#displayList#" index="i">
 					<li class="ui-state-highlight">#i#</li>
 				</cfloop>
 			</ul>
-						
+
 			<input type="hidden" id="contentDisplayList" value="#displayList#" name="displayList"/>
-			
+
 			<script>
 				//Removed from jQuery(document).ready() because it would not fire in ie7 frontend editing.
 				setContentDisplayListSort();
 			</script>
-		</div>	
+		</div>
 	</dd>
 	<dt>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.recordsperpage')#</dt>
 	<dd><select name="nextN" class="dropdown">

@@ -43,7 +43,7 @@ select remoteID from tcontentfeeds  where 0=1
 	ALTER TABLE "TCONTENTFEEDS" ADD "REMOTESOURCEURL" varchar2(255)
 	</cfquery>
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
-	CREATE INDEX "IDX_FEED_REMOTEID" ON "TCONTENTFEEDS" ("REMOTEID") 
+	CREATE INDEX "IDX_FEED_REMOTEID" ON "TCONTENTFEEDS" ("REMOTEID")
 	</cfquery>
 </cfcase>
 </cfswitch>
@@ -91,7 +91,7 @@ select remoteID from tcontentcategories  where 0=1
 	ALTER TABLE "TCONTENTCATEGORIES" ADD "REMOTESOURCEURL" varchar2(255)
 	</cfquery>
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
-	CREATE INDEX "IDX_CATEGORY_REMOTEID" ON "TCONTENTCATEGORIES" ("REMOTEID") 
+	CREATE INDEX "IDX_CATEGORY_REMOTEID" ON "TCONTENTCATEGORIES" ("REMOTEID")
 	</cfquery>
 </cfcase>
 </cfswitch>

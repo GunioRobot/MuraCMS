@@ -12,14 +12,14 @@
 			return this;
 		</cfscript>
 	</cffunction>
-	
+
 	<cffunction name="compile" access="public" returntype="string" output="false">
 		<cfargument name="filePath" type="string" required="true" />
-		
+
 		<cfscript>
 			var file     = "";
 			var compiled = "";
-			
+
 			// ensure file has no special chars that LESS chokes on
 			_cleanFile(arguments.filePath);
 
@@ -28,7 +28,7 @@
 
 			// attempt less compilation
 			try {
-				compiled = _getLessEngine().compile( file );				
+				compiled = _getLessEngine().compile( file );
 			} catch( any e ){
 				$throw('org.cfstatic.util.LessCompiler.badLESS', e.message, e.detail);
 			}

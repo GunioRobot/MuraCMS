@@ -1,14 +1,14 @@
 <!---
-	  
+
   Copyright (c) 2005, Chris Scott, David Ross, Kurt Wiersma, Sean Corfield
   All rights reserved.
-	
+
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
   You may obtain a copy of the License at
-  
+
        http://www.apache.org/licenses/LICENSE-2.0
-  
+
   Unless required by applicable law or agreed to in writing, software
   distributed under the License is distributed on an "AS IS" BASIS,
   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -27,26 +27,26 @@
  Initial classes to support throwsAdvice, as well as implementing interceptors to make before and after advice (as well as throws advice) all part of the method invocation chain. This is very much in line with the method invocation used in Spring, seems very necessary for throws advice to be implemented. Also should simplify some issues with not returning null values. These classes are not yet implemented in the AopProxyBean, so nothing works yet!
 
 
----> 
- 
-<cfcomponent name="ThrowsAdviceInterceptor" 
-			displayname="ThrowsAdviceInterceptor" 
-			extends="coldspring.aop.MethodInterceptor" 
-			hint="Interceptor for handling Throws Advice" 
+--->
+
+<cfcomponent name="ThrowsAdviceInterceptor"
+			displayname="ThrowsAdviceInterceptor"
+			extends="coldspring.aop.MethodInterceptor"
+			hint="Interceptor for handling Throws Advice"
 			output="false">
-			
+
 	<cfset variables.intentifier = 'afterThrowing' />
 	<cfset variables.intentifierLen = Len(variables.intentifier) />
 	<cfset variables.adviceType = 'throwsInterceptor' />
 	<cfset variables.methods = StructNew() />
-			
+
 	<cffunction name="init" access="public" returntype="coldspring.aop.MethodInterceptor" output="false">
 		<cfargument name="throwsAdvice" type="coldspring.aop.ThrowsAdvice" required="true" />
 		<cfset variables.throwsAdvice = arguments.throwsAdvice />
 		<cfset buildMethods() />
 		<cfreturn this />
 	</cffunction>
-	
+
 	<cffunction name="invokeMethod" access="public" returntype="any">
 		<cfargument name="methodInvocation" type="coldspring.aop.MethodInvocation" required="true" />
 		<cfset var rtn = 0 />
@@ -63,16 +63,16 @@
 					<cfset args.args = arguments.methodInvocation.getArguments() />
 					<cfset args.target = arguments.methodInvocation.getTarget() />
 					<cfset args.exception = CreateObject("component", "coldspring.aop.Exception").init(cfcatch) />
-					
+
 					<cfinvoke component="#variables.throwsAdvice#"
-							  method="#method#" 
+							  method="#method#"
 							  argumentcollection="#args#" />
 				</cfif>
 				<cfrethrow />
 			</cfcatch>
 		</cftry>
 	</cffunction>
-	
+
 	<cffunction name="getMethodForExceptionType" access="private" returntype="string" output="false">
 		<cfargument name="exceptionType" type="string" required="true" />
 		<cfset var methodCount = StructCount(variables.methods) />
@@ -81,16 +81,16 @@
 		<cfset var method = '' />
 		<cfset var strPos = 0 />
 		<cfset var ix = 0 />
-		
+
 		<!--- first get the catchAll method --->
 		<cfif StructKeyExists(variables.methods,'Any')>
 			<cfset method = variables.methods.Any />
 		</cfif>
-		
+
 		<!--- if there is a method for this exact exeption type, return it
 			  if there's only one method, return it if it's for any type
 			  if there are lots of methods, strip off the last parts of the exeption type --->
-			  
+
 		<cfif StructKeyExists(variables.methods,parsedType)>
 			<cfreturn variables.methods[parsedType] />
 		<cfelseif methodCount EQ 1>
@@ -109,9 +109,9 @@
 
 			<!--- return the all method or nothing --->
 			<cfreturn method />
-		</cfif>	
+		</cfif>
 	</cffunction>
-	
+
 	<cffunction name="buildMethods" access="private" returntype="void" output="false">
 		<cfset var md = getMetaData(variables.throwsAdvice) />
 		<cfset var function = 0 />
@@ -133,5 +133,5 @@
 			</cfif>
 		</cfloop>
 	</cffunction>
-	
+
 </cfcomponent>

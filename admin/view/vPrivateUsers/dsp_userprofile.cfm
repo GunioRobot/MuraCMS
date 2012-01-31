@@ -12,17 +12,17 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Mura CMS. If not, see <http://www.gnu.org/licenses/>.
 
-Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on 
+Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on
 Mura CMS. Thus, the terms and conditions of the GNU General Public License version 2 ("GPL") cover the entire combined work.
 
 However, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with programs
 or libraries that are released under the GNU Lesser General Public License version 2.1.
 
-In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with 
-independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without 
-Mura CMS under the license of your choice, provided that you follow these specific guidelines: 
+In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with
+independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without
+Mura CMS under the license of your choice, provided that you follow these specific guidelines:
 
-Your custom code 
+Your custom code
 
 • Must not alter any default objects in the Mura CMS database and
 • May not alter the default display of the Mura CMS logo within Mura CMS and
@@ -36,12 +36,12 @@ Your custom code
  /index.cfm
  /MuraProxy.cfc
 
-You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work 
-under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL 
+You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work
+under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL
 requires distribution of source code.
 
-For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your 
-modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
+For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your
+modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 <cfhtmlhead text="#session.dateKey#">
@@ -64,7 +64,7 @@ select * from rsSubTypes where subType <> 'Default'
 	<cfif not structIsEmpty(request.userBean.getErrors())>
 		<p class="error">#application.utility.displayErrors(request.userBean.getErrors())#</p>
 	</cfif>
-	
+
 	<p>(*Required, **Required to login to Site)<p>
 
 <div class="tabs initActiveTab">
@@ -73,7 +73,7 @@ select * from rsSubTypes where subType <> 'Default'
 <li><a href="###listGetAt(tabList,t)#" onclick="return false;"><span>#listGetAt(tabLabelList,t)#</span></a></li>
 </cfloop>
 </ul>
-	
+
 <div id="tabBasic">
 <dl class="oneColumn">
 		<cfif rsNonDefault.recordcount>
@@ -88,7 +88,7 @@ select * from rsSubTypes where subType <> 'Default'
 		<cfelse>
 			<input type="hidden" name="subtype" value="Default"/>
 		</cfif>
-		
+
 		<dt <cfif not  rsNonDefault.recordcount>class="first"</cfif>>#application.rbFactory.getKeyValue(session.rb,'user.fname')#*</dt>
 		<dd><input id="fname" name="fname" type="text" value="#HTMLEditFormat(request.userBean.getfname())#"  required="true" message="#application.rbFactory.getKeyValue(session.rb,'user.fnamerequired')#" class="text"></dd>
 		<dt>#application.rbFactory.getKeyValue(session.rb,'user.lname')#*</dt>
@@ -104,9 +104,9 @@ select * from rsSubTypes where subType <> 'Default'
 		<dt>#application.rbFactory.getKeyValue(session.rb,'user.username')#**</dt>
 		<dd><input id="username" name="usernameNoCache" type="text" value="#HTMLEditFormat(request.userBean.getusername())#" class="text" message="#application.rbFactory.getKeyValue(session.rb,'user.usernamerequired')#" ></dd>
 		<dt>#application.rbFactory.getKeyValue(session.rb,'user.newpassword')#**</dt>
-		<dd><input name="passwordNoCache"  autocomplete="off" validate="match" matchfield="password2" type="password" value="" class="text"  message="#application.rbFactory.getKeyValue(session.rb,'user.passwordmatchvalidate')#"></dd> 
+		<dd><input name="passwordNoCache"  autocomplete="off" validate="match" matchfield="password2" type="password" value="" class="text"  message="#application.rbFactory.getKeyValue(session.rb,'user.passwordmatchvalidate')#"></dd>
 		<dt>#application.rbFactory.getKeyValue(session.rb,'user.newpasswordconfirm')#**</dt>
-		<dd><input  name="password2" autocomplete="off" type="password" value="" class="text" message="#application.rbFactory.getKeyValue(session.rb,'user.passwordconfirmvalidate')#"></dd>  
+		<dd><input  name="password2" autocomplete="off" type="password" value="" class="text" message="#application.rbFactory.getKeyValue(session.rb,'user.passwordconfirmvalidate')#"></dd>
 <span id="extendSetsBasic"></span>
 </dl>
 </div>
@@ -163,9 +163,9 @@ select * from rsSubTypes where subType <> 'Default'
 			<!---</ul>--->
 			<cfelse>
 			<em>#application.rbFactory.getKeyValue(session.rb,'user.nointerestcategories')#</em>
-			</cfif> 
+			</cfif>
 		</dd>
-		
+
 	</dl>
 </div>
 <cfif rsSubTypes.recordcount>
@@ -173,7 +173,7 @@ select * from rsSubTypes where subType <> 'Default'
 			<span id="extendSetsDefault"></span>
 			<script type="text/javascript">
 			loadExtendedAttributes('#request.userbean.getUserID()#','#request.userbean.getType()#','#request.userBean.getSubType()#','#application.settingsManager.getSite(request.userBean.getSiteID()).getPrivateUserPoolID()#','#application.configBean.getContext()#','#application.settingsManager.getSite(request.userbean.getSiteID()).getThemeAssetPath()#');
-			</script>	
+			</script>
 </div>
 	<cfhtmlhead text='<script type="text/javascript" src="js/user.js"></script>'>
 </cfif>
@@ -182,7 +182,7 @@ select * from rsSubTypes where subType <> 'Default'
 <dt>#application.rbFactory.getKeyValue(session.rb,'user.emailbroadcaster')#</dt>
 <dd><ul class="radioGroup"><li><input name="subscribe" type="radio" class="radio" value="1"<cfif request.userBean.getsubscribe() eq 1>Checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'user.yes')#</li><li><input name="subscribe" type="radio" class="radio" value="0"<cfif request.userBean.getsubscribe() eq 0>Checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'user.no')#</li></ul></dd>
 <dt>#application.rbFactory.getKeyValue(session.rb,'user.tags')#</dt>
-<dd><input id="tags" name="tags" type="text" value="#HTMLEditFormat(request.userBean.getTags())#" class="text"></dd> 
+<dd><input id="tags" name="tags" type="text" value="#HTMLEditFormat(request.userBean.getTags())#" class="text"></dd>
 </dl>
 </div>
 </div>
@@ -194,12 +194,12 @@ select * from rsSubTypes where subType <> 'Default'
 		<input type="hidden" name="contact" value="0">
 		<input type="hidden" name="userid" value="#request.userBean.getuserid()#">
 		<input type="hidden" name="siteid" value="#request.userBean.getsiteid()#">
-<!---		
+<!---
 <cfhtmlhead text='<link rel="stylesheet" href="css/tab-view.css" type="text/css" media="screen">'>
 <cfhtmlhead text='<script type="text/javascript" src="js/tab-view.js"></script>'>
 <script type="text/javascript">
 initTabs(Array("#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'user.basic'))#","#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'user.addressinformation'))#","#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'user.interests'))#"<cfif rsSubTypes.recordcount>,"#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'user.extendedattributes'))#"</cfif>,"#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'user.advanced'))#"),#attributes.activeTab#,0,0);
-</script>	
+</script>
 --->
 	</cfoutput>
 </form>

@@ -35,45 +35,45 @@ StructAppend(attributes, form, "no");
 		background-image: none;
 		overflow: hidden !important;
 	}
-	
+
 	body#mura-select-link {
 		background: none;
 		overflow: hidden;
 	}
-	
+
 	#mura-select-link form {
 		width: 100%;
 	}
-	
+
 	#mura-select-link form.mura-link-search-result {
 		margin-bottom: 0;
 		padding-bottom: 0;
 	}
-	
+
 	#mura-select-link #mura-table-grid-container {
 		overflow: auto !important;
 		height: 287px;
 	}
-	
+
 	#mura-select-link .mura-table-grid {
 	    margin: 0;
 	}
-	
+
 	#mura-select-link .cke_skin_mura .cke_resizer {
 	    margin-right: 6px;
 	    margin-top: 30px;
 	}
-	
+
 	#cke_84_uiElement {
 		height: 375px !important;
 		overflow: visible !important;
 		zoom: 1;
 	}
-	
+
 	#cke_dialog_footer_80.cke_dialog_footer {
 	    padding: 0 !important;
 	}
-		
+
 	</style>
 </head>
 
@@ -92,25 +92,25 @@ StructAppend(attributes, form, "no");
 <div id="mura-table-grid-container">
  <table class="mura-table-grid stripe">
     <tr>
-	  <th class="administration">&nbsp;</th> 
+	  <th class="administration">&nbsp;</th>
       <th class="varWidth">Title</th>
     </tr>
     <cfif request.rslist.recordcount>
      <cfoutput query="request.rslist" maxrows="#request.nextn.recordsperPage#" startrow="#attributes.startrow#">
 		<cfset crumbdata=application.contentManager.getCrumbList(request.rslist.contentid, attributes.siteid)/>
         <tr>
-        <td class="administration" id="test"><input type="radio" name="theLinks" id="theLinks#request.rslist.currentrow#" value="#htmlEditFormat(request.contentRenderer.createHREF(request.rslist.type,request.rslist.filename,session.siteid,request.rslist.contentid,request.rslist.target,request.rslist.targetParams,'',application.configBean.getContext(),application.configBean.getStub(),application.configBean.getIndexFile()))#^#htmleditformat(request.rslist.menutitle)#"<cfif request.rslist.currentrow eq 1> checked</cfif>></td>  
+        <td class="administration" id="test"><input type="radio" name="theLinks" id="theLinks#request.rslist.currentrow#" value="#htmlEditFormat(request.contentRenderer.createHREF(request.rslist.type,request.rslist.filename,session.siteid,request.rslist.contentid,request.rslist.target,request.rslist.targetParams,'',application.configBean.getContext(),application.configBean.getStub(),application.configBean.getIndexFile()))#^#htmleditformat(request.rslist.menutitle)#"<cfif request.rslist.currentrow eq 1> checked</cfif>></td>
           <td class="varWidth"><label for="theLinks#request.rslist.currentrow#">#application.contentRenderer.dspZoomNoLinks(crumbdata,request.rsList.fileExt)#</label></td>
-		  
+
 		</tr>
        </cfoutput>
       <cfelse>
-      <tr> 
+      <tr>
         <td colspan="2" class="results"><em>Your search returned no results.</em></td>
       </tr>
     </cfif>
-	
-    <cfif request.nextn.numberofpages gt 1><tr> 
+
+    <cfif request.nextn.numberofpages gt 1><tr>
       <td colspan="7" class="results">More Results: <cfloop from="1"  to="#request.nextn.numberofpages#" index="i"><cfoutput><cfif request.nextn.currentpagenumber eq i> #i# <cfelse> <a href="?keywords=#attributes.keywords#&startrow=#evaluate('(#i#*#request.nextn.recordsperpage#)-#request.nextn.recordsperpage#+1')#">#i#</a> </cfif></cfoutput></cfloop></td></tr></cfif>
   </table>
 </td></tr></table></div></cfif></form>

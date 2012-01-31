@@ -10,16 +10,16 @@
 <cffunction name="empty" output="false">
 	<cfset var rs=getQuery(argumentCollection=arguments)>
 	<cfset var pluginEvent = createObject("component","mura.MuraScope") />
-	
+
 	<cfset pluginEvent=pluginEvent.init(arguments).getEvent()>
 	<cfset pluginEvent.setValue("rsTrash",rs)>
-	
+
 	<cfif isdefined("arguments.siteID") and len(arguments.siteID)>
 		<cfset getBean("pluginManager").announceEvent("onBeforeSiteEmptyTrash",pluginEvent)>
 	<cfelse>
 		<cfset getBean("pluginManager").announceEvent("onBeforeGlobalEmptyTrash",pluginEvent)>
 	</cfif>
-	
+
 	<cftransaction>
 	<cfloop query="rs">
 		<!--- CONTENT --->
@@ -27,76 +27,76 @@
 			delete from tcontentratings
 			where contentID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#rs.objectID#">
 		</cfquery>
-		
+
 		<cfquery datasource="#variables.configBean.getDatasource()#" password="#variables.configBean.getDbPassword()#" username="#variables.configBean.getDbUsername()#">
 			delete from tcontenteventreminders
 			where contentID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#rs.objectID#">
 		</cfquery>
-		
+
 		<cfquery datasource="#variables.configBean.getDatasource()#" password="#variables.configBean.getDbPassword()#" username="#variables.configBean.getDbUsername()#">
 			delete from tcontentassignments
 			where contentID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#rs.objectID#">
 			or userID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#rs.objectID#">
 		</cfquery>
-		
+
 		<cfquery datasource="#variables.configBean.getDatasource()#" password="#variables.configBean.getDbPassword()#" username="#variables.configBean.getDbUsername()#">
 			delete from tcontentcomments
 			where contentID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#rs.objectID#">
 		</cfquery>
-		
+
 		<cfquery datasource="#variables.configBean.getDatasource()#" password="#variables.configBean.getDbPassword()#" username="#variables.configBean.getDbUsername()#">
 			delete from tformresponsepackets
 			where formID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#rs.objectID#">
 		</cfquery>
-		
+
 		<cfquery datasource="#variables.configBean.getDatasource()#" password="#variables.configBean.getDbPassword()#" username="#variables.configBean.getDbUsername()#">
 			delete from tformresponsequestions
 			where formID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#rs.objectID#">
 		</cfquery>
-		
+
 		<!--- CATEGORIES --->
 		<cfquery datasource="#variables.configBean.getDatasource()#" password="#variables.configBean.getDbPassword()#" username="#variables.configBean.getDbUsername()#">
 			delete from tcontentcategoryassign
 			where categoryID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#rs.objectID#">
 		</cfquery>
-		
+
 		<!--- CONTENT USERGROUPS RELATIONSHIPS --->
 		<cfquery datasource="#variables.configBean.getDatasource()#" password="#variables.configBean.getDbPassword()#" username="#variables.configBean.getDbUsername()#">
 			delete from tpermissions
 			where contentID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#rs.objectID#">
 			or groupID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#rs.objectID#">
 		</cfquery>
-		
+
 		<!--- USERS CATEGORY RELATIONSHIP--->
 		<cfquery datasource="#variables.configBean.getDatasource()#" password="#variables.configBean.getDbPassword()#" username="#variables.configBean.getDbUsername()#">
 			delete from tusersinterests
 			where userID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#rs.objectID#">
 			or categoryID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#rs.objectID#">
 		</cfquery>
-		
+
 		<!--- USERS --->
 		<cfquery datasource="#variables.configBean.getDatasource()#" password="#variables.configBean.getDbPassword()#" username="#variables.configBean.getDbUsername()#">
 			delete from tuseraddresses
 			where userID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#rs.objectID#">
 		</cfquery>
-		
+
 		<cfquery datasource="#variables.configBean.getDatasource()#" password="#variables.configBean.getDbPassword()#" username="#variables.configBean.getDbUsername()#">
 			delete from tusersfavorites
 			where userID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#rs.objectID#">
 		</cfquery>
-		
+
 		<cfquery datasource="#variables.configBean.getDatasource()#" password="#variables.configBean.getDbPassword()#" username="#variables.configBean.getDbUsername()#">
 			delete from tusersmemb
 			where userID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#rs.objectID#">
 			or groupID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#rs.objectID#">
 		</cfquery>
-		
+
 		<!---MAILINGLISTS --->
 		<cfquery datasource="#variables.configBean.getDatasource()#" password="#variables.configBean.getDbPassword()#" username="#variables.configBean.getDbUsername()#">
 			delete from tmailinglistmembers
 			where mlid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#rs.objectID#">
 		</cfquery>
-		
+
 		<!---FEEDS --->
 		<cfquery datasource="#variables.configBean.getDatasource()#" password="#variables.configBean.getDbPassword()#" username="#variables.configBean.getDbUsername()#">
 			delete from tcontentfeeditems
@@ -118,7 +118,7 @@
 			delete from tadplacements
 			where placementID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#rs.objectID#">
 		</cfquery>
-			
+
 		<!--- EMPTY TRASH TABLE--->
 		<cfquery datasource="#variables.configBean.getDatasource()#" password="#variables.configBean.getDbPassword()#" username="#variables.configBean.getDbUsername()#">
 			delete from ttrash
@@ -141,25 +141,25 @@
 		where placementID not in (select placementID from tadplacements)
 	</cfquery>
 	</cftransaction>
-	
+
 	<!--- FILES --->
 	<cfif isdefined("arguments.siteID") and len(arguments.siteID)>
 		<cfset getBean('fileManager').purgeDeleted(arguments.siteID)>
 	<cfelse>
 		<cfset getBean('fileManager').purgeDeleted("")>
 	</cfif>
-	
+
 	<cfif isdefined("arguments.siteID") and len(arguments.siteID)>
 		<cfset getBean("pluginManager").announceEvent("onAfterSiteEmptyTrash",pluginEvent)>
 	<cfelse>
 		<cfset getBean("pluginManager").announceEvent("onAfterGlobalEmptyTrash",pluginEvent)>
 	</cfif>
-	
+
 </cffunction>
 
 <cffunction name="throwIn" output="false">
 <cfargument name="deleted">
-	<cfset var $="">	
+	<cfset var $="">
 	<cfset var objectClass=listLast(getMetaData(arguments.deleted).name,".")>
 	<cfset var idString="">
 	<cfset var labelString="">
@@ -171,31 +171,31 @@
 	<cfset var i="">
 	<cfset var rsRelated="">
 	<cfset var muraDeleteDateTime="">
-	
+
 	<cfif isDate(arguments.deleted.getValue("muraDeleteDateTime"))>
 		<cfset muraDeleteDateTime=arguments.deleted.getValue("muraDeleteDateTime")>
 	<cfelse>
 		<cfset muraDeleteDateTime=now()>
 	</cfif>
-	
+
 	<cfif listFindNoCase("campaignBean,creativeBean",objectClass)>
 		<cfset siteid=getBean('userManager').read(arguments.deleted.getUserID()).getSiteID()>
 	<cfelseif objectClass eq "placementBean">
-		<cfset siteid=getBean('userManager').read( getBean('advertiserManager').readCampaign(arguments.deleted.getCampaignID()).getUserID() ).getSiteID()>	
+		<cfset siteid=getBean('userManager').read( getBean('advertiserManager').readCampaign(arguments.deleted.getCampaignID()).getUserID() ).getSiteID()>
 	<cfelse>
 		<cfset siteid=arguments.deleted.getSiteID()>
 	</cfif>
-	
+
 	<cfset $=getBean('MuraScope').init(siteid)>
-	
+
 	<!--- Package up extra stuff related to the contentBean --->
 	<cfif objectClass eq "contentBean">
-		
+
 		<!--- Store display object assignments --->
 		<cfloop from="1" to="8" index="i">
 			<cfset arguments.deleted.getDisplayRegion(i)>
 		</cfloop>
-		
+
 		<!--- Store related content --->
 		<cfset rsRelated=arguments.deleted.getRelatedContentQuery()>
 		<cfif rsRelated.recordcount>
@@ -204,7 +204,7 @@
 		<!--- store categories --->
 		<cfset arguments.deleted.setValue("categoriesFromMuraTrash",  getBean("contentManager").getCategoriesByHistID( arguments.deleted.getContentHistID() )  )>
 	</cfif>
-	
+
 	<cfwddx action="cfml2wddx" input="#arguments.deleted.getAllValues()#" output="allValues">
 
 	<cfif objectType eq "userBean">
@@ -219,34 +219,34 @@
 		<cfset labelString=getLabelString(objectClass)>
 		<cfset idString=getIDString(objectClass)>
 	</cfif>
-	
+
 	<cfif structKeyExists(arguments.deleted,"getType")>
 		<cfset objectType=arguments.deleted.getType()>
 	<cfelse>
 		<cfset objectType=$.setProperCase(replaceNoCase(objectClass,"Bean",""))>
 	</cfif>
-	
+
 	<cfif objectType eq "1">
 		<cfset objectType="Group">
 	<cfelseif objectType eq "2">
 		<cfset objectType="User">
 	</cfif>
-	
+
 	<cfif structKeyExists(arguments.deleted,"getSubType")>
 		<cfset objectSubType=arguments.deleted.getSubType()>
 	<cfelse>
 		<cfset objectSubType="Default">
 	</cfif>
-	
+
 	<cfif len(idString)>
 		<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#" password="#variables.configBean.getReadOnlyDbPassword()#" username="#variables.configBean.getReadOnlyDbUsername()#">
 			select objectID from ttrash where objectID =<cfqueryparam cfsqltype="cf_sql_varchar" value="#evaluate('arguments.deleted.get#IDString#()')#" />
 		</cfquery>
-		
+
 		<cfif not rs.recordcount>
 			<cfquery datasource="#variables.configBean.getDatasource()#" password="#variables.configBean.getDbPassword()#" username="#variables.configBean.getDbUsername()#">
 				insert into ttrash (objectID,parentID,siteID,objectClass,objectLabel,objectType,objectSubType,objectString,deletedDate,deletedBy)
-					values(	
+					values(
 						<cfqueryparam cfsqltype="cf_sql_varchar" value="#evaluate('arguments.deleted.get#IDString#()')#" />,
 						<cfif structKeyExists(arguments.deleted,"getParentID")>
 							<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.deleted.getParentID()#" />
@@ -265,7 +265,7 @@
 						<cfqueryparam cfsqltype="cf_sql_longvarchar" value="#allValues#" />,
 						<cfqueryparam cfsqltype="cf_sql_timestamp" value="#muraDeleteDateTime#">,
 						<cfqueryparam cfsqltype="cf_sql_varchar" value="#left($.currentUser('fullname'),50)#" />
-					)			
+					)
 			</cfquery>
 		</cfif>
 	</cfif>
@@ -282,11 +282,11 @@
 	<cfset var rs="">
 	<cfset var retrieved="">
 	<cfset var allValues="">
-	
+
 	<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#" password="#variables.configBean.getReadOnlyDbPassword()#" username="#variables.configBean.getReadOnlyDbUsername()#">
-		select objectID,parentID,siteID,objectClass,objectLabel,objectType,objectSubType,objectString,deletedDate,deletedBy from ttrash where objectID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.objectID#" />				
+		select objectID,parentID,siteID,objectClass,objectLabel,objectType,objectSubType,objectString,deletedDate,deletedBy from ttrash where objectID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.objectID#" />
 	</cfquery>
-	
+
 	<cfif rs.recordcount>
 		<cfset retrieved=getBean(rs.objectClass)>
 		<cfwddx action = "wddx2cfml" input = "#rs.objectstring#" output = "allValues">
@@ -295,39 +295,39 @@
 		<cfset allValues.extendData="">
 		<cfset retrieved.setAllValues(allValues)>
 	</cfif>
-	
+
 	<cfreturn retrieved>
-	
+
 </cffunction>
 
 <cffunction name="getQuery" output="false">
 	<cfset var rs="">
-	
+
 	<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#" password="#variables.configBean.getReadOnlyDbPassword()#" username="#variables.configBean.getReadOnlyDbUsername()#">
-		select objectID,siteID,parentID,objectClass,objectType,objectSubType,objectLabel,deletedDate,deletedBy 
-		from ttrash where 
+		select objectID,siteID,parentID,objectClass,objectType,objectSubType,objectLabel,deletedDate,deletedBy
+		from ttrash where
 		1=1
 		<cfif structKeyExists(arguments,"sinceDate")>
 		and deletedDate >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#arguments.sinceDate#">
-		</cfif>	
+		</cfif>
 		<cfif structKeyExists(arguments,"objectID")>
 		and objectID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.objectID#">
 		</cfif>
 		<cfif structKeyExists(arguments,"parentID")>
 		and parentID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.parentID#">
-		</cfif>	
+		</cfif>
 		<cfif structKeyExists(arguments,"siteID")>
 		and siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#">
 		</cfif>
 		<cfif structKeyExists(arguments,"objectType")>
 		and objectType=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.objectType#">
-		</cfif>	
+		</cfif>
 		<cfif structKeyExists(arguments,"objectSubType")>
 		and objectSubType=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.objectSubType#">
-		</cfif>	
+		</cfif>
 		<cfif structKeyExists(arguments,"objectClass")>
 		and objectClass=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.objectClass#">
-		</cfif>	
+		</cfif>
 		<cfif structKeyExists(arguments,"deletedBy")>
 		and deletedBy=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.deletedBy#">
 		</cfif>
@@ -336,8 +336,8 @@
 		</cfif>
 		<cfif structKeyExists(arguments,"deletedDate") and isDate(arguments.deletedDate)>
 		and deletedDate=<cfqueryparam cfsqltype="cf_sql_timestamp" value="#arguments.deletedDate#">
-		</cfif>		
-		
+		</cfif>
+
 		<cfif structKeyExists(arguments,"keywords") and len(arguments.keywords)>
 			and (
 			objectClass like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#arguments.keywords#%">
@@ -348,12 +348,12 @@
 			or objectLabel like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#arguments.keywords#%">
 			)
 		</cfif>
-		
-		order by deletedDate desc		
+
+		order by deletedDate desc
 	</cfquery>
-	
+
 	<cfreturn rs>
-	
+
 </cffunction>
 
 <cffunction name="getIterator" output="false">
@@ -374,7 +374,7 @@
 	<cfset var doPurge=false>
 	<cfset var it="">
 	<cfset var item="">
-	
+
 	<cfif structKeyExists(arguments.restored,"getValue")>
 		<cfif arguments.restored.getValue("fromMuraTrash") eq "true">
 			<cfset doPurge=true>
@@ -385,7 +385,7 @@
 			<cfset doPurge=true>
 		</cfif>
 	</cfif>
-	
+
 	<cfif doPurge>
 		<cfif not isStruct(data)>
 			<cfset data=arguments.restored.getAllValues()>
@@ -396,11 +396,11 @@
 				<cfset getBean('fileManager').restoreVersion(data[i])>
 			</cfif>
 		</cfloop>
-		
+
 		<cfquery datasource="#variables.configBean.getDatasource()#" password="#variables.configBean.getDbPassword()#" username="#variables.configBean.getDbUsername()#">
-			delete from ttrash where objectID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#evaluate('arguments.restored.get#IDString#()')#" />		
+			delete from ttrash where objectID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#evaluate('arguments.restored.get#IDString#()')#" />
 		</cfquery>
-		
+
 		<cfif objectClass eq "contentBean">
 			<cfset it=getIterator(parentID=arguments.restored.getContentID(), deletedDate=arguments.restored.getvalue("muraDeleteDateTime"))>
 			<cfset it.end()>
@@ -435,67 +435,67 @@
 <cfargument name="objectClass">
 
 	<cfswitch expression="#arguments.objectClass#">
-	
+
 		<cfcase value="contentBean">
 			<cfreturn "contentID">
 		</cfcase>
-		
+
 		<cfcase value="contentCommentBean">
 			<cfreturn "commentID">
 		</cfcase>
-		
+
 		<cfcase value="feedBean">
 			<cfreturn "feedID">
 		</cfcase>
-		
+
 		<cfcase value="userBean">
 			<cfreturn "userID">
 		</cfcase>
-		
+
 		<cfcase value="addressBean">
 			<cfreturn "addressID">
 		</cfcase>
-		
+
 		<cfcase value="emailBean">
 			<cfreturn "emailID">
 		</cfcase>
-		
+
 		<cfcase value="settingsBean">
 			<cfreturn "siteID">
 		</cfcase>
-		
+
 		<cfcase value="changesetBean">
 			<cfreturn "changesetID">
 		</cfcase>
-		
+
 		<cfcase value="adzoneBean">
 			<cfreturn "adZoneID">
 		</cfcase>
-		
+
 		<cfcase value="campaignBean">
 			<cfreturn "campaignID">
 		</cfcase>
-		
+
 		<cfcase value="placementBean">
 			<cfreturn "placementID">
 		</cfcase>
-		
+
 		<cfcase value="creativeBean">
 			<cfreturn "creativeID">
 		</cfcase>
-		
+
 		<cfcase value="categoryBean">
 			<cfreturn "categoryID">
 		</cfcase>
-		
+
 		<cfcase value="mailinglistBean">
 			<cfreturn "mlid">
 		</cfcase>
-		
+
 		<cfcase value="extendObject">
 			<cfreturn "id">
 		</cfcase>
-		
+
 		<cfdefaultcase>
 			<cfreturn "">
 		</cfdefaultcase>
@@ -506,71 +506,71 @@
 <cfargument name="objectClass">
 
 	<cfswitch expression="#arguments.objectClass#">
-	
+
 		<cfcase value="contentBean">
 			<cfreturn "title">
 		</cfcase>
-		
+
 		<cfcase value="contentCommentBean">
 			<cfreturn "name">
 		</cfcase>
-		
+
 		<cfcase value="feedBean">
 			<cfreturn "name">
 		</cfcase>
-		
+
 		<cfcase value="changesetBean">
 			<cfreturn "name">
 		</cfcase>
-		
+
 		<cfcase value="userBean">
 			<cfreturn "username">
 		</cfcase>
-		
+
 		<cfcase value="addressBean">
 			<cfreturn "addressname">
 		</cfcase>
-		
+
 		<cfcase value="groupBean">
 			<cfreturn "groupname">
 		</cfcase>
-		
+
 		<cfcase value="settingsBean">
 			<cfreturn "site">
 		</cfcase>
-		
+
 		<cfcase value="adzoneBean">
 			<cfreturn "name">
 		</cfcase>
-		
+
 		<cfcase value="campaignBean">
 			<cfreturn "name">
 		</cfcase>
-		
+
 		<cfcase value="placementBean">
 			<cfreturn "placementID">
 		</cfcase>
-		
+
 		<cfcase value="creativeBean">
 			<cfreturn "name">
 		</cfcase>
-		
+
 		<cfcase value="emailBean">
 			<cfreturn "subject">
 		</cfcase>
-		
+
 		<cfcase value="categoryBean">
 			<cfreturn "name">
 		</cfcase>
-		
+
 		<cfcase value="mailinglistBean">
 			<cfreturn "name">
 		</cfcase>
-		
+
 		<cfcase value="extendObject">
 			<cfreturn "subtype">
 		</cfcase>
-		
+
 		<cfdefaultcase>
 			<cfreturn "">
 		</cfdefaultcase>

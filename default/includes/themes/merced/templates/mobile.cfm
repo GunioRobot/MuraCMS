@@ -1,5 +1,5 @@
 <cfoutput>
-<!DOCTYPE html> 
+<!DOCTYPE html>
 <html>
 <head>
 	<meta name="viewport" content="width=device-width, minimum-scale=1, maximum-scale=1" />
@@ -12,17 +12,17 @@
 	<title>#HTMLEditFormat($.content('HTMLTitle'))# - #HTMLEditFormat($.siteConfig('site'))#</title>
 
 	<link rel="icon" href="#$.siteConfig('assetPath')#/images/favicon.ico" type="image/x-icon" />
-	<link rel="shortcut icon" href="#$.siteConfig('assetPath')#/images/favicon.ico" type="image/x-icon" />	
-	
+	<link rel="shortcut icon" href="#$.siteConfig('assetPath')#/images/favicon.ico" type="image/x-icon" />
+
 	<link rel="stylesheet" href="#$.siteConfig('assetPath')#/css/mura.min.css" />
 	<link rel="stylesheet" href="#$.siteConfig('assetPath')#/mobile/jquery.mobile.min.css" />
 	<link rel="stylesheet" href="#$.siteConfig('themeAssetPath')#/css/mobile/mobile.css" />
-	
+
 	<script src="#$.siteConfig('assetPath')#/js/jquery/jquery.js"></script>
-	
+
 	<script type="text/javascript">
       $(document).bind("mobileinit", function(){
-            $.extend(  $.mobile , { 
+            $.extend(  $.mobile , {
                   ajaxEnabled : false,
 				  pushStateEnabled : false
              });
@@ -54,16 +54,16 @@
 		<cfelse>
 			#$.dspBody(body=$.content('body'),pageTitle='',crumbList=0,showMetaImage=0)#
 		</cfif>
-		
+
 		#$.dspObjects($.siteConfig('primaryColumn'))#
-		
+
 		<cfif $.content('contentID') eq "00000000000000000000000000000000001">
 		<!---
 		<div id="navHeader" class="header-fullscreen" data-role="header" data-nobackbtn="true" data-theme="a">
 		<h1>More</h1>
 		</div>
 		--->
-		
+
 		<cf_CacheOMatic key="dspMobilePrimaryNav#$.content('contentID')#">
 			#$.dspPrimaryNav(
 				viewDepth="0",
@@ -81,21 +81,21 @@
 		--->
 		<div id="navSub">#$.dspSubNav()#</div>
 		</cfif>
-		
-		
+
+
 	</div><!-- /content -->
 
 		<div data-role="footer"  data-theme="a" class="ui-bar">
 				<a href="./?mobileFormat=false" rel="external">#$.rbKey("mobile.fullversion")#</a>
 		</div><!-- /footer -->
-	
+
 </div><!-- /page -->
 
 <script>
 	$('body').live('pagebeforecreate',init);
-	
+
 	function init() {
-	
+
 	<!--- Primary Nav on Home Screen --->
 	$('##navPrimary').attr({
  		'data-role': 'listview',
@@ -103,7 +103,7 @@
   		'data-theme': 'c',
   		'data-dividertheme': 'b',
 	});
-	
+
 	<!--- Secondary Nav --->
 	$('##navSub ul').attr({
  		'data-role': 'listview',
@@ -111,26 +111,26 @@
   		'data-theme': 'c',
   		'data-dividertheme': 'b'
 	});
-	
+
 	$('##navSub li').attr({
  		'role': 'option',
  		'data-theme': 'c',
  		'tabindex': '0'
 	});
-	
-	<!--- Indexes --->	
+
+	<!--- Indexes --->
 	$('.svIndex ul:first').attr({
  		'data-role': 'listview',
   		'data-inset': 'true',
   		'data-theme': 'c',
   		'data-dividertheme': 'b'
 	});
-	
+
 	$('.svIndex .moreResults ul').attr({
 			'data-role': 'controlgroup',
 			'data-type': 'horizontal',
 	});
-	
+
 	$('.svIndex .moreResults ul li').attr({
 			'data-role': 'button',
 			'data-theme': 'c'
@@ -139,20 +139,20 @@
 	$('form ul, form ol').attr({
 			'data-role': 'fieldcontain'
 	});
-	
+
 	$('form li').attr({
 			'data-role': 'controlgroup'
 	});
-	
+
 	$('##btn-back').live('tap',function() {
 	  history.back(); return false;
 	}).live('click',function() {
 	  history.back(); return false;
 	});
-	
-}	
+
+}
 </script>
 
-</body>	
+</body>
 </html>
 </cfoutput>

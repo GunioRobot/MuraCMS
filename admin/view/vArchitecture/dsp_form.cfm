@@ -12,17 +12,17 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Mura CMS. If not, see <http://www.gnu.org/licenses/>.
 
-Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on 
+Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on
 Mura CMS. Thus, the terms and conditions of the GNU General Public License version 2 ("GPL") cover the entire combined work.
 
 However, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with programs
 or libraries that are released under the GNU Lesser General Public License version 2.1.
 
-In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with 
-independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without 
-Mura CMS under the license of your choice, provided that you follow these specific guidelines: 
+In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with
+independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without
+Mura CMS under the license of your choice, provided that you follow these specific guidelines:
 
-Your custom code 
+Your custom code
 
 • Must not alter any default objects in the Mura CMS database and
 • May not alter the default display of the Mura CMS logo within Mura CMS and
@@ -36,12 +36,12 @@ Your custom code
  /index.cfm
  /MuraProxy.cfc
 
-You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work 
-under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL 
+You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work
+under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL
 requires distribution of source code.
 
-For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your 
-modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
+For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your
+modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 <cfset variables.pluginEvent=createObject("component","mura.event").init(event.getAllValues())/>
@@ -51,7 +51,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset hasChangesets=application.settingsManager.getSite(attributes.siteID).getHasChangesets() and listFindNoCase("Page,Portal,Calendar,Gallery,File,Link",attributes.type)>
 <cfset request.perm=application.permUtility.getnodePerm(request.crumbdata)>
 <cfif attributes.parentID eq "" and not request.contentBean.getIsNew()>
-	<cfset attributes.parentID=request.contentBean.getParentID()>	
+	<cfset attributes.parentID=request.contentBean.getParentID()>
  </cfif>
 <cfif hasChangesets>
 <cfset currentChangeset=application.changesetManager.read(request.contentBean.getChangesetID())>
@@ -69,13 +69,13 @@ var requestedURL="";
 var formSubmitted=false;
 onload=function(){
 	var anchors=document.getElementsByTagName("A");
-	
-	for(var i=0;i<anchors.length;i++){		
+
+	for(var i=0;i<anchors.length;i++){
 		if (typeof(anchors[i].onclick) != 'function' && jQuery(anchors[i]).attr("href") !='#') {
    			anchors[i].onclick = setRequestedURL;
 		}
 	}
-	
+
 }
 
 onunload=function(){
@@ -111,12 +111,12 @@ function conditionalExit(msg){
 				}
 			}
 		});
-	
-		return false;	
-		
+
+		return false;
+
 	} else {
 		requestedURL="";
-		return true;	
+		return true;
 	}
 
 }
@@ -135,14 +135,14 @@ jQuery(document).ready(function(){
 				function(){
 					frontEndProxy.postMessage("cmd=setWindowMode&mode=standard");
 				}
-			);	
+			);
 		} else {
 			frontEndProxy.postMessage("cmd=setWindowMode&mode=standard");
 		}
 	}
 });
 </script>
-</cfif> 
+</cfif>
 
 <cfsilent>
 	<cfif request.contentBean.getType() eq 'File'>
@@ -169,12 +169,12 @@ jQuery(document).ready(function(){
 		<cfelse>
 			<cfset baseTypeList=pageLevelList>
 		</cfif>
-		
+
 		<!--- If the node is new check to see if the parent type has a matching sub type. --->
 		<cfif request.contentBean.getIsNew()>
 			<cfquery name="rsParentSubType" dbtype="query">
 			select * from rsSubTypes
-			where 
+			where
 			type = <cfqueryparam cfsqltype="cf_sql_varchar" value="#attributes.type#"/>
 			and subtype = <cfqueryparam cfsqltype="cf_sql_varchar" value="#$.getBean('content').loadBy(contentID=attributes.parentID, siteID=attributes.siteID).getSubType()#"/>
 			</cfquery>
@@ -182,21 +182,21 @@ jQuery(document).ready(function(){
 				<cfset request.contentBean.setSubType(rsParentSubType.subType)>
 			</cfif>
 		</cfif>
-		
+
 		<cfif rsSubTypes.recordCount>
 			<cfset isExtended=true/>
 		<cfelse>
 			<cfset isExtended=false/>
 		</cfif>
 	</cfif>
-	
+
 	<cfif  ListFindNoCase("Page,Portal,Calendar,Link,File,Gallery",attributes.type)>
 	<cfset rsPluginScripts1=application.pluginManager.getScripts("onContentEdit",attributes.siteID)>
 	<cfset rsPluginScripts2=application.pluginManager.getScripts("on#attributes.type#Edit",attributes.siteID)>
 	<cfquery name="rsPluginScripts3" dbtype="query">
-	select * from rsPluginScripts1 
+	select * from rsPluginScripts1
 	union
-	select * from rsPluginScripts2 
+	select * from rsPluginScripts2
 	</cfquery>
 	<cfquery name="rsPluginScripts" dbtype="query">
 	select * from rsPluginScripts3 order by pluginID
@@ -216,7 +216,7 @@ jQuery(document).ready(function(){
 	<cfelse>
 		<h2>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.editcontent")#</h2>
 	</cfif>
-	
+
 	<cfif attributes.compactDisplay neq "true">
 	<ul class="metadata">
 		<cfif not request.contentBean.getIsNew()>
@@ -239,24 +239,24 @@ jQuery(document).ready(function(){
 		</li>
 	</ul>
 	</cfif>
-	
+
 	<cfif attributes.compactDisplay eq "true" and not ListFindNoCase(nodeLevelList,attributes.type)>
 		<p class="notice">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.globallyappliednotice")#</p>
 	</cfif>
-	
+
 	<cfif not request.contentBean.getIsNew()>
 		<cfset draftcheck=application.contentManager.getDraftPromptData(request.contentBean.getContentID(),request.contentBean.getSiteID())>
-		
+
 		<cfif yesNoFormat(draftcheck.showdialog) and draftcheck.historyid neq request.contentBean.getContentHistID()>
 		<p class="notice">
 		#application.rbFactory.getKeyValue(session.rb,'sitemanager.draftprompt.inline')#: <strong><a href="./?#replace(cgi.query_string,'#request.contentBean.getContentHistID()#','#draftcheck.historyid#')#">#application.rbFactory.getKeyValue(session.rb,'sitemanager.draftprompt.gotolatest')#</a></strong>
 		<p>
 		</cfif>
 	</cfif>
-	
+
 	<cfif hasChangesets and (not currentChangeset.getIsNew() or pendingChangesets.recordcount)>
 		<p class="notice">
-		<cfif pendingChangesets.recordcount>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.changesetnodenotify")#: 
+		<cfif pendingChangesets.recordcount>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.changesetnodenotify")#:
 		<cfloop query="pendingChangesets"><a href="?fuseaction=cArch.edit&moduleID=#URLEncodedFormat(attributes.moduleID)#&siteID=#URLEncodedFormat(attributes.siteID)#&topID=#URLEncodedFormat(attributes.topID)#&contentID=#URLEncodedFormat(attributes.contentID)#&return=#URLEncodedFormat(attributes.return)#&contentHistID=#pendingChangesets.contentHistID#&parentID=#URLEncodedFormat(attributes.parentID)#&startrow=#URLEncodedFormat(attributes.startrow)#">"#HTMLEditFormat(pendingChangesets.changesetName)#"</a><cfif pendingChangesets.currentrow lt pendingChangesets.recordcount>, </cfif></cfloop><br/></cfif>
 		<cfif not currentChangeset.getIsNew()>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.changesetversionnotify")#: "#HTMLEditFormat(currentChangeset.getName())#"</cfif>
 		</p>
@@ -266,19 +266,19 @@ jQuery(document).ready(function(){
 		<p class="error">#application.utility.displayErrors(request.contentBean.getErrors())#</p>
 	</cfif>
 	<form novalidate="novalidate" action="index.cfm" method="post" enctype="multipart/form-data" name="contentForm" onsubmit="return ckContent(draftremovalnotice);" id="contentForm">
-	
+
 	<cfif attributes.compactDisplay neq "true" and attributes.moduleid eq '00000000000000000000000000000000000'>
 		#application.contentRenderer.dspZoom(request.crumbdata,fileExt)#
 	</cfif>
-	
-	<!--- This is plugin message targeting --->	
+
+	<!--- This is plugin message targeting --->
 	<span id="msg">
 	#application.pluginManager.renderEvent("on#request.contentBean.getType()#EditMessageRender", pluginEvent)#
 	#application.pluginManager.renderEvent("on#request.contentBean.getType()##request.contentBean.getSubType()#EditMessageRender", pluginEvent)#
 	</span>
-	
-	
-	<cfif attributes.compactDisplay neq "true" or not listFindNoCase(nodeLevelList,attributes.type)>	
+
+
+	<cfif attributes.compactDisplay neq "true" or not listFindNoCase(nodeLevelList,attributes.type)>
 		<cfif attributes.contentid neq "">
 			<ul id="navTask">
 			<cfif attributes.compactDisplay neq "true" and (request.contentBean.getfilename() neq '' or attributes.contentid eq '00000000000000000000000000000000001')>
@@ -297,7 +297,7 @@ jQuery(document).ready(function(){
 					</cfif>
 					<li><a href="javascript:preview('#request.contentBean.getfilename()#','#request.contentBean.getTargetParams()#');">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.viewversion")#</a></li>
 				</cfcase>
-				<cfcase value="File">	
+				<cfcase value="File">
 					<li><a  href="javascript:preview('http://#application.settingsManager.getSite(attributes.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##application.contentRenderer.getURLStem(attributes.siteid,"")#?LinkServID=#attributes.contentid#');">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.viewactive")#</a></li>
 					<li><a  href="javascript:preview('http://#application.settingsManager.getSite(attributes.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()#/tasks/render/file/?fileID=#request.contentBean.getFileID()#');">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.viewversion")#</a></li>
 				</cfcase>
@@ -312,13 +312,13 @@ jQuery(document).ready(function(){
 			</cfswitch>
 			<li><a href="index.cfm?fuseaction=cArch.hist&contentid=#URLEncodedFormat(attributes.contentid)#&type=#attributes.type#&parentid=#URLEncodedFormat(attributes.parentid)#&topid=#URLEncodedFormat(attributes.topid)#&siteid=#URLEncodedFormat(attributes.siteid)#&startrow=#attributes.startrow#&moduleid=#attributes.moduleid#&compactDisplay=#attributes.compactDisplay#">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.versionhistory")#</a> </li>
 			<cfif attributes.compactDisplay neq 'true' and request.contentBean.getactive()lt 1 and (request.perm neq 'none')><li><a href="index.cfm?fuseaction=cArch.update&contenthistid=#URLEncodedFormat(attributes.contenthistid)#&action=delete&contentid=#URLEncodedFormat(attributes.contentid)#&type=#attributes.type#&parentid=#URLEncodedFormat(attributes.parentid)#&topid=#URLEncodedFormat(attributes.topid)#&siteid=#URLEncodedFormat(attributes.siteid)#&startrow=#attributes.startrow#&moduleid=#attributes.moduleid#&return=#attributes.return#" onclick="return confirmDialog('#jsStringFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.deleteversionconfirm"))#',this.href)">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.deleteversion")#</a></li></cfif>
-			<cfif request.deletable><li><a href="index.cfm?fuseaction=cArch.update&action=deleteall&contentid=#URLEncodedFormat(attributes.contentid)#&type=#attributes.type#&parentid=#URLEncodedFormat(attributes.parentid)#&topid=#URLEncodedFormat(attributes.topid)#&siteid=#URLEncodedFormat(attributes.siteid)#&startrow=#attributes.startrow#&moduleid=#attributes.moduleid#" 
+			<cfif request.deletable><li><a href="index.cfm?fuseaction=cArch.update&action=deleteall&contentid=#URLEncodedFormat(attributes.contentid)#&type=#attributes.type#&parentid=#URLEncodedFormat(attributes.parentid)#&topid=#URLEncodedFormat(attributes.topid)#&siteid=#URLEncodedFormat(attributes.siteid)#&startrow=#attributes.startrow#&moduleid=#attributes.moduleid#"
 			<cfif listFindNoCase(nodeLevelList,request.contentBean.getType())>onclick="return confirmDialog('#jsStringFormat(application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.deletecontentrecursiveconfirm'),request.contentBean.getMenutitle()))#',this.href)"<cfelse>onclick="return confirmDialog('#jsStringFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.deletecontentconfirm"))#',this.href)"</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.deletecontent")#</a></li></cfif>
 			<cfif (listFind(session.mura.memberships,'Admin;#application.settingsManager.getSite(attributes.siteid).getPrivateUserPoolID()#;0') or listFind(session.mura.memberships,'S2'))><li><a href="index.cfm?fuseaction=cPerm.main&contentid=#URLEncodedFormat(attributes.contentid)#&type=#request.contentBean.gettype()#&parentid=#request.contentBean.getparentID()#&topid=#URLEncodedFormat(attributes.topid)#&siteid=#URLEncodedFormat(attributes.siteid)#&moduleid=#attributes.moduleid#&startrow=#attributes.startrow#">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.permissions")#</a></li></cfif>
 			</ul>
 		</cfif>
 	</cfif>
-	
+
 	<cfif attributes.compactDisplay neq "true">
 			<div class="selectContentType">
 			<cfif listFindNoCase(pageLevelList,attributes.type)>
@@ -348,7 +348,7 @@ jQuery(document).ready(function(){
 				</cfif>
 				</select>
 				</cfif>
-			<cfelseif attributes.type eq 'Link'>	
+			<cfelseif attributes.type eq 'Link'>
 				<cfset t="Link"/>
 				<cfsilent><cfquery name="rsst" dbtype="query">select * from rsSubTypes where type=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#t#"> and subtype not in ('Default','default')</cfquery></cfsilent>
 				<cfif rsst.recordcount>
@@ -362,7 +362,7 @@ jQuery(document).ready(function(){
 				</cfif>
 				</select>
 				</cfif>
-			<cfelseif attributes.type eq 'Component'>	
+			<cfelseif attributes.type eq 'Component'>
 				<cfset t="Component"/>
 				<cfsilent><cfquery name="rsst" dbtype="query">select * from rsSubTypes where type=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#t#"> and subtype not in ('Default','default')</cfquery></cfsilent>
 				<cfif rsst.recordcount>
@@ -379,7 +379,7 @@ jQuery(document).ready(function(){
 			</cfif>
 		</div>
 	</cfif>
-	
+
 	<cfif attributes.compactDisplay eq "true">
 		<cfif not listFindNoCase("Component,Form", attributes.type)>
 			<cfquery name="rsst" dbtype="query">select * from rsSubTypes where type=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#attributes.type#"> and subtype not in ('Default','default')</cfquery>
@@ -393,24 +393,24 @@ jQuery(document).ready(function(){
 					<cfloop query="rsst">
 						<option value="#t#^#rsst.subtype#" <cfif attributes.type eq t and request.contentBean.getSubType() eq rsst.subtype>selected</cfif>>#t#  / #rsst.subtype#</option>
 					</cfloop>
-					</select>	
-					</div>								
+					</select>
+					</div>
 			</cfif>
 		</cfif>
-			
+
 		<input type="hidden" name="closeCompactDisplay" value="true" />
 	</cfif>
-	
+
 	</cfoutput>
-	
+
 	<cfset tabLabelList=""/>
 	<cfset tabList="">
 	<cfsavecontent variable="tabContent">
-	
+
 		<cfif attributes.type neq "Form">
-			<cfinclude template="form/dsp_tab_basic.cfm">	
+			<cfinclude template="form/dsp_tab_basic.cfm">
 		<cfelse>
-			<cfif request.contentBean.getIsNew() and not (isdefined("url.formType") and url.formType eq "editor")>		
+			<cfif request.contentBean.getIsNew() and not (isdefined("url.formType") and url.formType eq "editor")>
 				<cfset request.contentBean.setBody( application.serviceFactory.getBean('formBuilderManager').createJSONForm( request.contentBean.getContentID() ) ) />
 			</cfif>
 			<cfif isJSON(request.contentBean.getBody())>
@@ -419,7 +419,7 @@ jQuery(document).ready(function(){
 				<cfinclude template="form/dsp_tab_basic.cfm">
 			</cfif>
 		</cfif>
-		
+
 		<cfswitch expression="#attributes.type#">
 			<cfcase value="Page,Portal,Calendar,Gallery,File,Link">
 			<cfif not len(tabAssignments) or listFindNocase(tabAssignments,'Meta Data')>
@@ -427,7 +427,7 @@ jQuery(document).ready(function(){
 			</cfif>
 			</cfcase>
 		</cfswitch>
-			
+
 		<cfswitch expression="#attributes.type#">
 		<cfcase value="Page,Portal,Calendar,Gallery">
 			<cfif not len(tabAssignments) or listFindNocase(tabAssignments,'Content Objects')>
@@ -459,7 +459,7 @@ jQuery(document).ready(function(){
 			<cfif not request.contentBean.getIsNew()>
 			<cfinclude template="form/dsp_tab_usage.cfm">
 			</cfif>
-			</cfif>		
+			</cfif>
 		</cfcase>
 		<cfcase value="Form">
 			<cfif not len(tabAssignments) or listFindNocase(tabAssignments,'Usage Report')>
@@ -469,7 +469,7 @@ jQuery(document).ready(function(){
 			</cfif>
 		</cfcase>
 	</cfswitch>
-	
+
 	<cfswitch expression="#attributes.type#">
 		<cfcase value="Page,Portal,Calendar,Gallery,Link,File,Component">
 		<cfif isExtended>
@@ -488,7 +488,7 @@ jQuery(document).ready(function(){
 		<cfif not len(tabAssignments) or listFindNocase(tabAssignments,'Advanced')>
 		<cfif listFind(session.mura.memberships,'S2IsPrivate')>
 		<cfinclude template="form/dsp_tab_advanced.cfm">
-		</cfif> 
+		</cfif>
 		</cfif>
 		<cfoutput query="rsPluginScripts" group="pluginID">
 			<!---<cfset tabLabelList=tabLabelList & ",'#jsStringFormat(rsPluginScripts.name)#'"/>--->
@@ -519,14 +519,14 @@ jQuery(document).ready(function(){
 		</ul>
 		#tabContent#
 	</div>
-	
+
 	<cfif assignChangesets>
 		<cfinclude template="form/dsp_changesets.cfm">
 	</cfif>
-	
+
 	<div class="clearfix" id="actionButtons">
 		<cfif assignChangesets>
-		<input type="button" class="submit" onclick="saveToChangeset('#request.contentBean.getChangesetID()#','#HTMLEditFormat(attributes.siteID)#','');return false;" value="#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.savetochangeset")#" />	
+		<input type="button" class="submit" onclick="saveToChangeset('#request.contentBean.getChangesetID()#','#HTMLEditFormat(attributes.siteID)#','');return false;" value="#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.savetochangeset")#" />
 		</cfif>
 		 <input type="button" class="submit" onclick="if(ckContent(draftremovalnotice)){submitForm(document.contentForm,'add');}" value="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.savedraft"))#" />
 		<cfif listFindNoCase("Page,Portal,Calendar,Gallery",attributes.type)>
@@ -534,7 +534,7 @@ jQuery(document).ready(function(){
 		</cfif>
 		<cfif request.perm eq 'editor'>
 		<input type="button" class="submit" onclick="document.contentForm.approved.value=1;if(ckContent(draftremovalnotice)){submitForm(document.contentForm,'add');}" value="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.publish"))#" />
-		</cfif> 
+		</cfif>
 	</div>
 	<div id="actionIndicator" style="display: none;">
 		<img src="#application.configBean.getContext()#/admin/images/progress_bar.gif">
@@ -542,7 +542,7 @@ jQuery(document).ready(function(){
 		<input name="approved" type="hidden" value="0">
 		<input id="removePreviousChangeset" name="removePreviousChangeset" type="hidden" value="false">
 		<input id="changesetID" name="changesetID" type="hidden" value="">
-		<input name="preview" type="hidden" value="0">	
+		<input name="preview" type="hidden" value="0">
 		<cfif attributes.type neq 'Link'>
 			<input name="filename" type="hidden" value="#request.contentBean.getfilename()#">
 		</cfif>
@@ -573,7 +573,7 @@ jQuery(document).ready(function(){
 			<input type="hidden" name="isLocked" value="#request.contentBean.getIsLocked()#">
 		</cfif>
 		<input name="OrderNo" type="hidden" value="<cfif request.contentBean.getorderno() eq ''>0<cfelse>#request.contentBean.getOrderNo()#</cfif>">
-				
+
 	</cfoutput>
 	</form>
 <cfelse>

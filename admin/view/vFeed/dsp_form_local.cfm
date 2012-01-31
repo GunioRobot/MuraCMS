@@ -12,17 +12,17 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Mura CMS. If not, see <http://www.gnu.org/licenses/>.
 
-Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on 
+Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on
 Mura CMS. Thus, the terms and conditions of the GNU General Public License version 2 ("GPL") cover the entire combined work.
 
 However, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with programs
 or libraries that are released under the GNU Lesser General Public License version 2.1.
 
-In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with 
-independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without 
-Mura CMS under the license of your choice, provided that you follow these specific guidelines: 
+In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with
+independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without
+Mura CMS under the license of your choice, provided that you follow these specific guidelines:
 
-Your custom code 
+Your custom code
 
 • Must not alter any default objects in the Mura CMS database and
 • May not alter the default display of the Mura CMS logo within Mura CMS and
@@ -36,12 +36,12 @@ Your custom code
  /index.cfm
  /MuraProxy.cfc
 
-You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work 
-under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL 
+You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work
+under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL
 requires distribution of source code.
 
-For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your 
-modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
+For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your
+modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 
@@ -117,21 +117,21 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfif len(attributes.assignmentID)>
 	<cfset rsDisplayObject=application.contentManager.readContentObject(attributes.assignmentID,attributes.regionID,attributes.orderno)>
 	<cfset request.feedBean.setInstanceParams(rsDisplayObject.params)>
-	
+
 	<cfif not isJson(rsDisplayObject.params)>
 		<cfset variables.contentListFields=request.feedBean.getDisplayList()>
-			  
+
 		<cfset variables.hasSummary=listFindNoCase("feed_slideshow_no_summary,feed_no_summary",rsDisplayObject.object) and listFindNoCase(variables.contentListFields,"Summary")>
 		<cfif variables.hasSummary>
 			<cfset  variables.contentListFields=listDeleteAt(variables.contentListFields,arguments.hasSummary)>
 		 </cfif>
-		
+
 		<cfif listFindNoCase("feed_slideshow_no_summary,feed_slideshow",rsDisplayObject.object)>
 			<cfset request.feedBean.setImageSize("medium")>
-			<cfset request.feedBean.setImageHeight("AUTO")>	
-			<cfset request.feedBean.setImageWidth("AUTO")>		
+			<cfset request.feedBean.setImageHeight("AUTO")>
+			<cfset request.feedBean.setImageWidth("AUTO")>
 		</cfif>
-		
+
 		<cfset request.feedBean.setDisplayList(variables.contentListFields)>
 	<cfelse>
 		<cfset request.feedBean.set(deserializeJSON(rsDisplayObject.params))>
@@ -158,7 +158,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <p class="notice">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.globallyappliednotice")#</p>
 </cfif>
 
-<!-- This is plugin message targeting --->	
+<!-- This is plugin message targeting --->
 <span id="msg">
 #application.pluginManager.renderEvent("onFeedEditMessageRender",event)#
 </span>
@@ -197,7 +197,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <dl class="oneColumn">
 <dt class="first">#application.rbFactory.getKeyValue(session.rb,'collections.choosecontentfromsection')#: <span id="selectFilter"><a href="javascript:;" onclick="javascript: loadSiteFilters('#attributes.siteid#','',1);return false;">[#application.rbFactory.getKeyValue(session.rb,'collections.selectnewsection')#]</a></span>
 </dt>
-<table id="contentFilters" class="mura-table-grid stripe"> 
+<table id="contentFilters" class="mura-table-grid stripe">
 <tr>
 <th class="varWidth">#application.rbFactory.getKeyValue(session.rb,'collections.section')#</th>
 <th>#application.rbFactory.getKeyValue(session.rb,'collections.type')#</th>
@@ -249,18 +249,18 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </dd>
 <dt>#application.rbFactory.getKeyValue(session.rb,'collections.includefeaturesonly')#</dt>
 <dd>
-<input name="isFeaturesOnly" type="radio" value="1" class="radio" <cfif request.feedBean.getIsFeaturesOnly()>checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.yes')# 
-<input name="isFeaturesOnly" type="radio" value="0" class="radio" <cfif not request.feedBean.getIsFeaturesOnly()>checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.no')# 
+<input name="isFeaturesOnly" type="radio" value="1" class="radio" <cfif request.feedBean.getIsFeaturesOnly()>checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.yes')#
+<input name="isFeaturesOnly" type="radio" value="0" class="radio" <cfif not request.feedBean.getIsFeaturesOnly()>checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.no')#
 </dd>
 <dt>#application.rbFactory.getKeyValue(session.rb,'collections.shownavonly')#</dt>
 <dd>
-<input name="showNavOnly" type="radio" value="1" class="radio" <cfif request.feedBean.getShowNavOnly()>checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.yes')# 
-<input name="showNavOnly" type="radio" value="0" class="radio" <cfif not request.feedBean.getShowNavOnly()>checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.no')# 
+<input name="showNavOnly" type="radio" value="1" class="radio" <cfif request.feedBean.getShowNavOnly()>checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.yes')#
+<input name="showNavOnly" type="radio" value="0" class="radio" <cfif not request.feedBean.getShowNavOnly()>checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.no')#
 </dd>
 <dt>#application.rbFactory.getKeyValue(session.rb,'collections.showexcludesearch')#</dt>
 <dd>
-<input name="showExcludeSearch" type="radio" value="1" class="radio" <cfif request.feedBean.getShowExcludeSearch()>checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.yes')# 
-<input name="showExcludeSearch" type="radio" value="0" class="radio" <cfif not request.feedBean.getShowExcludeSearch()>checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.no')# 
+<input name="showExcludeSearch" type="radio" value="1" class="radio" <cfif request.feedBean.getShowExcludeSearch()>checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.yes')#
+<input name="showExcludeSearch" type="radio" value="0" class="radio" <cfif not request.feedBean.getShowExcludeSearch()>checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.no')#
 </dd>
 <!---<dt><button onclick="previewFeed();" type="button">Preview Index</button></dt>--->
 </dl>
@@ -343,8 +343,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <dt>#application.rbFactory.getKeyValue(session.rb,'collections.displayname')#</dt>
 <dd>
-<input name="#displaNamePrefix#displayName" data-displayobjectparam="displayName" type="radio" value="1" class="radio" onchange="jQuery('##altNameContainer').toggle();"<cfif request.feedBean.getDisplayName()>checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.yes')# 
-<input name="#displaNamePrefix#displayName" data-displayobjectparam="displayName" type="radio" value="0" class="radio" onchange="jQuery('##altNameContainer').toggle();" <cfif not request.feedBean.getDisplayName()>checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.no')# 
+<input name="#displaNamePrefix#displayName" data-displayobjectparam="displayName" type="radio" value="1" class="radio" onchange="jQuery('##altNameContainer').toggle();"<cfif request.feedBean.getDisplayName()>checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.yes')#
+<input name="#displaNamePrefix#displayName" data-displayobjectparam="displayName" type="radio" value="0" class="radio" onchange="jQuery('##altNameContainer').toggle();" <cfif not request.feedBean.getDisplayName()>checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.no')#
 </dd>
 <span id="altNameContainer"<cfif NOT request.feedBean.getDisplayName()> style="display:none;"</cfif>>
 <dt>#application.rbFactory.getKeyValue(session.rb,'collections.altname')#</dt>
@@ -372,29 +372,29 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <dt id="availableFields"><span>Available Fields</span> <span>Selected Fields</span></dt>
 <dd>
 	<div class="sortableFields">
-	<p class="dragMsg"><span class="dragFrom">Drag Fields from Here&hellip;</span><span>&hellip;and Drop Them Here.</span></p>	
+	<p class="dragMsg"><span class="dragFrom">Drag Fields from Here&hellip;</span><span>&hellip;and Drop Them Here.</span></p>
 	<cfset displayList=request.feedBean.getDisplayList()>
 	<cfset availableList=request.feedBean.getAvailableDisplayList()>
-					
+
 	<ul id="availableListSort" class="displayListSortOptions">
 		<cfloop list="#availableList#" index="i">
 			<li class="ui-state-default">#i#</li>
 		</cfloop>
 	</ul>
-					
+
 	<ul id="displayListSort" class="displayListSortOptions">
 		<cfloop list="#displayList#" index="i">
 			<li class="ui-state-highlight">#i#</li>
 		</cfloop>
 	</ul>
 	<input type="hidden" id="displayList" value="#displayList#" name="#displaNamePrefix#displayList"  data-displayobjectparam="displayList"/>
-	</div>	
+	</div>
 	<script>
 		jQuery(document).ready(
 			function(){
 				setDisplayListSort();
 			}
-		);	
+		);
 	</script>
 </dd>
 </dl>
@@ -407,21 +407,21 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<dd><a title="#application.rbFactory.getKeyValue(session.rb,'collections.view')#" href="http://#application.settingsManager.getSite(attributes.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()#/tasks/feed/?feedID=#attributes.feedID#" target="_blank">http://#application.settingsManager.getSite(attributes.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()#/tasks/feed/?feedID=#attributes.feedID#</a></dd>
 	</cfif>
 	<dt<cfif attributes.feedID eq ''> class="first"</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.description')#</dt>
-	<dd><input name="description" class="text" value="#HTMLEditFormat(request.feedBean.getDescription())#"/></dd> 
+	<dd><input name="description" class="text" value="#HTMLEditFormat(request.feedBean.getDescription())#"/></dd>
 	<dt>#application.rbFactory.getKeyValue(session.rb,'collections.makedefault')#</dt>
 	<dd>
-	<input name="isDefault" type="radio" value="1" <cfif request.feedBean.getIsDefault()>checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.yes')# 
-	<input name="isDefault" type="radio" value="0" <cfif not request.feedBean.getIsDefault()>checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.no')# 
+	<input name="isDefault" type="radio" value="1" <cfif request.feedBean.getIsDefault()>checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.yes')#
+	<input name="isDefault" type="radio" value="0" <cfif not request.feedBean.getIsDefault()>checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.no')#
 	</dd>
 	<dt>#application.rbFactory.getKeyValue(session.rb,'collections.isPublic')#</dt>
 	<dd>
-	<input name="isPublic" type="radio" value="1" <cfif request.feedBean.getIsPublic()>checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.yes')# 
-	<input name="isPublic" type="radio" value="0" <cfif not request.feedBean.getIsPublic()>checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.no')# 
+	<input name="isPublic" type="radio" value="1" <cfif request.feedBean.getIsPublic()>checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.yes')#
+	<input name="isPublic" type="radio" value="0" <cfif not request.feedBean.getIsPublic()>checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.no')#
 	</dd>
 	<dt>#application.rbFactory.getKeyValue(session.rb,'collections.allowhtml')#</dt>
 	<dd>
-	<input name="allowHTML" type="radio" value="1" <cfif request.feedBean.getAllowHTML()>checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.yes')# 
-	<input name="allowHTML" type="radio" value="0" <cfif not request.feedBean.getAllowHTML()>checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.no')# 
+	<input name="allowHTML" type="radio" value="1" <cfif request.feedBean.getAllowHTML()>checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.yes')#
+	<input name="allowHTML" type="radio" value="0" <cfif not request.feedBean.getAllowHTML()>checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.no')#
 	</dd>
 	<dt>#application.rbFactory.getKeyValue(session.rb,'collections.version')#</dt>
 	<dd><select name="version" class="dropdown">
@@ -434,7 +434,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<dd><input name="lang" class="text" value="#htmlEditFormat(request.feedBean.getlang())#" maxlength="50">
 	</dd>
 	<cfif application.settingsManager.getSite(attributes.siteid).getextranet()>
-	
+
 	<dt><input name="restricted" type="CHECKBOX" value="1"   onclick="javascript: this.checked?toggleDisplay2('rg',true):toggleDisplay2('rg',false);" <cfif request.feedBean.getrestricted() eq 1>checked </cfif> class="checkbox">
 		#application.rbFactory.getKeyValue(session.rb,'collections.restrictaccess')#
 		<div id="rg"  <cfif request.feedBean.getrestricted() NEQ 1>style="display:none;"</cfif>>
@@ -443,7 +443,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<option value="RestrictAll" <cfif request.feedBean.getrestrictgroups() eq 'RestrictAll'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.restrictall')#</option>
 		<option value="" <cfif request.feedBean.getrestrictgroups() eq ''>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.allowall')#</option>
 		</optgroup>
-		<cfquery dbtype="query" name="rsGroups">select * from request.rsrestrictgroups where isPublic=1</cfquery>	
+		<cfquery dbtype="query" name="rsGroups">select * from request.rsrestrictgroups where isPublic=1</cfquery>
 		<cfif rsGroups.recordcount>
 		<optgroup label="#htmlEditFormat(application.rbFactory.getKeyValue(session.rb,'user.membergroups'))#">
 		<cfloop query="rsGroups">
@@ -451,7 +451,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfloop>
 		</optgroup>
 		</cfif>
-		<cfquery dbtype="query" name="rsGroups">select * from request.rsrestrictgroups where isPublic=0</cfquery>	
+		<cfquery dbtype="query" name="rsGroups">select * from request.rsrestrictgroups where isPublic=0</cfquery>
 		<cfif rsGroups.recordcount>
 		<optgroup label="#htmlEditFormat(application.rbFactory.getKeyValue(session.rb,'user.adminusergroups'))#">
 		<cfloop query="rsGroups">
@@ -460,7 +460,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</optgroup>
 		</cfif>
 		</select>
-	
+
 	</div>
 	</dt></cfif>
 	</dl>
@@ -486,7 +486,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	#tabCOntent#
 </cfif>
 
-<input type="hidden" id="instanceParams" value='#request.feedBean.getInstanceParams()#' name="instanceParams" />		
+<input type="hidden" id="instanceParams" value='#request.feedBean.getInstanceParams()#' name="instanceParams" />
 <input type="hidden" name="assignmentID" value="#HTMLEditFormat(attributes.assignmentID)#" />
 <input type="hidden" name="orderno" value="#HTMLEditFormat(attributes.orderno)#" />
 <input type="hidden" name="regionid" value="#HTMLEditFormat(attributes.regionID)#" />
@@ -498,7 +498,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<input type="hidden" name="action" value="add">
 <cfelse>
 	<cfif attributes.compactDisplay neq "true">
-		<input type="button" class="submit" onclick="submitForm(document.forms.form1,'delete','#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'collections.deletelocalconfirm'))#');" value="#application.rbFactory.getKeyValue(session.rb,'collections.delete')#" /> 
+		<input type="button" class="submit" onclick="submitForm(document.forms.form1,'delete','#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'collections.deletelocalconfirm'))#');" value="#application.rbFactory.getKeyValue(session.rb,'collections.delete')#" />
 	</cfif>
 	<cfif isObjectInstance>
 		<input type="button" class="submit" onclick="updateInstanceObject();submitForm(document.forms.form1,'update');" value="#application.rbFactory.getKeyValue(session.rb,'collections.update')#" />
@@ -534,7 +534,7 @@ jQuery(document).ready(function(){
 				function(){
 					<cfif len(attributes.assignmentID)>frontEndProxy.postMessage("cmd=setWindowMode&mode=configurator");<cfelse>frontEndProxy.postMessage("cmd=setWindowMode&mode=standard");</cfif>
 				}
-			);	
+			);
 		} else {
 			<cfif len(attributes.assignmentID)>frontEndProxy.postMessage("cmd=setWindowMode&mode=configurator");<cfelse>frontEndProxy.postMessage("cmd=setWindowMode&mode=standard");</cfif>
 		}
@@ -542,5 +542,5 @@ jQuery(document).ready(function(){
 });
 </script>
 </cfoutput>
-</cfsavecontent>	
-<cfhtmlhead text="#headerStr#">	
+</cfsavecontent>
+<cfhtmlhead text="#headerStr#">

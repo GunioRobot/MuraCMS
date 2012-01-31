@@ -34,7 +34,7 @@
 	 * - getBean(name) - returns the named bean
 	 */
 	function setSubsystemBeanFactory( subsystem, factory ) {
-		
+
 		ensureNewFrameworkStructsExist();
 		application[ variables.framework.applicationKey ].subsystemFactories[ subsystem ] = factory;
 
@@ -323,11 +323,11 @@
 	* same effect as getBeanFactory when not using subsystems
 	*/
 	function getSubsystemBeanFactory( subsystem ) {
-		
+
 		setupSubsystemWrapper( subsystem );
-		
+
 		return application[ variables.framework.applicationKey ].subsystemFactories[ subsystem ];
-		
+
 	}
 
 
@@ -336,25 +336,25 @@
 	 * previously set via setBeanFactory or setSubsystemBeanFactory
 	 */
 	function hasBeanFactory() {
-		
+
 		if ( hasDefaultBeanFactory() ) {
 			return true;
 		}
-		
+
 		if ( not usingSubsystems() ) {
 			return false;
 		}
-		
+
 		if ( structKeyExists( request, 'subsystem' ) ) {
 			return hasSubsystemBeanFactory(request.subsystem);
 		}
-		
+
 		if ( len(variables.framework.defaultSubsystem) gt 0 ) {
 			return hasSubsystemBeanFactory(variables.framework.defaultSubsystem);
 		}
-		
+
 		return false;
-		
+
 	}
 
 	/*
@@ -368,11 +368,11 @@
 	 * returns true if a subsystem specific bean factory has been set
 	 */
 	function hasSubsystemBeanFactory( subsystem ) {
-		
+
 		ensureNewFrameworkStructsExist();
-		
+
 		return structKeyExists( application[ variables.framework.applicationKey ].subsystemFactories, subsystem );
-		
+
 	}
 
 	/*
@@ -387,7 +387,7 @@
 	}
 
 	function actionSpecifiesSubsystem( action ) {
-		
+
 		if ( not usingSubsystems() ) {
 			return false;
 		}
@@ -398,9 +398,9 @@
 	 * return the action without the subsystem
 	 */
 	function getSectionAndItem( action ) { // "private"
-	
+
 		var sectionAndItem = '';
-		
+
 		if ( usingSubsystems() and actionSpecifiesSubsystem( action ) ) {
 			if ( listLen( action, ':' ) gt 1 ) {
 				sectionAndItem = listLast( action, ':' );
@@ -408,7 +408,7 @@
 		} else {
 			sectionAndItem = action;
 		}
-		
+
 		if ( len( sectionAndItem ) eq 0 ) {
 			sectionAndItem = variables.framework.defaultSection & '.' & variables.framework.defaultItem;
 		} else if ( listLen( sectionAndItem, '.' ) eq 1 ) {
@@ -420,9 +420,9 @@
 		} else {
 			sectionAndItem = listFirst( sectionAndItem, '.' ) & '.' & listLast( sectionAndItem, '.' );
 		}
-		
+
 		return sectionAndItem;
-		
+
 	}
 </cfscript><cfsilent>
 
@@ -456,7 +456,7 @@
 
 </cfsilent><cfscript>
 	function getDefaultSubsystem() { // "private"
-	
+
 		if ( not usingSubsystems() ) {
 			return '';
 		}
@@ -471,7 +471,7 @@
 		}
 
 		return variables.framework.defaultSubsystem;
-		
+
 	}
 
 	/*
@@ -587,7 +587,7 @@
 	}
 
 	function ensureNewFrameworkStructsExist() { // "private"
-	
+
 		var framework = application[variables.framework.applicationKey];
 
 		if ( not structKeyExists(framework, 'subsystemFactories') ) {
@@ -746,7 +746,7 @@
 	}
 
 	function isSubsystemInitialized( subsystem ) { // "private"
-	
+
 		ensureNewFrameworkStructsExist();
 
 		return structKeyExists( application[ variables.framework.applicationKey ].subsystems, subsystem );
@@ -754,7 +754,7 @@
 	}
 
 	function parseViewOrLayoutPath( path ) {
-		
+
 		var pathInfo = StructNew();
 		var subsystem = getSubsystem( arguments.path );
 
@@ -1021,7 +1021,7 @@
 		<cfargument name="cfc" />
 		<cfargument name="method" />
 		<cfset var metadata="">
-		
+
 		<cfif structKeyExists(arguments.cfc,arguments.method) or structKeyExists(arguments.cfc,"onMissingMethod")>
 			<cftry>
 				<cfinvoke component="#arguments.cfc#" method="#arguments.method#" rc="#request.context#" />
@@ -1077,7 +1077,7 @@
 	<cffunction name="restoreFlashContext" access="private" hint="Restore request context from session scope if present.">
 		<cfset var preserveKey = "">
 		<cfset var preserveKeySessionKey = "">
-			
+
 		<cfif not isDefined('URL') or not structKeyExists( URL, variables.framework.preserveKeyURLKey )>
 			<cfreturn>
 		</cfif>
@@ -1104,25 +1104,25 @@
 	<cffunction name="getNextPreserveKeyAndPurgeOld" access="private" output="false">
 		<cfset var nextPreserveKey = "" />
 		<cfset var oldKeyToPurge = "" />
-		
+
 		<cflock scope="session" type="exclusive" timeout="30">
 			<cfparam name="session.__fw1NextPreserveKey" default="1" />
 			<cfset nextPreserveKey = session.__fw1NextPreserveKey />
 			<cfset session.__fw1NextPreserveKey = session.__fw1NextPreserveKey + 1/>
 		</cflock>
-		
+
 		<cfset oldKeyToPurge = nextPreserveKey - variables.framework.maxNumContextsPreserved>
 		<cfif StructKeyExists(session, getPreserveKeySessionKey(oldKeyToPurge))>
 			<cfset structDelete(session, getPreserveKeySessionKey(oldKeyToPurge)) />
 		</cfif>
-		
+
 		<cfreturn nextPreserveKey />
-		
+
 	</cffunction>
 
 	<cffunction name="saveFlashContext" returntype="string" access="private" hint="Save request context to session scope if present.">
 		<cfargument name="keys" type="string" />
-		
+
 		<cfset var currPreserveKey = getNextPreserveKeyAndPurgeOld() />
 		<cfset var preserveKeySessionKey = getPreserveKeySessionKey(currPreserveKey) />
 		<cfset var key = "" />

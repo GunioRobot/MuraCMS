@@ -12,17 +12,17 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Mura CMS. If not, see <http://www.gnu.org/licenses/>.
 
-Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on 
+Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on
 Mura CMS. Thus, the terms and conditions of the GNU General Public License version 2 ("GPL") cover the entire combined work.
 
 However, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with programs
 or libraries that are released under the GNU Lesser General Public License version 2.1.
 
-In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with 
-independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without 
-Mura CMS under the license of your choice, provided that you follow these specific guidelines: 
+In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with
+independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without
+Mura CMS under the license of your choice, provided that you follow these specific guidelines:
 
-Your custom code 
+Your custom code
 
 • Must not alter any default objects in the Mura CMS database and
 • May not alter the default display of the Mura CMS logo within Mura CMS and
@@ -36,12 +36,12 @@ Your custom code
  /index.cfm
  /MuraProxy.cfc
 
-You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work 
-under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL 
+You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work
+under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL
 requires distribution of source code.
 
-For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your 
-modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
+For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your
+modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 
@@ -68,7 +68,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfoutput>
 <cfif arrayLen(extendSets)>
 <dl class="oneColumn"   id="extendDL">
-<cfloop from="1" to="#arrayLen(extendSets)#" index="s">	
+<cfloop from="1" to="#arrayLen(extendSets)#" index="s">
 <cfset extendSetBean=extendSets[s]/>
 <cfif  userBean.getType() eq 2><cfset style=extendSetBean.getStyle()/><cfif not len(style)><cfset started=true/></cfif></cfif>
 	<span class="extendset" extendsetid="#extendSetBean.getExtendSetID()#" categoryid="#extendSetBean.getCategoryID()#" #style#>
@@ -77,7 +77,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfsilent>
 	<cfset attributesArray=extendSetBean.getAttributes() />
 	</cfsilent>
-	<dd><dl><cfloop from="1" to="#arrayLen(attributesArray)#" index="a">	
+	<dd><dl><cfloop from="1" to="#arrayLen(attributesArray)#" index="a">
 		<cfset attributeBean=attributesArray[a]/>
 		<cfset attributeValue=userBean.getvalue(attributeBean.getName(),'useMuraDefault') />
 		<dt>
@@ -88,12 +88,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfif>
 		<cfif attributeBean.getType() eq "File" and len(attributeValue) and attributeValue neq 'useMuraDefault'> <a href="#application.configBean.getContext()#/tasks/render/file/?fileID=#attributeValue#" target="_blank">[Download]</a> <input type="checkbox" value="true" name="extDelete#attributeBean.getAttributeID()#"/> Delete</cfif>
 		</dt>
-		
+
 		<!--- if it's an hidden type attribute then flip it to be a textbox so it can be editable through the admin --->
 		<cfif attributeBean.getType() IS "Hidden">
 			<cfset attributeBean.setType( "TextBox" ) />
-		</cfif>	
-		
+		</cfif>
+
 		<dd>#attributeBean.renderAttribute(attributeValue)#</dd>
 	</cfloop></dl></dd>
 	</span>
@@ -115,7 +115,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfsavecontent variable="returnsets.basic">
 <cfoutput>
 <cfif arrayLen(extendSets)>
-<cfloop from="1" to="#arrayLen(extendSets)#" index="s">	
+<cfloop from="1" to="#arrayLen(extendSets)#" index="s">
 <cfset extendSetBean=extendSets[s]/>
 <cfif  userBean.getType() eq 2><cfset style=extendSetBean.getStyle()/><cfif not len(style)><cfset started=true/></cfif></cfif>
 	<span class="extendset" extendsetid="#extendSetBean.getExtendSetID()#" categoryid="#extendSetBean.getCategoryID()#" #style#>
@@ -124,7 +124,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfsilent>
 	<cfset attributesArray=extendSetBean.getAttributes() />
 	</cfsilent>
-	<dd><dl><cfloop from="1" to="#arrayLen(attributesArray)#" index="a">	
+	<dd><dl><cfloop from="1" to="#arrayLen(attributesArray)#" index="a">
 		<cfset attributeBean=attributesArray[a]/>
 		<cfset attributeValue=userBean.getvalue(attributeBean.getName(),'useMuraDefault') />
 		<dt>
@@ -135,12 +135,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfif>
 		<cfif attributeBean.getType() eq "File" and len(attributeValue) and attributeValue neq 'useMuraDefault'> <a href="#application.configBean.getContext()#/tasks/render/file/?fileID=#attributeValue#" target="_blank">[Download]</a> <input type="checkbox" value="true" name="extDelete#attributeBean.getAttributeID()#"/> Delete</cfif>
 		</dt>
-		
+
 		<!--- if it's an hidden type attribute then flip it to be a textbox so it can be editable through the admin --->
 		<cfif attributeBean.getType() IS "Hidden">
 			<cfset attributeBean.setType( "TextBox" ) />
-		</cfif>	
-		
+		</cfif>
+
 		<dd>#attributeBean.renderAttribute(attributeValue)#</dd>
 	</cfloop></dl></dd>
 	</span>

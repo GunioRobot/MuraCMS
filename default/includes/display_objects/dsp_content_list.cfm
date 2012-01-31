@@ -12,17 +12,17 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Mura CMS. If not, see <http://www.gnu.org/licenses/>.
 
-Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on 
+Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on
 Mura CMS. Thus, the terms and conditions of the GNU General Public License version 2 ("GPL") cover the entire combined work.
 
 However, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with programs
 or libraries that are released under the GNU Lesser General Public License version 2.1.
 
-In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with 
-independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without 
-Mura CMS under the license of your choice, provided that you follow these specific guidelines: 
+In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with
+independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without
+Mura CMS under the license of your choice, provided that you follow these specific guidelines:
 
-Your custom code 
+Your custom code
 
 • Must not alter any default objects in the Mura CMS database and
 • May not alter the default display of the Mura CMS logo within Mura CMS and
@@ -36,25 +36,25 @@ Your custom code
  /index.cfm
  /MuraProxy.cfc
 
-You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work 
-under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL 
+You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work
+under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL
 requires distribution of source code.
 
-For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your 
-modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
+For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your
+modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 <cfsilent>
 	<cfif not structKeyExists(arguments,"type")>
 		<cfset arguments.type="Feed">
 	</cfif>
-	
+
 	<cfif not structKeyExists(arguments,"fields")>
 		<cfset arguments.fields="Date,Title,Image,Summary,Credits,Tags">
 	</cfif>
-	
+
 	<cfset arguments.hasImages=listFindNoCase(arguments.fields,"Image")>
-	
+
 	<cfif arguments.hasImages>
 		<cfif not structKeyExists(arguments,"imageSize") or not listFindNoCase("small,medium,large,custom",arguments.imageSize) or $.event("muraMobileRequest")>
 			<cfset arguments.imageSize="small">
@@ -65,14 +65,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfif not structKeyExists(arguments,"imageWidth")>
 			<cfset arguments.imageWidth="auto">
 		</cfif>
-		
+
 		<cfif not structKeyExists(arguments,"imagePadding")>
 			<cfset arguments.imagePadding=20>
 		</cfif>
 
 		<cfset arguments.imageStyles='style="#$.generateListImageSyles(size=arguments.imageSize,width=arguments.imageWidth,height=arguments.imageHeight,padding=arguments.imagePadding)#"'>
 	</cfif>
-</cfsilent>	
+</cfsilent>
 
 <cfif getListFormat() eq "ul">
 	<ul>
@@ -81,17 +81,17 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfsilent>
 		<cfset arguments.item=arguments.iterator.next()>
 		<cfset arguments.class=""/>
-		
-		<cfif not arguments.iterator.hasPrevious()> 
-			<cfset arguments.class=listAppend(arguments.class,"first"," ")/> 
+
+		<cfif not arguments.iterator.hasPrevious()>
+			<cfset arguments.class=listAppend(arguments.class,"first"," ")/>
 		</cfif>
-		
-		<cfif not arguments.iterator.hasNext()> 
-			<cfset arguments.class=listAppend(arguments.class,"last"," ")/> 
+
+		<cfif not arguments.iterator.hasNext()>
+			<cfset arguments.class=listAppend(arguments.class,"last"," ")/>
 		</cfif>
-			
+
 		<cfset arguments.hasImage=arguments.hasImages and len(arguments.item.getValue('fileID')) and showImageInList(arguments.item.getValue('fileEXT')) />
-			
+
 		<cfif arguments.hasImage>
 			<cfset arguments.class=listAppend(arguments.class,"hasImage"," ")>
 		</cfif>
@@ -108,7 +108,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							<cfif cookie.mobileFormat>
 							<!---<div class="image">---><img src="#arguments.item.getImageURL(size=arguments.imageSize,width=arguments.imageWidth,height=arguments.imageHeight)#"  alt="#htmlEditFormat(arguments.item.getValue('title'))#"/><!---</div>--->
 							<cfelse>
-							<a class="image" href="#arguments.item.getURL()#" title="#HTMLEditFormat(arguments.item.getValue('title'))#"><img src="#arguments.item.getImageURL(size=arguments.imageSize,width=arguments.imageWidth,height=arguments.imageHeight)#"  alt="#htmlEditFormat(arguments.item.getValue('title'))#"/></a>	
+							<a class="image" href="#arguments.item.getURL()#" title="#HTMLEditFormat(arguments.item.getValue('title'))#"><img src="#arguments.item.getImageURL(size=arguments.imageSize,width=arguments.imageWidth,height=arguments.imageHeight)#"  alt="#htmlEditFormat(arguments.item.getValue('title'))#"/></a>
 							</cfif>
 						</cfif>
 					</cfcase>
@@ -120,7 +120,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						<cfelseif arguments.type eq "Calendar">
 						<p class="releaseDate"><cfif LSDateFormat(arguments.item.getValue('displayStart'),"short") lt LSDateFormat(arguments.item.getValue('displayStop'),"short")>#LSDateFormat(arguments.item.getValue('displayStart'),$.getShortDateFormat())# - #LSDateFormat(arguments.item.getValue('displayStop'),$.getShortDateFormat())#<cfelse>#LSDateFormat(arguments.item.getValue('displayStart'),$.getLongDateFormat())#</cfif></p>
 						<cfelseif LSisDate(arguments.item.getValue('releaseDate'))>
-						<p class="releaseDate">#LSDateFormat(arguments.item.getValue('releaseDate'),$.getLongDateFormat())#</p>		
+						<p class="releaseDate">#LSDateFormat(arguments.item.getValue('releaseDate'),$.getLongDateFormat())#</p>
 						</cfif>
 					</cfcase>
 					<cfcase value="Title">
@@ -150,7 +150,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						<cfif len(arguments.item.getValue('tags'))>
 							<cfset arguments.tagLen=listLen(arguments.item.getValue('tags')) />
 							<p class="tags">
-								#$.rbKey('tagcloud.tags')#: 
+								#$.rbKey('tagcloud.tags')#:
 								<cfif cookie.mobileFormat>
 								<cfloop from="1" to="#arguments.tagLen#" index="arguments.t">
 									<cfset arguments.tag=#trim(listgetAt(arguments.item.getValue('tags'),arguments.t))#>
@@ -167,12 +167,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					</cfcase>
 					<cfcase value="Rating">
 						<cfif (arguments.item.getValue('type') eq 'Page' or showItemMeta(arguments.item.getValue('type')) or (len(arguments.item.getValue('fileID')) and showItemMeta(arguments.item.getValue('fileEXT'))))>
-							<p class="rating #application.raterManager.getStarText(arguments.item.getValue('rating'))#">#$.rbKey('list.rating')#: <span><cfif isNumeric(arguments.item.getValue('rating'))>#arguments.item.getValue('rating')# star<cfif arguments.item.getValue('rating') gt 1>s</cfif> <cfelse>Zero stars</cfif></span></p>	 	
+							<p class="rating #application.raterManager.getStarText(arguments.item.getValue('rating'))#">#$.rbKey('list.rating')#: <span><cfif isNumeric(arguments.item.getValue('rating'))>#arguments.item.getValue('rating')# star<cfif arguments.item.getValue('rating') gt 1>s</cfif> <cfelse>Zero stars</cfif></span></p>
 						</cfif>
 					</cfcase>
 					<cfdefaultcase>
 						<cfif len(arguments.item.getValue(arguments.field))>
-						 	<p class="sys#uCase(left(arguments.field,1))##iif(len(arguments.field) gt 1,de('#right(arguments.field,len(arguments.field)-1)#'),de(''))#">#HTMLEditFormat(arguments.item.getValue(arguments.field))#</p>	 	
+						 	<p class="sys#uCase(left(arguments.field,1))##iif(len(arguments.field) gt 1,de('#right(arguments.field,len(arguments.field)-1)#'),de(''))#">#HTMLEditFormat(arguments.item.getValue(arguments.field))#</p>
 						</cfif>
 					</cfdefaultcase>
 				</cfswitch>
@@ -192,7 +192,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						<cfelseif arguments.type eq "Calendar">
 						<dt class="releaseDate"><cfif LSDateFormat(arguments.item.getValue('displayStart'),"short") lt LSDateFormat(arguments.item.getValue('displayStop'),"short")>#LSDateFormat(arguments.item.getValue('displayStart'),$.getShortDateFormat())# - #LSDateFormat(arguments.item.getValue('displayStop'),$.getShortDateFormat())#<cfelse>#LSDateFormat(arguments.item.getValue('displayStart'),$.getLongDateFormat())#</cfif></dt>
 						<cfelseif LSisDate(arguments.item.getValue('releaseDate'))>
-						<dt class="releaseDate">#LSDateFormat(arguments.item.getValue('releaseDate'),$.getLongDateFormat())#</dt>		
+						<dt class="releaseDate">#LSDateFormat(arguments.item.getValue('releaseDate'),$.getLongDateFormat())#</dt>
 						</cfif>
 					</cfcase>
 					<cfcase value="Title">
@@ -227,7 +227,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						<cfif len(arguments.item.getValue('tags'))>
 							<cfset arguments.tagLen=listLen(arguments.item.getValue('tags')) />
 							<dd class="tags">
-								#$.rbKey('tagcloud.tags')#: 
+								#$.rbKey('tagcloud.tags')#:
 								<cfloop from="1" to="#arguments.tagLen#" index="t">
 								<cfset arguments.tag=#trim(listgetAt(arguments.item.getValue('tags'),t))#>
 								<a href="#$.createHREF(filename='#$.event('currentFilenameAdjusted')#/tag/#urlEncodedFormat(arguments.tag)#')#">#arguments.tag#</a><cfif arguments.tagLen gt t>, </cfif>
@@ -237,18 +237,18 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					</cfcase>
 					<cfcase value="Rating">
 						<cfif (arguments.item.getValue('type') eq 'Page' or showItemMeta(arguments.item.getValue('type')) or (len(arguments.item.getValue('fileID')) and showItemMeta(arguments.item.getValue('fileEXT'))))>
-						 	<dd class="rating #application.raterManager.getStarText(arguments.item.getValue('rating'))#">#$.rbKey('list.rating')#: <span><cfif isNumeric(arguments.item.getValue('rating'))>#arguments.item.getValue('rating')# star<cfif arguments.item.getValue('rating') gt 1>s</cfif> <cfelse>Zero stars</cfif></span></dd>	 	
+						 	<dd class="rating #application.raterManager.getStarText(arguments.item.getValue('rating'))#">#$.rbKey('list.rating')#: <span><cfif isNumeric(arguments.item.getValue('rating'))>#arguments.item.getValue('rating')# star<cfif arguments.item.getValue('rating') gt 1>s</cfif> <cfelse>Zero stars</cfif></span></dd>
 						</cfif>
 					</cfcase>
 					<cfdefaultcase>
 						<cfif len(arguments.item.getValue(arguments.field))>
-						 	<dd class="sys#uCase(left(arguments.field,1))##iif(len(arguments.field) gt 1,de('#right(arguments.field,len(arguments.field)-1)#'),de(''))#">#HTMLEditFormat(arguments.item.getValue(arguments.field))#</dd>	 	
+						 	<dd class="sys#uCase(left(arguments.field,1))##iif(len(arguments.field) gt 1,de('#right(arguments.field,len(arguments.field)-1)#'),de(''))#">#HTMLEditFormat(arguments.item.getValue(arguments.field))#</dd>
 						</cfif>
 					</cfdefaultcase>
 				</cfswitch>
 			</cfloop>
 		</dl>
-	</cfif>	
+	</cfif>
 	</cfoutput>
 </cfloop>
 

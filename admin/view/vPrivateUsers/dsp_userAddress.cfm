@@ -12,17 +12,17 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Mura CMS. If not, see <http://www.gnu.org/licenses/>.
 
-Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on 
+Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on
 Mura CMS. Thus, the terms and conditions of the GNU General Public License version 2 ("GPL") cover the entire combined work.
 
 However, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with programs
 or libraries that are released under the GNU Lesser General Public License version 2.1.
 
-In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with 
-independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without 
-Mura CMS under the license of your choice, provided that you follow these specific guidelines: 
+In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with
+independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without
+Mura CMS under the license of your choice, provided that you follow these specific guidelines:
 
-Your custom code 
+Your custom code
 
 • Must not alter any default objects in the Mura CMS database and
 • May not alter the default display of the Mura CMS logo within Mura CMS and
@@ -36,12 +36,12 @@ Your custom code
  /index.cfm
  /MuraProxy.cfc
 
-You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work 
-under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL 
+You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work
+under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL
 requires distribution of source code.
 
-For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your 
-modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
+For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your
+modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 
@@ -50,17 +50,17 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset extendSets=application.classExtensionManager.getSubTypeByName("Address",request.userBean.getsubtype(),request.userBean.getSiteID()).getExtendSets(inherit=true,activeOnly=true) />
 <cfoutput><form novalidate="novalidate" action="index.cfm?fuseaction=cPrivateUsers.updateAddress&userid=#URLEncodedFormat(attributes.userid)#&routeid=#attributes.routeid#&siteid=#URLEncodedFormat(attributes.siteid)#" method="post" enctype="multipart/form-data" name="form1" onsubmit="return validate(this);"  autocomplete="off" >
 	<h2>#application.rbFactory.getKeyValue(session.rb,'user.adminuseraddressform')#</h2>
-	
+
 	<!--- #application.utility.displayErrors(request.addressBean.getErrors())# --->
-	
+
 	<h3>#Request.userBean.getFname()# #Request.userBean.getlname()# <cfif find("activeTab",attributes.returnURL)><a href="index.cfm?#attributes.returnURL#"><cfelse><a href="index.cfm?#attributes.returnURL#&activeTab=1"></cfif>[#application.rbFactory.getKeyValue(session.rb,'user.back')#]</a></h3>
-	
+
 	<cfif arrayLen(extendSets)>
 	<br/>
 	<div id="page_tabView">
 	<div class="page_aTab">
 	</cfif>
-	
+
 		<dl class="oneColumn">
 		<dt class="first"></dt>
 		<dt>#application.rbFactory.getKeyValue(session.rb,'user.addressname')#</dt>
@@ -80,13 +80,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<dt>#application.rbFactory.getKeyValue(session.rb,'user.phone')#</dt>
 		<dd><input id="phone" name="phone" type="text" value="#HTMLEditFormat(rsAddress.phone)#" class="text"></dd>
 		<dt>#application.rbFactory.getKeyValue(session.rb,'user.fax')#</dt>
-		<dd><input id="fax" name="fax" type="text" value="#HTMLEditFormat(rsAddress.fax)#" class="text"></dd> 
+		<dd><input id="fax" name="fax" type="text" value="#HTMLEditFormat(rsAddress.fax)#" class="text"></dd>
 		<dt>#application.rbFactory.getKeyValue(session.rb,'user.website')# (#application.rbFactory.getKeyValue(session.rb,'user.includehttp')#)</dt>
 		<dd><input id="addressURL" name="addressURL" type="text" value="#HTMLEditFormat(rsAddress.addressURL)#" class="text"></dd>
 		<dt>#application.rbFactory.getKeyValue(session.rb,'user.email')#</dt>
-		<dd><input id="addressEmail" name="addressEmail" validate="email" message="#application.rbFactory.getKeyValue(session.rb,'user.emailvalidate')#" type="text" value="#HTMLEditFormat(rsAddress.addressEmail)#" class="text"></dd> 
+		<dd><input id="addressEmail" name="addressEmail" validate="email" message="#application.rbFactory.getKeyValue(session.rb,'user.emailvalidate')#" type="text" value="#HTMLEditFormat(rsAddress.addressEmail)#" class="text"></dd>
 		<dt>#application.rbFactory.getKeyValue(session.rb,'user.hours')#</dt>
-		<dd><textarea id="hours" name="hours" >#HTMLEditFormat(rsAddress.hours)#</textarea></dd>   
+		<dd><textarea id="hours" name="hours" >#HTMLEditFormat(rsAddress.hours)#</textarea></dd>
 
 </dl>
 
@@ -95,7 +95,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </div>
 <div class="page_aTab">
 <dl class="oneColumn" id="extendDL">
-<cfloop from="1" to="#arrayLen(extendSets)#" index="s">	
+<cfloop from="1" to="#arrayLen(extendSets)#" index="s">
 <cfset extendSetBean=extendSets[s]/>
 <cfoutput><cfset style=extendSetBean.getStyle()/><cfif not len(style)><cfset started=true/></cfif>
 	<span class="extendset" extendsetid="#extendSetBean.getExtendSetID()#" categoryid="#extendSetBean.getCategoryID()#" #style#>
@@ -104,7 +104,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfsilent>
 	<cfset attributesArray=extendSetBean.getAttributes() />
 	</cfsilent>
-	<dd><dl><cfloop from="1" to="#arrayLen(attributesArray)#" index="a">	
+	<dd><dl><cfloop from="1" to="#arrayLen(attributesArray)#" index="a">
 		<cfset attributeBean=attributesArray[a]/>
 		<cfset attributeValue=addressBean.getExtendedAttribute(attributeBean.getAttributeID(),true) />
 		<dt>
@@ -115,12 +115,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfif>
 		<cfif attributeBean.getType() eq "File" and len(attributeValue) and attributeValue neq 'useMuraDefault'> <a href="#application.configBean.getContext()#/tasks/render/file/?fileID=#attributeValue#" target="_blank">[Download]</a> <input type="checkbox" value="true" name="extDelete#attributeBean.getAttributeID()#"/> Delete</cfif>
 		</dt>
-		
+
 		<!--- if it's an hidden type attribute then flip it to be a textbox so it can be editable through the admin --->
 		<cfif attributeBean.getType() IS "Hidden">
 			<cfset attributeBean.setType( "TextBox" ) />
-		</cfif>	
-		
+		</cfif>
+
 		<dd>#attributeBean.renderAttribute(attributeValue)#</dd>
 	</cfloop></dl></dd>
 </cfoutput>
@@ -133,12 +133,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfhtmlhead text='<script type="text/javascript" src="js/tab-view.js"></script>'>
 <script type="text/javascript">
 initTabs(Array("#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'user.basic'))#","#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'user.extendedattributes'))#"),0,0,0);
-</script>	
+</script>
 </cfif>
 
-	
+
 		<cfif attributes.addressid eq ''>
-        
+
 				<input type="button" class="submit" onclick="submitForm(document.forms.form1,'add');" value="#application.rbFactory.getKeyValue(session.rb,'user.add')#" />
            <cfelse>
             	<input type="button" class="submit" onclick="submitForm(document.forms.form1,'update');" value="#application.rbFactory.getKeyValue(session.rb,'user.update')#" />

@@ -12,17 +12,17 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Mura CMS. If not, see <http://www.gnu.org/licenses/>.
 
-Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on 
+Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on
 Mura CMS. Thus, the terms and conditions of the GNU General Public License version 2 ("GPL") cover the entire combined work.
 
 However, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with programs
 or libraries that are released under the GNU Lesser General Public License version 2.1.
 
-In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with 
-independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without 
-Mura CMS under the license of your choice, provided that you follow these specific guidelines: 
+In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with
+independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without
+Mura CMS under the license of your choice, provided that you follow these specific guidelines:
 
-Your custom code 
+Your custom code
 
 • Must not alter any default objects in the Mura CMS database and
 • May not alter the default display of the Mura CMS logo within Mura CMS and
@@ -36,12 +36,12 @@ Your custom code
  /index.cfm
  /MuraProxy.cfc
 
-You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work 
-under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL 
+You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work
+under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL
 requires distribution of source code.
 
-For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your 
-modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
+For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your
+modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 <cfcomponent extends="mura.cfobject" output="false">
@@ -61,7 +61,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset variables.configBean=arguments.configBean />
 	<cfset variables.userDAO=arguments.userDAO />
 	<cfset variables.userGateway=arguments.userGateway />
-	<cfset variables.userUtility=arguments.userUtility />	
+	<cfset variables.userUtility=arguments.userUtility />
 	<cfset variables.globalUtility=arguments.utility />
 	<cfset variables.ClassExtensionManager=variables.configBean.getClassExtensionManager() />
 	<cfset variables.fileManager=arguments.fileManager />
@@ -69,9 +69,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset variables.trashManager=arguments.trashManager />
 	<cfset variables.settingsManager=arguments.settingsManager />
 	<cfset variables.clusterManager=arguments.clusterManager />
-	
+
 	<!---<cfset variables.userDAO.setUserManager(this)>--->
-	
+
 	<cfreturn this />
 </cffunction>
 
@@ -84,12 +84,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="siteid" type="string" default=""/>
 	<cfargument name="isPublic" type="numeric" default="0"/>
 	<cfset var rs ="" />
-		
+
 	<cfset rs=variables.userGateway.getUserGroups(arguments.siteid,arguments.isPublic) />
-		
+
 	<cfreturn rs />
 </cffunction>
-	
+
 <cffunction name="read" access="public" returntype="any" output="false">
 	<cfargument name="userid" type="string" default=""/>
 	<cfargument name="username" type="string" default=""/>
@@ -102,7 +102,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var site=""/>
 	<cfset var cacheFactory="">
 	<cfset var bean=arguments.userBean>
-	
+
 	<cfif len(arguments.siteID)>
 		<cfif len(arguments.username)>
 			<cfreturn readByUsername(arguments.username,arguments.siteid,bean) />
@@ -112,11 +112,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfreturn readByRemoteID(arguments.remoteID,arguments.siteid,bean) />
 		</cfif>
 	</cfif>
-	
+
 	<cfset key= "user" & arguments.siteid & arguments.userID />
 	<cfset site=variables.settingsManager.getSite(arguments.siteid)/>
-	<cfset cacheFactory=site.getCacheFactory(name="data")>			
-	
+	<cfset cacheFactory=site.getCacheFactory(name="data")>
+
 	<cfif site.getCache()>
 		<!--- check to see if it is cached. if not then pass in the context --->
 		<!--- otherwise grab it from the cache --->
@@ -136,11 +136,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfif>
 	<cfelse>
 		<cfreturn variables.userDAO.read(arguments.userid,bean) />
-	</cfif>		
+	</cfif>
 </cffunction>
 
 <cffunction name="readUserHash" access="public" returntype="query" output="false">
-	<cfargument name="userid" type="string" default=""/>		
+	<cfargument name="userid" type="string" default=""/>
 	<cfreturn variables.userDAO.readUserHash(arguments.userid) />
 </cffunction>
 
@@ -152,7 +152,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var site=variables.settingsManager.getSite(arguments.siteid)/>
 	<cfset var cacheFactory=site.getCacheFactory(name="data")>
 	<cfset var bean=arguments.userBean>
-	
+
 	<cfif site.getCache()>
 		<!--- check to see if it is cached. if not then pass in the context --->
 		<!--- otherwise grab it from the cache --->
@@ -172,7 +172,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfif>
 	<cfelse>
 		<cfreturn variables.userDAO.readByUsername(arguments.username,arguments.siteid,bean) />
-	</cfif>	
+	</cfif>
 
 </cffunction>
 
@@ -185,7 +185,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var site=variables.settingsManager.getSite(arguments.siteid)/>
 	<cfset var cacheFactory=site.getCacheFactory(name="data")>
 	<cfset var bean=arguments.userBean>
-	
+
 	<cfif site.getCache()>
 		<!--- check to see if it is cached. if not then pass in the context --->
 		<!--- otherwise grab it from the cache --->
@@ -205,8 +205,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfif>
 	<cfelse>
 		<cfreturn variables.userDAO.readByGroupName(arguments.groupname,arguments.siteid,arguments.isPublic,bean) />
-	</cfif>			
-	
+	</cfif>
+
 </cffunction>
 
 <cffunction name="readByRemoteID" access="public" returntype="any" output="false">
@@ -216,8 +216,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var key= "user" & arguments.siteid & arguments.remoteID />
 	<cfset var site=variables.settingsManager.getSite(arguments.siteid)/>
 	<cfset var cacheFactory=site.getCacheFactory(name="data")>
-	<cfset var bean=arguments.userBean>	
-	
+	<cfset var bean=arguments.userBean>
+
 	<cfif site.getCache()>
 		<!--- check to see if it is cached. if not then pass in the context --->
 		<!--- otherwise grab it from the cache --->
@@ -237,8 +237,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfif>
 	<cfelse>
 		<cfreturn variables.userDAO.readByRemoteID(arguments.remoteID,arguments.siteid,bean) />
-	</cfif>			
-	
+	</cfif>
+
 </cffunction>
 
 <cffunction name="purgeUserCache" output="false">
@@ -246,14 +246,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="userBean">
 	<cfargument name="broadcast" default="true">
 	<cfset var cache="">
-	
+
 	<cfif not isDefined("arguments.userBean")>
 		<cfset arguments.userBean=read(userID=arguments.userID)>
 	</cfif>
-	
+
 	<cfif NOT arguments.userBean.getIsNew()>
 		<cfset cache=variables.settingsManager.getSite(arguments.userBean.getSiteID()).getCacheFactory(name="data")>
-		
+
 		<cfset cache.purge("user" & arguments.userBean.getSiteID() & arguments.userBean.getUserID())>
 		<cfif len(arguments.userBean.getRemoteID())>
 			<cfset cache.purge("user" & userBean.getSiteID() & arguments.userBean.getRemoteID())>
@@ -264,7 +264,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfif len(arguments.userBean.getGroupname())>
 			<cfset cache.purge("user" & arguments.userBean.getSiteID() & arguments.userBean.getGroupname())>
 		</cfif>
-		
+
 		<cfif arguments.broadcast>
 			<cfset variables.clusterManager.purgeUserCache(userID=arguments.userBean.getUserID())>
 		</cfif>
@@ -272,32 +272,32 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="save" access="public" returntype="any" output="false">
-	<cfargument name="data" type="any" default="#structnew()#"/>	
+	<cfargument name="data" type="any" default="#structnew()#"/>
 	<cfargument name="updateGroups" type="boolean" default="true" required="yes" />
 	<cfargument name="updateInterests" type="boolean" default="true" required="yes" />
 	<cfargument name="OriginID" type="string" default="" required="yes" />
-	
+
 	<cfset var userID="">
 	<cfset var rs="">
-	
+
 	<cfif isObject(arguments.data)>
 		<cfif listLast(getMetaData(arguments.data).name,".") eq "userBean">
 		<cfset arguments.data=arguments.data.getAllValues()>
 		<cfelse>
 			<cfthrow type="custom" message="The attribute 'DATA' is not of type 'mura.user.userBean'">
 		</cfif>
-	</cfif>	
-	
+	</cfif>
+
 	<cfif not structKeyExists(arguments.data,"userID")>
 		<cfthrow type="custom" message="The attribute 'USERID' is required when saving a user.">
 	</cfif>
-	
+
 	<cfquery datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#" name="rs">
 	select userID from tusers where userID=<cfqueryparam value="#arguments.data.userID#">
 	</cfquery>
-	
+
 	<cfif rs.recordcount>
-		<cfreturn update(arguments.data,arguments.updateGroups,arguments.updateInterests, arguments.originID)>	
+		<cfreturn update(arguments.data,arguments.updateGroups,arguments.updateInterests, arguments.originID)>
 	<cfelse>
 		<cfreturn create(arguments.data)>
 	</cfif>
@@ -305,35 +305,35 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="update" access="public" returntype="any" output="false">
-	<cfargument name="data" type="any" default="#structnew()#"/>	
+	<cfargument name="data" type="any" default="#structnew()#"/>
 	<cfargument name="updateGroups" type="boolean" default="true" required="yes" />
 	<cfargument name="updateInterests" type="boolean" default="true" required="yes" />
 	<cfargument name="OriginID" type="string" default="" required="yes" />
-	
+
 	<cfset var error =""/>
 	<cfset var addressBean =""/>
 	<cfset var userBean="" />
 	<cfset var pluginEvent = createObject("component","mura.event") />
-			
+
 	<cfif isObject(arguments.data)>
 		<cfset arguments.data=arguments.data.getAllValues() />
 	</cfif>
-	
+
 	<cfset pluginEvent.init(arguments.data)>
 	<cfset pluginEvent.setValue("updateGroups",arguments.updateGroups) />
 	<cfset pluginEvent.setValue("updateInterests",arguments.updateInterests) />
 	<cfset pluginEvent.setValue("OriginID",arguments.OriginID) />
-	
+
 	<cfif not structKeyExists(arguments.data,"userID") or (structKeyExists(arguments.data,"userID") and not len(arguments.data.userID))>
 		<cfreturn create(arguments.data) />
 	</cfif>
-	
+
 	<cfif not structKeyExists(arguments.data,"siteID") or (structKeyExists(arguments.data,"siteID") and not len(arguments.data.siteID))>
 		<cfthrow type="custom" message="The attribute 'SITEID' is required when saving a user.">
 	</cfif>
-	
+
 	<cfset userBean=variables.userDAO.read(arguments.data.userid)/>
-	
+
 	<cfset userBean.set(arguments.data) />
 	<cfset userBean.validate()>
 
@@ -341,38 +341,38 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif userBean.getAddressID() neq ''>
 	<cfset addressBean=variables.userDAO.readAddress(userBean.getAddressID()) />
 	<cfset addressBean.set(arguments.data) />
-	<cfset pluginEvent.setValue("addressBean",addressBean)/>	
+	<cfset pluginEvent.setValue("addressBean",addressBean)/>
 	</cfif>
-	
+
 	<cfset pluginEvent.setValue("siteID", userBean.getSiteID())>
 
-	<cfif userBean.getType() eq 1>	
-		<cfset pluginEvent.setValue("groupBean",userBean)/>			
+	<cfif userBean.getType() eq 1>
+		<cfset pluginEvent.setValue("groupBean",userBean)/>
 		<cfset variables.pluginManager.announceEvent("onBeforeGroupUpdate",pluginEvent)>
 		<cfset variables.pluginManager.announceEvent("onBeforeGroupSave",pluginEvent)>
 		<cfset variables.pluginManager.announceEvent("onBeforeGroup#userBean.getSubType()#Update",pluginEvent)>
-		<cfset variables.pluginManager.announceEvent("onBeforeGroup#userBean.getSubType()#Save",pluginEvent)>		
+		<cfset variables.pluginManager.announceEvent("onBeforeGroup#userBean.getSubType()#Save",pluginEvent)>
 	<cfelse>
-		<cfset pluginEvent.setValue("userBean",userBean)/>	
+		<cfset pluginEvent.setValue("userBean",userBean)/>
 		<cfset variables.pluginManager.announceEvent("onBeforeUserUpdate",pluginEvent)>
 		<cfset variables.pluginManager.announceEvent("onBeforeUserSave",pluginEvent)>
 		<cfset variables.pluginManager.announceEvent("onBeforeUser#userBean.getSubType()#Update",pluginEvent)>
-		<cfset variables.pluginManager.announceEvent("onBeforeUser#userBean.getSubType()#Save",pluginEvent)>	
+		<cfset variables.pluginManager.announceEvent("onBeforeUser#userBean.getSubType()#Save",pluginEvent)>
 	</cfif>
-	
+
 	<cfif structIsEmpty(userBean.getErrors())>
-		
+
 		<!--- Reset extended data internal ids --->
 		<cfset arguments.data=userBean.getAllValues()>
-	
-		<cfif isDefined('arguments.data.activationNotify') and userBean.getInActive() eq 0>	
+
+		<cfif isDefined('arguments.data.activationNotify') and userBean.getInActive() eq 0>
 			<cfset variables.userUtility.sendActivationNotification(userBean) />
 		</cfif>
-		
+
 		<cfif structKeyExists(arguments.data,"extendSetID") and len(arguments.data.extendSetID)>
 			<cfset variables.ClassExtensionManager.saveExtendedData(userBean.getUserID(),arguments.data,'tclassextenddatauseractivity')/>
 		</cfif>
-		
+
 		<cfif structKeyExists(arguments.data,"newFile") and len(arguments.data.newfile)>
 			<cfset setPhotoFile(userBean)/>
 		</cfif>
@@ -381,22 +381,22 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset variables.fileManager.deleteVersion(userBean.getPhotoFileID()) />
 			<cfset userBean.setPhotoFileID("") />
 		</cfif>
-		
+
 		<cfif userBean.getAddressID() neq ''>
 		<cfset variables.userDAO.updateAddress(addressBean) />
 		</cfif>
-		
+
 		<cfset variables.globalUtility.logEvent("UserID:#userBean.getUserID()# Type:#userBean.getType()# User:#userBean.getFName()# #userBean.getFName()# Group:#userBean.getGroupName()# was updated","mura-users","Information",true) />
 		<cfset setLastUpdateInfo(userBean) />
 		<cfset variables.userDAO.update(userBean,arguments.updateGroups,arguments.updateInterests,arguments.OriginID) />
 		<cfset purgeUserCache(userBean=userBean)>
-		<!--- Put in re-read the user to make sure that all extended attributes are cleaned. 
+		<!--- Put in re-read the user to make sure that all extended attributes are cleaned.
 		Not need due to extended attributes now not using ext[pluginID] based form field names.
 		<cfset userBean=read(userID=userBean.getUserID())>
 		--->
-		
-		<cfif  userBean.getType() eq 1>	
-			<cfset pluginEvent.setValue("groupBean",userBean)/>			
+
+		<cfif  userBean.getType() eq 1>
+			<cfset pluginEvent.setValue("groupBean",userBean)/>
 			<cfset variables.pluginManager.announceEvent("onGroupUpdate",pluginEvent)>
 			<cfset variables.pluginManager.announceEvent("onGroupSave",pluginEvent)>
 			<cfset variables.pluginManager.announceEvent("onGroup#userBean.getSubType()#Update",pluginEvent)>
@@ -404,51 +404,51 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset variables.pluginManager.announceEvent("onAfterGroupUpdate",pluginEvent)>
 			<cfset variables.pluginManager.announceEvent("onAfterGroupSave",pluginEvent)>
 			<cfset variables.pluginManager.announceEvent("onAfterGroup#userBean.getSubType()#Update",pluginEvent)>
-			<cfset variables.pluginManager.announceEvent("onAfterGroup#userBean.getSubType()#Save",pluginEvent)>		
+			<cfset variables.pluginManager.announceEvent("onAfterGroup#userBean.getSubType()#Save",pluginEvent)>
 		<cfelse>
-			<cfset pluginEvent.setValue("userBean",userBean)/>	
+			<cfset pluginEvent.setValue("userBean",userBean)/>
 			<cfset variables.pluginManager.announceEvent("onUserUpdate",pluginEvent)>
 			<cfset variables.pluginManager.announceEvent("onUserSave",pluginEvent)>
 			<cfset variables.pluginManager.announceEvent("onUser#userBean.getSubType()#Update",pluginEvent)>
-			<cfset variables.pluginManager.announceEvent("onUser#userBean.getSubType()#Save",pluginEvent)>	
+			<cfset variables.pluginManager.announceEvent("onUser#userBean.getSubType()#Save",pluginEvent)>
 			<cfset variables.pluginManager.announceEvent("onAfterUserUpdate",pluginEvent)>
 			<cfset variables.pluginManager.announceEvent("onAfterUserSave",pluginEvent)>
 			<cfset variables.pluginManager.announceEvent("onAfterUser#userBean.getSubType()#Update",pluginEvent)>
-			<cfset variables.pluginManager.announceEvent("onAfterUser#userBean.getSubType()#Save",pluginEvent)>			
+			<cfset variables.pluginManager.announceEvent("onAfterUser#userBean.getSubType()#Save",pluginEvent)>
 		</cfif>
-		
+
 	</cfif>
-	
+
 	<cfreturn userBean />
 </cffunction>
 
 <cffunction name="create" access="public" returntype="any" output="false">
-	<cfargument name="data" type="any" default="#structnew()#"/>		
-	
+	<cfargument name="data" type="any" default="#structnew()#"/>
+
 	<cfset var addressBean = "" />
 	<cfset var userBean= getBean("user") />
 	<cfset var pluginEvent = createObject("component","mura.event") />
-	
+
 	<cfif isObject(arguments.data)>
 		<cfset arguments.data=arguments.data.getAllValues() />
 	</cfif>
-	
+
 	<cfset pluginEvent.init(arguments.data)>
-	
+
 	<cfset userBean.set(arguments.data) />
 	<cfset userBean.validate()>
-	
+
 	<!--- MAKE SURE ALL REQUIRED DATA IS THERE--->
 	<cfif not structKeyExists(arguments.data,"userID") or (structKeyExists(arguments.data,"userID") and not len(arguments.data.userID))>
 		<cfset userBean.setUserID(createuuid()) />
 	<cfelse>
 		<cfset userBean.setUserID(arguments.data.userID) />
 	</cfif>
-	
+
 	<cfif not structKeyExists(arguments.data,"siteID") or (structKeyExists(arguments.data,"siteID") and not len(arguments.data.siteID))>
 		<cfthrow type="custom" message="The attribute 'SITEID' is required when saving a user.">
 	</cfif>
-	
+
 	<cfif not structKeyExists(arguments.data,"fromMuraTrash")>
 		<cfset addressBean=getBean("addressBean") />
 		<cfset addressBean.set(arguments.data) />
@@ -461,40 +461,40 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset addressBean.setAddressName('Primary') />
 		</cfif>
 	</cfif>
-	
+
 	<cfif userBean.getPassword() eq ''>
 	<cfset userBean.setPassword(variables.userUtility.getRandomPassword(6,"Alpha","no"))/>
 	</cfif>
-	
+
 	<cfset pluginEvent.setValue("siteID", userBean.getSiteID())>
-	
-	<cfif userBean.getType() eq 1>	
-		<cfset pluginEvent.setValue("groupBean",userBean)/>			
+
+	<cfif userBean.getType() eq 1>
+		<cfset pluginEvent.setValue("groupBean",userBean)/>
 		<cfset variables.pluginManager.announceEvent("onBeforeGroupCreate",pluginEvent)>
 		<cfset variables.pluginManager.announceEvent("onBeforeGroupSave",pluginEvent)>
 		<cfset variables.pluginManager.announceEvent("onBeforeGroup#userBean.getSubType()#Create",pluginEvent)>
-		<cfset variables.pluginManager.announceEvent("onBeforeGroup#userBean.getSubType()#Save",pluginEvent)>				
+		<cfset variables.pluginManager.announceEvent("onBeforeGroup#userBean.getSubType()#Save",pluginEvent)>
 	<cfelse>
-		<cfset pluginEvent.setValue("userBean",userBean)/>	
+		<cfset pluginEvent.setValue("userBean",userBean)/>
 		<cfset variables.pluginManager.announceEvent("onBeforeUserCreate",pluginEvent)>
 		<cfset variables.pluginManager.announceEvent("onBeforeUserSave",pluginEvent)>
 		<cfset variables.pluginManager.announceEvent("onBeforeUser#userBean.getSubType()#Create",pluginEvent)>
-		<cfset variables.pluginManager.announceEvent("onBeforeUser#userBean.getSubType()#Save",pluginEvent)>		
+		<cfset variables.pluginManager.announceEvent("onBeforeUser#userBean.getSubType()#Save",pluginEvent)>
 	</cfif>
-	
+
 	<cfif structIsEmpty(userBean.getErrors())>
-		
+
 		<!--- Reset extended data internal ids --->
 		<cfset arguments.data=userBean.getAllValues()>
-		
+
 		<cfif structKeyExists(arguments.data,"extendSetID") and len(arguments.data.extendSetID)>
 			<cfset variables.ClassExtensionManager.saveExtendedData(userBean.getUserID(),arguments.data,'tclassextenddatauseractivity')/>
 		</cfif>
-		
+
 		<cfif structKeyExists(arguments.data,"newFile") and len(arguments.data.newfile)>
 			<cfset setPhotoFile(userBean)/>
 		</cfif>
-		
+
 		<cfset variables.globalUtility.logEvent("UserID:#userBean.getUserID()# Type:#userBean.getType()# User:#userBean.getFName()# #userBean.getFName()# Group:#userBean.getGroupName()# was created","mura-users","Information",true) />
 		<cfset setLastUpdateInfo(userBean) />
 		<cfset variables.userDAO.create(userBean) />
@@ -503,12 +503,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfif isObject(addressBean)>
 			<cfset variables.userDAO.createAddress(addressBean) />
 		</cfif>
-		
+
 		<cfset userBean.purgeExtendedData()>
 		<cfset userBean.setIsNew(0)>
-		
-		<cfif  userBean.getType() eq 1>	
-			<cfset pluginEvent.setValue("groupBean",userBean)/>			
+
+		<cfif  userBean.getType() eq 1>
+			<cfset pluginEvent.setValue("groupBean",userBean)/>
 			<cfset variables.pluginManager.announceEvent("onGroupCreate",pluginEvent)>
 			<cfset variables.pluginManager.announceEvent("onGroupSave",pluginEvent)>
 			<cfset variables.pluginManager.announceEvent("onGroup#userBean.getSubType()#Create",pluginEvent)>
@@ -516,95 +516,95 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset variables.pluginManager.announceEvent("onAfterGroupCreate",pluginEvent)>
 			<cfset variables.pluginManager.announceEvent("onAfterGroupSave",pluginEvent)>
 			<cfset variables.pluginManager.announceEvent("onAfterGroup#userBean.getSubType()#Create",pluginEvent)>
-			<cfset variables.pluginManager.announceEvent("onAfterGroup#userBean.getSubType()#Save",pluginEvent)>		
+			<cfset variables.pluginManager.announceEvent("onAfterGroup#userBean.getSubType()#Save",pluginEvent)>
 		<cfelse>
-			<cfset pluginEvent.setValue("userBean",userBean)/>	
+			<cfset pluginEvent.setValue("userBean",userBean)/>
 			<cfset variables.pluginManager.announceEvent("onUserCreate",pluginEvent)>
 			<cfset variables.pluginManager.announceEvent("onUserSave",pluginEvent)>
 			<cfset variables.pluginManager.announceEvent("onUser#userBean.getSubType()#Create",pluginEvent)>
-			<cfset variables.pluginManager.announceEvent("onUser#userBean.getSubType()#Save",pluginEvent)>		
+			<cfset variables.pluginManager.announceEvent("onUser#userBean.getSubType()#Save",pluginEvent)>
 			<cfset variables.pluginManager.announceEvent("onAfterUserCreate",pluginEvent)>
 			<cfset variables.pluginManager.announceEvent("onAfterUserSave",pluginEvent)>
 			<cfset variables.pluginManager.announceEvent("onAfterUser#userBean.getSubType()#Create",pluginEvent)>
-			<cfset variables.pluginManager.announceEvent("onAfterUser#userBean.getSubType()#Save",pluginEvent)>	
+			<cfset variables.pluginManager.announceEvent("onAfterUser#userBean.getSubType()#Save",pluginEvent)>
 		</cfif>
 	</cfif>
-	
+
 	<cfreturn userBean />
 </cffunction>
 
 <cffunction name="delete" access="public" returntype="void" output="false">
 	<cfargument name="userid" type="string" default=""/>
 	<cfargument name="type" type="numeric" default="2"/>
-	
+
 	<cfset var userBean=read(arguments.userid) />
 	<cfset var pluginEvent = createObject("component","mura.event").init(arguments) />
 	<cfset var addresses="">
 	<cfset pluginEvent.setValue("siteID", userBean.getSiteID())>
-	
-	<cfif  userBean.getType() eq 1>	
-		<cfset pluginEvent.setValue("groupBean",userBean)/>			
-		<cfset variables.pluginManager.announceEvent("onGroupDelete",pluginEvent)>	
+
+	<cfif  userBean.getType() eq 1>
+		<cfset pluginEvent.setValue("groupBean",userBean)/>
+		<cfset variables.pluginManager.announceEvent("onGroupDelete",pluginEvent)>
 		<cfset variables.pluginManager.announceEvent("onBeforeGroupDelete",pluginEvent)>
-		<cfset variables.pluginManager.announceEvent("onBeforeGroup#userBean.getSubType()#Delete",pluginEvent)>				
+		<cfset variables.pluginManager.announceEvent("onBeforeGroup#userBean.getSubType()#Delete",pluginEvent)>
 	<cfelse>
-		<cfset pluginEvent.setValue("userBean",userBean)/>	
+		<cfset pluginEvent.setValue("userBean",userBean)/>
 		<cfset variables.pluginManager.announceEvent("onUserDelete",pluginEvent)>
 		<cfset variables.pluginManager.announceEvent("onBeforeUserDelete",pluginEvent)>
-		<cfset variables.pluginManager.announceEvent("onBeforeUser#userBean.getSubType()#Delete",pluginEvent)>		
+		<cfset variables.pluginManager.announceEvent("onBeforeUser#userBean.getSubType()#Delete",pluginEvent)>
 	</cfif>
-	
+
 	<cfset variables.trashManager.throwIn(userBean)>
 	<cfset variables.globalUtility.logEvent("UserID:#arguments.userid# Type:#userBean.getType()# User:#userBean.getFName()# #userBean.getFName()# Group:#userBean.getGroupName()# was deleted","mura-users","Information",true) />
 	<cfif len(userBean.getPhotoFileID())>
 		<cfset variables.fileManager.deleteVersion(userBean.getPhotoFileID()) />
 	</cfif>
-	
+
 	<cfset variables.userDAO.delete(arguments.userid,arguments.type) />
 	<cfset purgeUserCache(userBean=userBean)>
-	
-	<cfif  userBean.getType() eq 1>			
+
+	<cfif  userBean.getType() eq 1>
 		<cfset variables.pluginManager.announceEvent("onAfterGroupDelete",pluginEvent)>
-		<cfset variables.pluginManager.announceEvent("onAfterGroup#userBean.getSubType()#Delete",pluginEvent)>				
+		<cfset variables.pluginManager.announceEvent("onAfterGroup#userBean.getSubType()#Delete",pluginEvent)>
 	<cfelse>
 		<cfset variables.pluginManager.announceEvent("onAfterUserDelete",pluginEvent)>
-		<cfset variables.pluginManager.announceEvent("onAfterUser#userBean.getSubType()#Delete",pluginEvent)>		
+		<cfset variables.pluginManager.announceEvent("onAfterUser#userBean.getSubType()#Delete",pluginEvent)>
 	</cfif>
-	
+
 </cffunction>
 
 <cffunction name="readGroupMemberships" access="public" returntype="any" output="false">
-	<cfargument name="userid" type="string" default="" required="yes"/>		
+	<cfargument name="userid" type="string" default="" required="yes"/>
 	<cfreturn variables.userDAO.readGroupMemberships(arguments.userid) />
 </cffunction>
 
 <cffunction name="getAddresses" access="public" returntype="any" output="false">
-	<cfargument name="userid" type="string" default="" required="yes"/>		
+	<cfargument name="userid" type="string" default="" required="yes"/>
 	<cfreturn variables.userDAO.getAddresses(arguments.userid) />
-</cffunction> 
+</cffunction>
 
 <cffunction name="getAddressByID" access="public" returntype="any" output="false">
-	<cfargument name="addressid" type="string" default="" required="yes"/>		
+	<cfargument name="addressid" type="string" default="" required="yes"/>
 	<cfreturn variables.userDAO.getAddressByID(arguments.addressid) />
-</cffunction> 
+</cffunction>
 
 <cffunction name="readInterestGroups" access="public" returntype="any" output="false">
-	<cfargument name="userid" type="string" default="" required="yes"/>		
+	<cfargument name="userid" type="string" default="" required="yes"/>
 	<cfreturn variables.userDAO.readInterestGroups(arguments.userid) />
 </cffunction>
 
 <cffunction name="readMemberships" access="public" returntype="any" output="false">
-	<cfargument name="userid" type="string" default="" required="yes"/>		
+	<cfargument name="userid" type="string" default="" required="yes"/>
 	<cfreturn variables.userDAO.readMemberships(arguments.userid) />
 </cffunction>
 
 <cffunction name="getPublicGroups" access="public" returntype="any" output="false">
-	<cfargument name="siteid" type="string" default="" required="yes"/>		
+	<cfargument name="siteid" type="string" default="" required="yes"/>
 	<cfreturn variables.userGateway.getPublicGroups(arguments.siteid) />
 </cffunction>
 
 <cffunction name="getPublicGroupsIterator" access="public" returntype="any" output="false">
-	<cfargument name="siteid" type="string" default="" required="yes"/>		
+	<cfargument name="siteid" type="string" default="" required="yes"/>
 	<cfset var rs=variables.userGateway.getPublicGroups(arguments.siteid) />
 	<cfset var it=getBean("userIterator")>
 	<cfset it.setQuery(rs)>
@@ -612,12 +612,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="getPrivateGroups" access="public" returntype="any" output="false">
-	<cfargument name="siteid" type="string" default="" required="yes"/>	
+	<cfargument name="siteid" type="string" default="" required="yes"/>
 	<cfreturn variables.userGateway.getPrivateGroups(arguments.siteid) />
 </cffunction>
 
 <cffunction name="getPrivateGroupsIterator" access="public" returntype="any" output="false">
-	<cfargument name="siteid" type="string" default="" required="yes"/>	
+	<cfargument name="siteid" type="string" default="" required="yes"/>
 	<cfset var rs=variables.userGateway.getPrivateGroups(arguments.siteid) />
 	<cfset var it=getBean("userIterator")>
 	<cfset it.setQuery(rs)>
@@ -625,7 +625,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="createUserInGroup" access="public" returntype="void" output="false">
-	<cfargument name="userid" type="string" default="" required="yes"/>		
+	<cfargument name="userid" type="string" default="" required="yes"/>
 	<cfargument name="groupid" type="string" default="" required="yes"/>
 	<cfset variables.userDAO.createUserInGroup(arguments.userid,arguments.groupid) />
 	<cfset purgeUserCache(userID=arguments.userID)>
@@ -633,7 +633,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="deleteUserFromGroup" access="public" returntype="void" output="false">
-	<cfargument name="userid" type="string" default="" required="yes"/>		
+	<cfargument name="userid" type="string" default="" required="yes"/>
 	<cfargument name="groupid" type="string" default="" required="yes"/>
 	<cfset variables.userDAO.deleteUserFromGroup(arguments.userid,arguments.groupid) />
 	<cfset purgeUserCache(userID=arguments.userID)>
@@ -641,27 +641,27 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="getSearch" access="public" returntype="query" output="false">
-	<cfargument name="search" type="string" default="" required="yes"/>		
+	<cfargument name="search" type="string" default="" required="yes"/>
 	<cfargument name="siteid" type="string" default="" required="yes"/>
 	<cfargument name="isPublic" type="numeric" default="1" required="yes"/>
 	<cfreturn variables.userGateway.getSearch(arguments.search,arguments.siteid,arguments.isPublic) />
 </cffunction>
 
 <cffunction name="getAdvancedSearch" access="public" returntype="query" output="false">
-	<cfargument name="data" type="any" default="" hint="This can be a struct or an instance of userFeedBean."/>	
+	<cfargument name="data" type="any" default="" hint="This can be a struct or an instance of userFeedBean."/>
 	<cfargument name="siteid" type="any" hint="deprecated, use userFeedBean.setSiteID()" default=""/>
 	<cfargument name="isPublic" type="any" hint="deprecated, use userFeedBean.setIsPublic()" default=""/>
 	<cfreturn variables.userGateway.getAdvancedSearch(arguments.data,arguments.siteid,arguments.isPublic) />
 </cffunction>
 
 <cffunction name="getAdvancedSearchQuery" access="public" returntype="query" output="false">
-	<cfargument name="userFeedBean" type="any" default="" required="yes"/>		
-	
+	<cfargument name="userFeedBean" type="any" default="" required="yes"/>
+
 	<cfreturn getAdvancedSearch(arguments.userFeedBean) />
 </cffunction>
 
 <cffunction name="getAdvancedSearchIterator" access="public" returntype="query" output="false">
-	<cfargument name="userFeedBean" type="any" required="yes"/>		
+	<cfargument name="userFeedBean" type="any" required="yes"/>
 	<cfset var rs= getAdvancedSearch(arguments.userFeedBean) />
 	<cfset var it = getBean("userIterator")>
 	<cfset it.setQuery(rs)>
@@ -669,7 +669,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="setLastUpdateInfo" access="public" returntype="void" output="false">
-	<cfargument name="userBean" type="any" default="" required="yes"/>		
+	<cfargument name="userBean" type="any" default="" required="yes"/>
 	<cfif session.mura.isLoggedIn>
 			<cfset arguments.userBean.setLastUpdateBy(left(session.mura.fname & " " & session.mura.lname,50))/>
 			<cfset arguments.userBean.setLastUpdateByID(session.mura.userID)/>
@@ -683,9 +683,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfargument name="email" type="string" default=""/>
 		<cfargument name="siteid" type="string" default=""/>
 		<cfargument name="returnURL" type="string" default=""/>
-	
+
 		<cfreturn variables.userUtility.sendLoginByEmail(arguments.email,arguments.siteid,arguments.returnURL) />
-		
+
 </cffunction>
 
 <cffunction name="sendLoginByUser" access="public" returntype="string" output="false">
@@ -693,37 +693,37 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfargument name="siteid" type="string" default=""/>
 		<cfargument name="returnURL" type="string" default=""/>
 		<cfargument name="isPublicReg" required="yes" type="boolean" default="false"/>
-	
+
 		<cfreturn variables.userUtility.sendLoginByUser(arguments.userBean,arguments.siteid,arguments.returnURL,arguments.isPublicReg) />
-		
+
 </cffunction>
 
 <cffunction name="createAddress" access="public" returntype="struct" output="false">
-	<cfargument name="data" type="any" default="#structnew()#"/>		
-	
+	<cfargument name="data" type="any" default="#structnew()#"/>
+
 	<cfset var addressBean=getBean("addressBean") />
 	<cfset var userBean="" />
-	
+
 	<cfif isObject(arguments.data)>
 		<cfset arguments.data=arguments.data.getAllValues() />
 	</cfif>
-	
+
 	<cfif not structKeyExists(arguments.data,"userID") or (structKeyExists(arguments.data,"userID") and not len(arguments.data.userID))>
 		<cfthrow type="custom" message="The attribute 'USERID' is required when saving an address.">
 	</cfif>
-	
+
 	<cfset addressBean.set(arguments.data) />
 	<cfset addressBean.validate()>
-	
+
 	<cfset userBean=read(addressBean.getUserID())>
 	<cfset addressBean.setSiteID(userBean.getSiteID())>
-	
+
 	<cfif not structKeyExists(arguments.data,"addressID") or (structKeyExists(arguments.data,"addressID") and not len(arguments.data.addressID))>
 		<cfset addressBean.setAddressID(createuuid()) />
 	<cfelse>
 		<cfset addressBean.setAddressID(arguments.data.addressID) />
 	</cfif>
-	
+
 	<cfif structIsEmpty(addressBean.getErrors())>
 		<cfset variables.userDAO.createAddress(addressBean) />
 		<cfif structKeyExists(arguments.data,"extendSetID")>
@@ -737,12 +737,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="updateAddress" access="public" returntype="any" output="false">
-	<cfargument name="data" type="any" default="#structnew()#"/>	
-	
+	<cfargument name="data" type="any" default="#structnew()#"/>
+
 	<cfset var error =""/>
 	<cfset var addressBean=""/>
 	<cfset var userBean="" />
-	
+
 	<cfif isObject(arguments.data)>
 		<cfset addressBean=arguments.data>
 		<cfset arguments.data=arguments.data.getAllValues() />
@@ -751,21 +751,21 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfelse>
 		<cfset addressBean=getBean("addressBean")>
 	</cfif>
-	
+
 	<cfif not structKeyExists(arguments.data,"userID") or (structKeyExists(arguments.data,"userID") and not len(arguments.data.userID))>
 		<cfthrow type="custom" message="The attribute 'USERID' is required when saving an address.">
 	</cfif>
-	
+
 	<cfif not structKeyExists(arguments.data,"addressID") or (structKeyExists(arguments.data,"addressID") and not len(arguments.data.addressID))>
 		<cfreturn createAddress(arguments.data) />
 	</cfif>
-	
+
 	<cfset addressBean.set(arguments.data) />
 	<cfset addressBean.validate()>
-	
+
 	<cfset userBean=read(addressBean.getUserID())>
 	<cfset addressBean.setSiteID(userBean.getSiteID())>
-	
+
 	<cfif structIsEmpty(addressBean.getErrors())>
 		<cfset variables.userDAO.updateAddress(addressBean) />
 		<cfif structKeyExists(arguments.data,"extendSetID")>
@@ -773,60 +773,60 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset variables.ClassExtensionManager.saveExtendedData(addressBean.getAddressID(),arguments.data,'tclassextenddatauseractivity')/>
 		</cfif>
 	</cfif>
-	
+
 	<cfset purgeUserCache(userBean=userBean)>
-	
+
 	<cfreturn addressBean />
 </cffunction>
 
 <cffunction name="deleteAddress" access="public" returntype="void" output="false">
-	<cfargument name="addressid" type="string" default=""/>			
+	<cfargument name="addressid" type="string" default=""/>
 	<cfset var addressBean=variables.userDAO.readAddress(arguments.addressID) />
 	<cfif not addressBean.getIsNew()>
 		<cfset variables.trashManager.throwIn(addressBean)>
 		<cfset variables.userDAO.deleteAddress(arguments.addressid) />
 	</cfif>
 	<cfset purgeUserCache(userID=addressBean.getUserID())>
-	
+
 </cffunction>
 
-<cffunction name="getCurrentUserID" access="public" returntype="string" output="false">		
-	
+<cffunction name="getCurrentUserID" access="public" returntype="string" output="false">
+
 	<cfreturn session.mura.userID />
-	
+
 </cffunction>
 
-<cffunction name="getCurrentName" access="public" returntype="string" output="false">		
-	
+<cffunction name="getCurrentName" access="public" returntype="string" output="false">
+
 	<cftry>
 		<cfreturn session.mura.fname & " " & session.mura.lname />
 		<cfcatch>
 			<cfreturn ''/>
 		</cfcatch>
 	</cftry>
-	
+
 </cffunction>
 
-<cffunction name="getCurrentLastLogin" access="public" returntype="string" output="false">		
-	
+<cffunction name="getCurrentLastLogin" access="public" returntype="string" output="false">
+
 	<cftry>
 		<cfreturn session.mura.lastlogin />
 		<cfcatch>
 			<cfreturn ''/>
 		</cfcatch>
 	</cftry>
-	
+
 </cffunction>
 
-<cffunction name="getCurrentCompany" access="public" returntype="string" output="false">		
-	
+<cffunction name="getCurrentCompany" access="public" returntype="string" output="false">
+
 	<cftry>
 		<cfreturn session.mura.company />
 		<cfcatch>
 			<cfreturn ''/>
 		</cfcatch>
 	</cftry>
-	
+
 </cffunction>
 
 <cffunction name="setPhotoFile" output="false">
@@ -853,13 +853,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset arguments.userBean.setPhotoFileID(variables.fileManager.create(theFileStruct.fileObj,arguments.userBean.getUserID(),arguments.userBean.getSiteID(),tempFile.ClientFile,tempFile.ContentType,tempFile.ContentSubType,tempFile.FileSize,'00000000000000000000000000000000008',tempFile.ServerFileExt,theFileStruct.fileObjSmall,theFileStruct.fileObjMedium)) />
 		<cfcatch>
 			<cfset error.photo="The file you uploaded appears to be corrupt. Please select another file to upload."/>
-			<cfset userBean.setErrors(error)/> 
+			<cfset userBean.setErrors(error)/>
 		</cfcatch>
 	</cftry>
 <cfelse>
 	<cffile action="delete" file="#variables.configBean.getTempDir()##tempFile.serverfile#">
 	<cfset error.photo="The file you uploaded is not a supported format. Only, JPEG, GIF and PNG files are accepted."/>
-	<cfset userBean.setErrors(error)/> 
+	<cfset userBean.setErrors(error)/>
 </cfif>
 </cffunction>
 
@@ -871,7 +871,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="setUserStructDefaults" output="false" access="public" returntype="void">
 <cfset var user="">
 <cfif not structKeyExists(session,"mura")>
-	<cfif yesNoFormat(variables.configBean.getValue("useLegacySessions")) 
+	<cfif yesNoFormat(variables.configBean.getValue("useLegacySessions"))
 			and len(getAuthUser()) and isValid("UUID",listFirst(getAuthUser(),"^"))>
 		<cfset user=read(listFirst(getAuthUser(),"^"))>
 		<cfset variables.userUtility.setUserStruct(user.getAllValues())>
